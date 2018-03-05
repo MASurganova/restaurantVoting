@@ -1,19 +1,19 @@
-package model;
+package ru.voting.model;
 
 import java.util.List;
 
-public class Restaurant {
-    private String name;
+public class Restaurant extends AbstractNamedEntity {
     private List<Lunch> lunches;
     private Lunch currentLunch;
 
-    public Restaurant(String name) {
-        this.name = name;
+    public Restaurant(Integer id, String name) {
+        super(id, name);
     }
 
-    public Restaurant(String name, List<Lunch> lunches) {
-        this.name = name;
+    public Restaurant(Integer id, String name, List<Lunch> lunches, Lunch currentLunch) {
+        this(id, name);
         this.lunches = lunches;
+        this.currentLunch = currentLunch;
     }
 
     public void addLunch(Lunch lunch) {
@@ -22,14 +22,6 @@ public class Restaurant {
 
     public void removeLunch(Lunch lunch) {
         lunches.remove(lunch);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<Lunch> getLunches() {

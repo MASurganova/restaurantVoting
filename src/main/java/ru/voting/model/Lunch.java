@@ -1,11 +1,13 @@
-package model;
+package ru.voting.model;
 
 import java.util.List;
 
-public class Lunch {
+public class Lunch extends AbstractBaseEntity {
+
     private List<Dish> dishes;
 
-    public Lunch(List<Dish> dishes) {
+    public Lunch(Integer id, List<Dish> dishes) {
+        super(id);
         this.dishes = dishes;
     }
 
