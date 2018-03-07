@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class User extends AbstractNamedEntity {
 
+    private String email;
+
     private String password;
 
     private boolean enabled = true;
@@ -17,15 +19,24 @@ public class User extends AbstractNamedEntity {
 
     private Set<Role> roles;
 
-    public User(Integer id, String name, String password, Role role, Role ... roles) {
-        this(id, name, password, true, EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Role role, Role ... roles) {
+        this(id, name, email, password, true, EnumSet.of(role, roles));
     }
 
-    public User(Integer id, String name, String password, boolean enabled, EnumSet<Role> roles) {
+    public User(Integer id, String name, String email, String password, boolean enabled, EnumSet<Role> roles) {
         super(id, name);
         this.password = password;
         this.enabled = enabled;
         this.roles = roles;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -57,7 +68,8 @@ public class User extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "User{" +
-                "password='" + password + '\'' +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", enabled=" + enabled +
                 ", choice=" + choice +
                 ", roles=" + roles +
