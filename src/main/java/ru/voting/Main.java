@@ -11,8 +11,7 @@ public class Main {
         ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
 
-        UserRepository userRepository = (UserRepository) appCtx.getBean("userRepository");
-//        UserRepository userRepository = appCtx.getBean(UserRepository.class);
+        UserRepository userRepository = appCtx.getBean(UserRepository.class);
         userRepository.getAll();
         appCtx.close();
     }

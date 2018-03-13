@@ -19,6 +19,7 @@ public class User extends AbstractNamedEntity {
 
     private Set<Role> roles;
 
+
     public User(Integer id, String name, String email, String password, Role role, Role ... roles) {
         this(id, name, email, password, true, EnumSet.of(role, roles));
     }
@@ -52,8 +53,6 @@ public class User extends AbstractNamedEntity {
     }
 
     public void setChoice(Restaurant choice) throws TimeDelayException {
-        LocalTime time = LocalTime.now();
-        if (time.isAfter(LocalTime.of(11, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         this.choice = choice;
     }
 
@@ -63,6 +62,14 @@ public class User extends AbstractNamedEntity {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package ru.voting.web;
 
 import org.slf4j.Logger;
+import ru.voting.model.Restaurant;
 import ru.voting.model.Role;
 import ru.voting.model.User;
+import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
 
 import javax.servlet.ServletConfig;
@@ -15,15 +17,15 @@ import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class UserServlet extends HttpServlet {
-    private static final Logger log = getLogger(UserServlet.class);
+public class RestaurantServlet extends HttpServlet {
+    private static final Logger log = getLogger(RestaurantServlet.class);
 
-    private UserRepository repository;
+    private RestaurantRepository repository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        repository = new UserRepository();
+        repository = new RestaurantRepository();
     }
 
     @Override
@@ -31,14 +33,12 @@ public class UserServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
 
-        User user = new User(id.isEmpty() ? null : Integer.valueOf(id),
-                request.getParameter("name"),
-                request.getParameter("email"),
-                request.getParameter("password"), Role.ROLE_USER);
+        Restaurant restaurant = new Restaurant(id.isEmpty() ? null : Integer.valueOf(id),
+                request.getParameter("name"));
 
-        log.info(user.isNew() ? "Create {}" : "Update {}", user);
-        repository.save(user);
-        response.sendRedirect("users");
+        log.info(restaurant.isNew() ? "Create {}" : "Update {}", restaurant);
+        repository.save(restaurant);
+        response.sendRedirect("restaurants");
     }
 
     @Override
@@ -50,21 +50,21 @@ public class UserServlet extends HttpServlet {
                 int id = getId(request);
                 log.info("Delete {}", id);
                 repository.delete(id);
-                response.sendRedirect("users");
+                response.sendRedirect("restaurants");
                 break;
             case "create":
             case "update":
-                final User user = "create".equals(action) ?
-                        new User(null, "", "", "",  Role.ROLE_USER) :
+                final Restaurant restaurant = "create".equals(action) ?
+                        new Restaurant(null, "") :
                         repository.get(getId(request));
-                request.setAttribute("user", user);
-                request.getRequestDispatcher("/jsp/user/userForm.jsp").forward(request, response);
+                request.setAttribute("restaurant", restaurant);
+                request.getRequestDispatcher("/jsp/user/restaurantForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("users", repository.getAll());
-                request.getRequestDispatcher("/jsp/user/users.jsp").forward(request, response);
+                request.setAttribute("restaurants", repository.getAll());
+                request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
                 break;
         }
     }

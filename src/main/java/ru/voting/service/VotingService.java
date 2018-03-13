@@ -1,18 +1,26 @@
-package ru.voting.util;
+package ru.voting.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.model.RestaurantTO;
 import ru.voting.model.User;
-import ru.voting.service.UserService;
+import ru.voting.repository.DishRepository;
+import ru.voting.repository.RestaurantRepository;
+import ru.voting.repository.UserRepository;
+import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class VotingUtil {
+@Service
+public class VotingService {
 
     private Map<LocalDate, RestaurantTO> historyVoting = new HashMap<>();
 
@@ -22,7 +30,14 @@ public class VotingUtil {
 
     private boolean votingEnded = false;
 
-    private UserService users;
+    @Autowired
+    private UserRepository users;
+
+    @Autowired
+    private RestaurantRepository restaurants;
+
+    @Autowired
+    private DishRepository dishes;
 
     public void endVoting() {
         int maxVoters = currentRestaurants.stream().map(RestaurantTO::getVoters)
@@ -71,5 +86,34 @@ public class VotingUtil {
 
     public void setCurrentChoice(RestaurantTO currentChoice) {
         this.currentChoice = currentChoice;
+    }
+
+    public void addDishToLunch(Restaurant restaurant, Dish dish) {
+        restaurant.addDish(dish);
+        dish.setRestaurant(restaurant);
+        restaurants.save(restaurant);
+        dishes.save(dish);
+    }
+
+    public void removeDishFromLunch(Restaurant restaurant, int dishId) {
+        Dish dish = dishes.get(dishId);
+        restaurant.removeDish(dish);
+        restaurants.save(restaurant);
+        dishes.delete(dishId);
+    }
+
+    public void addVoice(User user, RestaurantTO restaurant) throws TimeDelayException {
+        LocalTime time = LocalTime.now();
+        if (time.isAfter(LocalTime.of(11, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
+        if (user.getChoice() == null || !restaurant.getName().equals(user.getChoice().getName())) {
+            if (user.getChoice() != null) {
+                RestaurantTO choise = currentRestaurants.stream().filter(r -> r.getName().equals(user.getChoice().getName()))
+                        .findFirst().orElse(null);
+                if (choise != null) choise.removeVoter();
+            }
+            user.setChoice(restaurants.getByName(restaurant.getName()));
+            users.save(user);
+            restaurant.addVoter();
+        }
     }
 }

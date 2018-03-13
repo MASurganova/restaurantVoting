@@ -36,4 +36,20 @@ public class RestaurantTO{
     public List<Dish> getLunch() {
         return lunch;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getTotalPrice() {
+        return lunch.stream().mapToInt(Dish::getPrice).sum();
+    }
+
+    public void setLunch(List<Dish> lunch) {
+        this.lunch = lunch;
+    }
+
+    public void setVoters(AtomicInteger voters) {
+        this.voters = voters;
+    }
 }
