@@ -10,6 +10,6 @@ public class AuthorizedUser {
     }
 
     public static Restaurant getChoice() {
-        return new Restaurant(null, "my choice");
+        return new Restaurant(null, "MY choice");
     }
 }

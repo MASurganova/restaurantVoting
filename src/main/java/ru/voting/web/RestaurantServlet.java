@@ -1,11 +1,14 @@
 package ru.voting.web;
 
 import org.slf4j.Logger;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.voting.model.Restaurant;
 import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
+import ru.voting.util.ValidationUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,12 +23,21 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class RestaurantServlet extends HttpServlet {
     private static final Logger log = getLogger(RestaurantServlet.class);
 
+    private ConfigurableApplicationContext springContext;
+
     private RestaurantRepository repository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        repository = new RestaurantRepository();
+        springContext = ValidationUtil.getSpringContext();
+        repository = springContext.getBean(RestaurantRepository.class);
+    }
+
+    @Override
+    public void destroy() {
+        springContext.close();
+        super.destroy();
     }
 
     @Override
@@ -33,8 +45,14 @@ public class RestaurantServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
 
-        Restaurant restaurant = new Restaurant(id.isEmpty() ? null : Integer.valueOf(id),
-                request.getParameter("name"));
+        Restaurant restaurant;
+        if (id.isEmpty()) {
+            restaurant = new Restaurant(null,
+                    request.getParameter("name"));
+        } else {
+            restaurant = repository.get(Integer.valueOf(id));
+            restaurant.setName(request.getParameter("name"));
+        }
 
         log.info(restaurant.isNew() ? "Create {}" : "Update {}", restaurant);
         repository.save(restaurant);
@@ -58,7 +76,7 @@ public class RestaurantServlet extends HttpServlet {
                         new Restaurant(null, "") :
                         repository.get(getId(request));
                 request.setAttribute("restaurant", restaurant);
-                request.getRequestDispatcher("/jsp/user/restaurantForm.jsp").forward(request, response);
+                request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
                 break;
             case "all":
             default:

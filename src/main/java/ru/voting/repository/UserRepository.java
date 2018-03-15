@@ -16,9 +16,9 @@ public class UserRepository extends AbstractInMemoryRepository<User>{
 
     public UserRepository() {
         super();
-        inMemoryRepository.put(++inMemoryCount, new User(inMemoryCount, "USER", "user@mail.ru",
+        save (new User(null, "USER", "user@mail.ru",
                 "password", Role.ROLE_USER));
-        inMemoryRepository.put(++inMemoryCount, new User(inMemoryCount, "ADMIN", "admin@mail.ru",
+        save(new User(null, "ADMIN", "admin@mail.ru",
                 "password", Role.ROLE_ADMIN, Role.ROLE_USER));
     }
 

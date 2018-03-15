@@ -31,6 +31,7 @@
     <jsp:useBean id="dish" type="ru.voting.model.Dish" scope="request"/>
     <form method="post" action="dishes">
         <input type="hidden" name="id" value="${dish.id}">
+        <input type="hidden" name="restaurant" value="${param.restaurant}">
         <dl>
             <dt>Наименование:</dt>
             <dd><input type="text" value="${dish.description}" name="description" required></dd>

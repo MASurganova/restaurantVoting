@@ -2,6 +2,7 @@ package ru.voting;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
 
 import java.util.Arrays;
@@ -14,5 +15,8 @@ public class Main {
         UserRepository userRepository = appCtx.getBean(UserRepository.class);
         userRepository.getAll();
         appCtx.close();
+
+        RestaurantRepository restaurantRepository = appCtx.getBean(RestaurantRepository.class);
+        restaurantRepository.getAll().forEach(System.out::println);
     }
 }

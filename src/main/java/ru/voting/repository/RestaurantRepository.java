@@ -2,20 +2,21 @@ package ru.voting.repository;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
+import ru.voting.service.VotingService;
 import ru.voting.util.RestaurantUtil;
 import ru.voting.model.Restaurant;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static ru.voting.util.RestaurantUtil.*;
 
 @Repository
 public class RestaurantRepository extends AbstractInMemoryRepository<Restaurant> {
     private static final Logger log =getLogger(UserRepository.class);
 
-
     public RestaurantRepository() {
         super();
-        save(RestaurantUtil.my);
-        save(RestaurantUtil.other);
+        save(MY);
+        save(OTHER);
     }
 
     //    public boolean delete(int id) {

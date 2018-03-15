@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -14,7 +15,7 @@ public abstract class AbstractInMemoryRepository <T extends AbstractBaseEntity> 
     protected static final Logger log = getLogger(AbstractInMemoryRepository.class);
 
     protected Map<Integer, T> inMemoryRepository;
-    protected int inMemoryCount = 0;
+    protected AtomicInteger inMemoryCount = new AtomicInteger(0);
 
     public AbstractInMemoryRepository() {
         inMemoryRepository = new HashMap<>();
@@ -28,7 +29,7 @@ public abstract class AbstractInMemoryRepository <T extends AbstractBaseEntity> 
 
     public T save(T t) {
         log.info(t.isNew() ? "create {}" : "update {}", t);
-        if (t.isNew()) t.setId(++inMemoryCount);
+        if (t.isNew()) t.setId(inMemoryCount.incrementAndGet());
         inMemoryRepository.put(t.getId(), t);
         return t;
     }

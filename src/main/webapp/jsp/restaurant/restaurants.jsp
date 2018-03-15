@@ -8,7 +8,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="../../index.html">Home</a></h3>
+    <h3><a href="index.html">Home</a></h3>
     <h2>Рестораны</h2>
     <a href="restaurants?action=create">Добавить ресторан</a>
     <section>
@@ -26,7 +26,14 @@
                 <jsp:useBean id="restaurant" scope="page" type="ru.voting.model.Restaurant"/>
                 <tr>
                     <td><c:out value="${restaurant.name}"/></td>
-                    <td>${restaurant.lunch}</td>
+                    <td>
+                        <ul>
+                            <c:forEach items="${restaurant.lunch}" var="dish">
+                                <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
+                                <li><c:out value="${dish.description}"/></li>
+                            </c:forEach>
+                        </ul>
+                    </td>
                     <td>${restaurant.totalPrice}</td>
                     <td><a href="restaurants?action=update&id=${restaurant.id}">Update</a></td>
                     <td><a href="restaurants?action=delete&id=${restaurant.id}">Delete</a></td>

@@ -1,6 +1,8 @@
 package ru.voting.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Restaurant extends AbstractNamedEntity {
 
@@ -9,6 +11,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     public Restaurant(Integer id, String name) {
         super(id, name);
+        this.lunch = new ArrayList<>();
     }
 
     public Restaurant(Integer id, String name, List<Dish> lunch) {
@@ -18,6 +21,7 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     public void addDish(Dish dish) {
+        this.lunch.removeIf(d -> Objects.equals(d.getId(), dish.getId()));
         this.lunch.add(dish);
         totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
     }
@@ -38,5 +42,15 @@ public class Restaurant extends AbstractNamedEntity {
 
     public int getTotalPrice() {
         return this.totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "lunch=" + lunch +
+                ", totalPrice=" + totalPrice +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

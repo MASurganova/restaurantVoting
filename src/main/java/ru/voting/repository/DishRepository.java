@@ -13,13 +13,8 @@ public class DishRepository extends AbstractInMemoryRepository<Dish> {
     private static final Logger log =getLogger(DishRepository.class);
 
     public DishRepository() {
-        super();
-        save(RestaurantUtil.dish1);
-        save(RestaurantUtil.dish2);
-        save(RestaurantUtil.dish3);
-        save(RestaurantUtil.dish4);
-        save(RestaurantUtil.dish5);
     }
+
 
     //    public boolean delete(int id) {
 //        log.info("delete {}", id);

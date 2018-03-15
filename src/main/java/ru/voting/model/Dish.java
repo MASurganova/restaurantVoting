@@ -36,4 +36,13 @@ public class Dish extends AbstractBaseEntity {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "description='" + description + '\'' +
+                ", price=" + price +
+                ", restaurant=" + restaurant +
+                '}';
+    }
 }
