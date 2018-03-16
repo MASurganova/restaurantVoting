@@ -45,4 +45,28 @@ public class RestaurantRepository extends AbstractInMemoryRepository<Restaurant>
                 .findFirst().orElse(null);
     }
 
+    public void addVoter(Restaurant restaurant) {
+        restaurant.addVoter();
+        save(restaurant);
+    }
+
+    public void removeVoter(Restaurant restaurant) {
+        restaurant.removeVoter();
+        save(restaurant);
+    }
+
+    public void updateVoters(Restaurant restaurant) {
+        restaurant.setVoters(0);
+        save(restaurant);
+    }
+
+    public void enabled(Restaurant restaurant) {
+        restaurant.setEnabled(true);
+        save(restaurant);
+    }
+
+    public void disabled(Restaurant restaurant) {
+        restaurant.setEnabled(false);
+        save(restaurant);
+    }
 }

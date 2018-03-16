@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -18,7 +19,7 @@ public abstract class AbstractInMemoryRepository <T extends AbstractBaseEntity> 
     protected AtomicInteger inMemoryCount = new AtomicInteger(0);
 
     public AbstractInMemoryRepository() {
-        inMemoryRepository = new HashMap<>();
+        inMemoryRepository = new ConcurrentHashMap<>();
     }
 
     public boolean delete(int id) {

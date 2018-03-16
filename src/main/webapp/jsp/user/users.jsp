@@ -8,7 +8,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="../../index.html">Home</a></h3>
+    <h3><a href="index.html">Home</a></h3>
     <h2>Пользователи</h2>
     <a href="users?action=create">Добавить пользователя</a>
     <section>

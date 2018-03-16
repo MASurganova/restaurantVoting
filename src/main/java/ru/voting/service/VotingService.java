@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.model.RestaurantTO;
 import ru.voting.model.User;
 import ru.voting.repository.DishRepository;
+import ru.voting.repository.HistoryRepository;
 import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
 import ru.voting.util.exception.TimeDelayException;
@@ -14,19 +14,12 @@ import ru.voting.util.exception.TimeDelayException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class VotingService {
-
-    private Map<LocalDate, RestaurantTO> historyVoting = new HashMap<>();
-
-    private Set<RestaurantTO> currentRestaurants = new HashSet<>();
-
-    private RestaurantTO currentChoice;
 
     private boolean votingEnded = false;
 
@@ -39,17 +32,19 @@ public class VotingService {
     @Autowired
     private DishRepository dishes;
 
+    @Autowired
+    private HistoryRepository history;
+
     public void endVoting() {
-        int maxVoters = currentRestaurants.stream().map(RestaurantTO::getVoters)
-                .max(Integer::compareTo).orElseGet(null);
-        currentChoice = currentRestaurants.stream().filter(restaurantTO -> restaurantTO.getVoters() == maxVoters)
-                .findFirst().orElseGet(null);
-        historyVoting.put(LocalDate.now(), currentChoice);
-        votingEnded = true;
-        currentRestaurants.clear();
+        Restaurant currentChoice = getCurrentChoice();
+        history.addInHistory(LocalDate.now(), currentChoice);
+        votingEnded = false;
+        restaurants.getAll().forEach(restaurants::updateVoters);
+        restaurants.getAll().forEach(r -> restaurants.disabled(r));
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
                 String.format("Голосование за ресторан, где мы будем обедать завершено, выбран ресторан - %s"
                         , currentChoice.getName())));
+        users.getAll().forEach(u -> users.setChoice(u, null));
     }
 
     public void startVoting() {
@@ -61,31 +56,20 @@ public class VotingService {
 //    Нужно реализовать рассылку письма по email с переданным текстом
     private void sendEmail(String email, String s) {}
 
-    public void addRestaurant(Restaurant restaurant) {
-        currentRestaurants.add(new RestaurantTO(restaurant));
+    public Map<LocalDate, Restaurant> getHistoryVoting() {
+        return history.getHistory();
     }
 
-    public void removeRestaurant(Restaurant restaurant) {
-        this.currentRestaurants = currentRestaurants.stream().filter(restaurantTO -> !restaurantTO.getName().equals(restaurant.getName()))
-        .collect(Collectors.toSet());
-
+    public Set<Restaurant> getCurrentRestaurants() {
+        return restaurants.getAll().stream().filter(Restaurant::isEnabled).collect(Collectors.toSet());
     }
 
-    public Map<LocalDate, RestaurantTO> getHistoryVoting() {
-        return historyVoting;
-    }
-
-    public Set<RestaurantTO> getCurrentRestaurants() {
-        if (votingEnded) return currentRestaurants;
-        else return null;
-    }
-
-    public RestaurantTO getCurrentChoice() {
-        return currentChoice;
-    }
-
-    public void setCurrentChoice(RestaurantTO currentChoice) {
-        this.currentChoice = currentChoice;
+    public Restaurant getCurrentChoice() {
+        Set<Restaurant> currentRestorants = getCurrentRestaurants();
+        int maxVoters = currentRestorants.stream().map(Restaurant::getVoters)
+                .max(Integer::compareTo).orElseGet(null);
+        return currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
+                .findFirst().orElseGet(null);
     }
 
     public void addDishToLunch(Restaurant restaurant, Dish dish) {
@@ -102,18 +86,18 @@ public class VotingService {
         dishes.delete(dishId);
     }
 
-    public void addVoice(User user, RestaurantTO restaurant) throws TimeDelayException {
+    public void addVoice(User user, Restaurant restaurant) throws TimeDelayException {
         LocalTime time = LocalTime.now();
-        if (time.isAfter(LocalTime.of(11, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
-        if (user.getChoice() == null || !restaurant.getName().equals(user.getChoice().getName())) {
-            if (user.getChoice() != null) {
-                RestaurantTO choise = currentRestaurants.stream().filter(r -> r.getName().equals(user.getChoice().getName()))
-                        .findFirst().orElse(null);
-                if (choise != null) choise.removeVoter();
-            }
-            user.setChoice(restaurants.getByName(restaurant.getName()));
-            users.save(user);
-            restaurant.addVoter();
+        if (time.isAfter(LocalTime.of(12, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
+        if (user.getChoice() == null || !restaurant.equals(user.getChoice())) {
+            if (user.getChoice() != null)
+                restaurants.removeVoter(user.getChoice());
+            users.setChoice(user, restaurant);
+            restaurants.addVoter(restaurant);
         }
+    }
+
+    public void addVoice(int userId, int restaurantId) throws TimeDelayException {
+        addVoice(users.get(userId), restaurants.get(restaurantId));
     }
 }

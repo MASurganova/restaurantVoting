@@ -3,15 +3,21 @@ package ru.voting.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Restaurant extends AbstractNamedEntity {
 
     private List<Dish> lunch;
     private int totalPrice;
 
+    private boolean enabled;
+
+    private AtomicInteger voters;
+
     public Restaurant(Integer id, String name) {
         super(id, name);
         this.lunch = new ArrayList<>();
+        this.voters = new AtomicInteger(0);
     }
 
     public Restaurant(Integer id, String name, List<Dish> lunch) {
@@ -29,6 +35,30 @@ public class Restaurant extends AbstractNamedEntity {
     public void removeDish(Dish dish) {
         this.lunch.remove(dish);
         totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
+    }
+
+    public void setEnabled(boolean enabeled) {
+        this.enabled = enabeled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public int getVoters() {
+        return voters.get();
+    }
+
+    public int addVoter() {
+        return voters.incrementAndGet();
+    }
+
+    public int removeVoter() {
+        return voters.decrementAndGet();
+    }
+
+    public void setVoters(int voters) {
+        this.voters.set(voters);
     }
 
     public List<Dish> getLunch() {

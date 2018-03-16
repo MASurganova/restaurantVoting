@@ -56,10 +56,10 @@ public class DishServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-        Restaurant restaurant = restaurants.get(Integer.valueOf(request.getParameter("restaurant")));
+        Restaurant restaurant = restaurants.get(Integer.parseInt("restaurant"));
 
         Dish dish = new Dish(id.isEmpty() ? null : Integer.valueOf(id),
-                request.getParameter("description"), Integer.parseInt(request.getParameter("price")),
+                request.getParameter("name"), Integer.parseInt(request.getParameter("price")),
                 restaurant);
 
         log.info(dish.isNew() ? "Create {}" : "Update {}", dish);
@@ -95,6 +95,6 @@ public class DishServlet extends HttpServlet {
 
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.valueOf(paramId);
+        return Integer.parseInt(paramId);
     }
 }

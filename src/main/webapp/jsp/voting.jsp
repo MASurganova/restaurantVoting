@@ -4,13 +4,12 @@
 
 <html>
 <head>
-    <title>Restaurants</title>
+    <title>Voting</title>
 </head>
 <body>
 <section>
     <h3><a href="index.html">Home</a></h3>
-    <h2>Рестораны</h2>
-    <a href="restaurants?action=create">Добавить ресторан</a>
+    <h2>Голосование</h2>
     <section>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
@@ -18,9 +17,8 @@
                 <th>Название</th>
                 <th>Список блюд на ланч</th>
                 <th>Цена ланча</th>
-                <th>Участие в голосовании</th>
-                <th></th>
-                <th></th>
+                <th>Колличество проголосовавших</th>
+                <th>Выбрать</th>
             </tr>
             </thead>
             <c:forEach items="${restaurants}" var="restaurant">
@@ -36,13 +34,14 @@
                         </ul>
                     </td>
                     <td>${restaurant.totalPrice}</td>
-                    <td>${restaurant.enabled}</td>
-                    <td><a href="restaurants?action=update&id=${restaurant.id}">Обновить</a></td>
-                    <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
-                    <td><a href="restaurants?action=enabled&id=${restaurant.id}">Добавить в голосование</a></td>
+                    <td>${restaurant.voters}</td>
+                    <td><a href="voting?action=choose&id=${restaurant.id}">Choose</a></td>
                 </tr>
             </c:forEach>
         </table>
     </section>
+    <c:if test="${userId == 2}">
+        <a href="voting?action=endVoting">Закончить голосование</a>
+    </c:if>
 </body>
 </html>

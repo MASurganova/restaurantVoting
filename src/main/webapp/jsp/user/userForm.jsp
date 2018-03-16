@@ -25,7 +25,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="../../index.html">Home</a></h3>
+    <h3><a href="index.html">Home</a></h3>
     <h2>${param.action == 'create' ? 'Создать пользователя' : 'Редактировать пользователя'}</h2>
     <hr>
     <jsp:useBean id="user" type="ru.voting.model.User" scope="request"/>

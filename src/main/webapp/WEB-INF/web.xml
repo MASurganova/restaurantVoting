@@ -36,4 +36,14 @@
         <url-pattern>/dishes</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>votingServlet</servlet-name>
+        <servlet-class>ru.voting.web.VotingServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>votingServlet</servlet-name>
+        <url-pattern>/voting</url-pattern>
+    </servlet-mapping>
+
 </web-app>

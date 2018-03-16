@@ -78,6 +78,11 @@ public class RestaurantServlet extends HttpServlet {
                 request.setAttribute("restaurant", restaurant);
                 request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
                 break;
+            case "enabled":
+                repository.enabled(repository.get(getId(request)));
+                request.setAttribute("restaurants", repository.getAll());
+                request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
+                break;
             case "all":
             default:
                 log.info("getAll");

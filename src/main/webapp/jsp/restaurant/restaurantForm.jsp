@@ -4,28 +4,11 @@
 <html>
 <head>
     <title>Meal</title>
-    <style>
-        dl {
-            background: none repeat scroll 0 0 #FAFAFA;
-            margin: 8px 0;
-            padding: 0;
-        }
-
-        dt {
-            display: inline-block;
-            width: 170px;
-        }
-
-        dd {
-            display: inline-block;
-            margin-left: 8px;
-            vertical-align: top;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <section>
-    <h3><a href="../../index.html">Home</a></h3>
+    <h3><a href="index.html">Home</a></h3>
     <h2>${param.action == 'create' ? 'Создать ресторан' : 'Редактировать ресторан'}</h2>
     <jsp:useBean id="restaurant" type="ru.voting.model.Restaurant" scope="request"/>
     <form method="post" action="restaurants">
@@ -50,7 +33,7 @@
                 </thead>
                 <c:forEach items="${restaurant.lunch}" var="dish">
                     <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
-                    <tr>
+                    <tr class="normal">
                         <td><c:out value="${dish.description}"/></td>
                         <td>${dish.price}</td>
                         <td><a href="dishes?action=update&id=${dish.id}&restaurant=${restaurant.id}">Update</a></td>

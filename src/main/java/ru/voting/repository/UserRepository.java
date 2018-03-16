@@ -2,6 +2,7 @@ package ru.voting.repository;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
+import ru.voting.model.Restaurant;
 import ru.voting.model.Role;
 import ru.voting.model.User;
 
@@ -20,6 +21,11 @@ public class UserRepository extends AbstractInMemoryRepository<User>{
                 "password", Role.ROLE_USER));
         save(new User(null, "ADMIN", "admin@mail.ru",
                 "password", Role.ROLE_ADMIN, Role.ROLE_USER));
+    }
+
+    public void setChoice(User user, Restaurant restaurant) {
+        user.setChoice(restaurant);
+        save(user);
     }
 
 //    public boolean delete(int id) {

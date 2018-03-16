@@ -13,8 +13,6 @@ public class User extends AbstractNamedEntity {
 
     private String password;
 
-    private boolean enabled = true;
-
     private Restaurant choice;
 
     private Set<Role> roles;
@@ -27,7 +25,6 @@ public class User extends AbstractNamedEntity {
     public User(Integer id, String name, String email, String password, boolean enabled, EnumSet<Role> roles) {
         super(id, name);
         this.password = password;
-        this.enabled = enabled;
         this.roles = roles;
         this.email = email;
     }
@@ -52,17 +49,11 @@ public class User extends AbstractNamedEntity {
         return choice;
     }
 
-    public void setChoice(Restaurant choice) throws TimeDelayException {
+    public void setChoice(Restaurant choice){
         this.choice = choice;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public Set<Role> getRoles() {
         return roles;
@@ -77,7 +68,6 @@ public class User extends AbstractNamedEntity {
         return "User{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", enabled=" + enabled +
                 ", choice=" + choice +
                 ", roles=" + roles +
                 ", name='" + name + '\'' +
