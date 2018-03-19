@@ -1,26 +1,14 @@
 package ru.voting.repository;
 
-import org.springframework.stereotype.Repository;
 import ru.voting.model.Restaurant;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
-public class HistoryRepository {
-    private Map<LocalDate, Restaurant> repository;
+public interface HistoryRepository {
 
-    public HistoryRepository() {
-        this.repository = new ConcurrentHashMap<>();
-    }
+    void addInHistory(LocalDate date, Restaurant restaurant);
 
-    public void addInHistory(LocalDate date, Restaurant restaurant) {
-        repository.put(date, restaurant);
-    }
-
-    public Map<LocalDate, Restaurant> getHistory() {
-        return repository;
-    }
+    Map<LocalDate, Restaurant> getHistory();
 }
-

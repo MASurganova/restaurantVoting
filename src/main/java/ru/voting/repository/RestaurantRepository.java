@@ -1,72 +1,28 @@
 package ru.voting.repository;
 
-import org.slf4j.Logger;
-import org.springframework.stereotype.Repository;
-import ru.voting.service.VotingService;
-import ru.voting.util.RestaurantUtil;
+import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 
-import static org.slf4j.LoggerFactory.getLogger;
-import static ru.voting.util.RestaurantUtil.*;
+import java.util.List;
 
-@Repository
-public class RestaurantRepository extends AbstractInMemoryRepository<Restaurant> {
-    private static final Logger log =getLogger(UserRepository.class);
+public interface RestaurantRepository {
+    boolean delete(int id);
 
-    public RestaurantRepository() {
-        super();
-        save(MY);
-        save(OTHER);
-    }
+    Restaurant save(Restaurant restaurant) ;
 
-    //    public boolean delete(int id) {
-//        log.info("delete {}", id);
-//        return true;
-//    }
-//
-//    public Restaurant save(Restaurant restaurant) {
-//        log.info("save {}", restaurant);
-//        return restaurant;
-//    }
-//
-//    public Restaurant get(int id) {
-//        log.info("get {}", id);
-//        return null;
-//    }
-//
-//    public List<Restaurant> getAll() {
-//        log.info("getAll");
-//        return Collections.emptyList();
-//    }
+    Restaurant get(int id);
 
-    public Restaurant getByName(String name) {
-        log.info("get by name {}", name);
-        return inMemoryRepository.values().stream().filter(r -> r.getName().equals(name))
-                .findFirst().orElse(null);
-    }
+    List<Restaurant> getAll();
 
-    public void addVoter(Restaurant restaurant) {
-        restaurant.addVoter();
-        save(restaurant);
-    }
+    Restaurant getByName(String name);
 
-    public void removeVoter(Restaurant restaurant) {
-        restaurant.removeVoter();
-        save(restaurant);
-    }
+    void addVoter(Restaurant restaurant);
 
-    public void updateVoters(Restaurant restaurant) {
-        restaurant.setVoters(0);
-        save(restaurant);
-    }
+    void removeVoter(Restaurant restaurant);
 
-    public void enabled(Restaurant restaurant) {
-        restaurant.setEnabled(true);
-        save(restaurant);
-    }
+    void updateVoters(Restaurant restaurant);
 
-    public void disabled(Restaurant restaurant) {
-        restaurant.setEnabled(false);
-        save(restaurant);
-    }
+    void enabled(Restaurant restaurant);
+
+    void disabled(Restaurant restaurant);
 }

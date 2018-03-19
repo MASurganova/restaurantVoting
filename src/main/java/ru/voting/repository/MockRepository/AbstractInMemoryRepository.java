@@ -1,10 +1,9 @@
-package ru.voting.repository;
+package ru.voting.repository.MockRepository;
 
 import org.slf4j.Logger;
 import ru.voting.model.AbstractBaseEntity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public abstract class AbstractInMemoryRepository <T extends AbstractBaseEntity> {
+public abstract class AbstractInMemoryRepository<T extends AbstractBaseEntity> {
     protected static final Logger log = getLogger(AbstractInMemoryRepository.class);
 
     protected Map<Integer, T> inMemoryRepository;

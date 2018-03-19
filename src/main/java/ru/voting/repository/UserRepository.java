@@ -1,56 +1,22 @@
 package ru.voting.repository;
 
-import org.slf4j.Logger;
-import org.springframework.stereotype.Repository;
 import ru.voting.model.Restaurant;
-import ru.voting.model.Role;
 import ru.voting.model.User;
 
-import java.util.*;
+import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
+public interface UserRepository {
 
-@Repository
-public class UserRepository extends AbstractInMemoryRepository<User>{
+    boolean delete(int id);
 
-    private static final Logger log = getLogger(UserRepository.class);
+    User get(int id);
 
-    public UserRepository() {
-        super();
-        save (new User(null, "USER", "user@mail.ru",
-                "password", Role.ROLE_USER));
-        save(new User(null, "ADMIN", "admin@mail.ru",
-                "password", Role.ROLE_ADMIN, Role.ROLE_USER));
-    }
+    List<User> getAll();
 
-    public void setChoice(User user, Restaurant restaurant) {
-        user.setChoice(restaurant);
-        save(user);
-    }
+    User getByEmail(String email);
 
-//    public boolean delete(int id) {
-//        log.info("delete {}", id);
-//        return true;
-//    }
-//
-//    public User save(User user) {
-//        log.info(user.isNew() ? "create {}" : "update {}", user);
-//        return user;
-//    }
-//
-//   public User get(int id) {
-//        log.info("get {}", id);
-//        return null;
-//    }
-//
-//    public List<User> getAll() {
-//        log.info("getAll");
-//        return Collections.EMPTY_LIST;
-//    }
+    User save(User user);
 
-    public User getByEmail(String email) {
-        log.info("getByEmail {}", email);
-        return inMemoryRepository.values().stream().filter(user -> user.getEmail().equals(email))
-                .findFirst().orElse(null);
-    }
+    void setChoice(User user, Restaurant restaurant);
+
 }

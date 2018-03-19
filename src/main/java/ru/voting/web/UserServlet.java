@@ -2,9 +2,9 @@ package ru.voting.web;
 
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.voting.model.Role;
 import ru.voting.model.User;
+import ru.voting.repository.MockRepository.InMemoryUserRepository;
 import ru.voting.repository.UserRepository;
 import ru.voting.util.ValidationUtil;
 
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -30,7 +29,7 @@ public class UserServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
-        repository = springContext.getBean(UserRepository.class);
+        repository = springContext.getBean(InMemoryUserRepository.class);
     }
 
     @Override

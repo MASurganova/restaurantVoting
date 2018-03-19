@@ -2,12 +2,9 @@ package ru.voting.web;
 
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.voting.model.Restaurant;
-import ru.voting.model.Role;
-import ru.voting.model.User;
+import ru.voting.repository.MockRepository.InMemoryRestaurantRepository;
 import ru.voting.repository.RestaurantRepository;
-import ru.voting.repository.UserRepository;
 import ru.voting.util.ValidationUtil;
 
 import javax.servlet.ServletConfig;
@@ -31,7 +28,7 @@ public class RestaurantServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
-        repository = springContext.getBean(RestaurantRepository.class);
+        repository = springContext.getBean(InMemoryRestaurantRepository.class);
     }
 
     @Override

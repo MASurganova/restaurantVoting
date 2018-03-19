@@ -2,8 +2,8 @@ package ru.voting;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.voting.repository.RestaurantRepository;
-import ru.voting.repository.UserRepository;
+import ru.voting.repository.MockRepository.InMemoryRestaurantRepository;
+import ru.voting.repository.MockRepository.InMemoryUserRepository;
 
 import java.util.Arrays;
 
@@ -12,11 +12,11 @@ public class Main {
         ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
 
-        UserRepository userRepository = appCtx.getBean(UserRepository.class);
-        userRepository.getAll();
+        InMemoryUserRepository inMemoryUserRepository = appCtx.getBean(InMemoryUserRepository.class);
+        inMemoryUserRepository.getAll();
         appCtx.close();
 
-        RestaurantRepository restaurantRepository = appCtx.getBean(RestaurantRepository.class);
+        InMemoryRestaurantRepository restaurantRepository = appCtx.getBean(InMemoryRestaurantRepository.class);
         restaurantRepository.getAll().forEach(System.out::println);
     }
 }
