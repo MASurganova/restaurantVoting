@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.voting.model.Role;
 import ru.voting.model.User;
-import ru.voting.repository.MockRepository.InMemoryUserRepository;
+import ru.voting.repository.MockRepositories.InMemoryUserRepository;
 import ru.voting.repository.UserRepository;
+import ru.voting.service.UserService;
 import ru.voting.util.ValidationUtil;
 
 import javax.servlet.ServletConfig;
@@ -23,13 +24,13 @@ public class UserServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
 
-    private UserRepository repository;
+    private UserService service;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
-        repository = springContext.getBean(InMemoryUserRepository.class);
+        service = springContext.getBean(UserService.class);
     }
 
     @Override
@@ -49,7 +50,8 @@ public class UserServlet extends HttpServlet {
                 request.getParameter("password"), Role.ROLE_USER);
 
         log.info(user.isNew() ? "Create {}" : "Update {}", user);
-        repository.save(user);
+        if (user.isNew()) service.create(user);
+        else service.update(user);
         response.sendRedirect("users");
     }
 
@@ -61,21 +63,21 @@ public class UserServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                repository.delete(id);
+                service.delete(id);
                 response.sendRedirect("users");
                 break;
             case "create":
             case "update":
                 final User user = "create".equals(action) ?
                         new User(null, "", "", "",  Role.ROLE_USER) :
-                        repository.get(getId(request));
+                        service.get(getId(request));
                 request.setAttribute("user", user);
                 request.getRequestDispatcher("/jsp/user/userForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("users", repository.getAll());
+                request.setAttribute("users", service.getAll());
                 request.getRequestDispatcher("/jsp/user/users.jsp").forward(request, response);
                 break;
         }

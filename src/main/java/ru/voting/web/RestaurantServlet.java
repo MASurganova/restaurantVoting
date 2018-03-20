@@ -3,8 +3,9 @@ package ru.voting.web;
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.voting.model.Restaurant;
-import ru.voting.repository.MockRepository.InMemoryRestaurantRepository;
+import ru.voting.repository.MockRepositories.InMemoryRestaurantRepository;
 import ru.voting.repository.RestaurantRepository;
+import ru.voting.service.VotingService;
 import ru.voting.util.ValidationUtil;
 
 import javax.servlet.ServletConfig;
@@ -22,13 +23,13 @@ public class RestaurantServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
 
-    private RestaurantRepository repository;
+    private VotingService service;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
-        repository = springContext.getBean(InMemoryRestaurantRepository.class);
+        service = springContext.getBean(VotingService.class);
     }
 
     @Override
@@ -47,12 +48,13 @@ public class RestaurantServlet extends HttpServlet {
             restaurant = new Restaurant(null,
                     request.getParameter("name"));
         } else {
-            restaurant = repository.get(Integer.valueOf(id));
+            restaurant = service.getRestaurantById(Integer.valueOf(id));
             restaurant.setName(request.getParameter("name"));
         }
 
         log.info(restaurant.isNew() ? "Create {}" : "Update {}", restaurant);
-        repository.save(restaurant);
+        if (restaurant.isNew()) service.createRestaurant(restaurant);
+        else service.updateRestaurant(restaurant);
         response.sendRedirect("restaurants");
     }
 
@@ -64,26 +66,26 @@ public class RestaurantServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                repository.delete(id);
+                service.deleteRestaurant(id);
                 response.sendRedirect("restaurants");
                 break;
             case "create":
             case "update":
                 final Restaurant restaurant = "create".equals(action) ?
                         new Restaurant(null, "") :
-                        repository.get(getId(request));
+                        service.getRestaurantById(getId(request));
                 request.setAttribute("restaurant", restaurant);
                 request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
                 break;
             case "enabled":
-                repository.enabled(repository.get(getId(request)));
-                request.setAttribute("restaurants", repository.getAll());
+                service.addRestaurantToVote(getId(request));
+                request.setAttribute("restaurants", service.getAllRestaurants());
                 request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("restaurants", repository.getAll());
+                request.setAttribute("restaurants", service.getAllRestaurants());
                 request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
                 break;
         }

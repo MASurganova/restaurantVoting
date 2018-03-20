@@ -4,10 +4,6 @@ import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.repository.DishRepository;
-import ru.voting.repository.MockRepository.InMemoryDishRepository;
-import ru.voting.repository.MockRepository.InMemoryRestaurantRepository;
-import ru.voting.repository.RestaurantRepository;
 import ru.voting.service.VotingService;
 import ru.voting.util.ValidationUtil;
 
@@ -27,17 +23,13 @@ public class DishServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
 
-    private RestaurantRepository restaurants;
-    private DishRepository dishes;
     private VotingService service;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
-        restaurants = springContext.getBean(InMemoryRestaurantRepository.class);
         service = springContext.getBean(VotingService.class);
-        dishes = springContext.getBean(InMemoryDishRepository.class);
         service.addDishToLunch(MY, DISH_1);
         service.addDishToLunch(MY, DISH_2);
         service.addDishToLunch(OTHER, DISH_3);
@@ -55,7 +47,7 @@ public class DishServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-        Restaurant restaurant = restaurants.get(Integer.valueOf(request.getParameter("restaurant")));
+        Restaurant restaurant = service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")));
 
         Dish dish = new Dish(id.isEmpty() ? null : Integer.valueOf(id),
                 request.getParameter("description"), Integer.parseInt(request.getParameter("price")),
@@ -71,7 +63,7 @@ public class DishServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        Restaurant restaurant = restaurants.get(Integer.valueOf(request.getParameter("restaurant")));
+        Restaurant restaurant = service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")));
 
         switch (action == null ? "all" : action) {
             case "delete":
@@ -85,7 +77,7 @@ public class DishServlet extends HttpServlet {
             case "update":
                 final Dish dish = "create".equals(action) ?
                         new Dish(null, "", 0, restaurant) :
-                        dishes.get(getId(request));
+                        service.getDishById(getId(request));
                 request.setAttribute("dish", dish);
                 request.getRequestDispatcher("/jsp/restaurant/dishForm.jsp").forward(request, response);
                 break;

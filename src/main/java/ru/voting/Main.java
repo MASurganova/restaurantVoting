@@ -2,8 +2,8 @@ package ru.voting;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.voting.repository.MockRepository.InMemoryRestaurantRepository;
-import ru.voting.repository.MockRepository.InMemoryUserRepository;
+import ru.voting.repository.MockRepositories.InMemoryRestaurantRepository;
+import ru.voting.repository.MockRepositories.InMemoryUserRepository;
 
 import java.util.Arrays;
 

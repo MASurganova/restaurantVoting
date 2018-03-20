@@ -1,7 +1,8 @@
-package ru.voting.repository.MockRepository;
+package ru.voting.repository.MockRepositories;
 
 import org.slf4j.Logger;
 import ru.voting.model.AbstractBaseEntity;
+import ru.voting.util.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public abstract class AbstractInMemoryRepository<T extends AbstractBaseEntity> {
 
     public T get(int id) {
         log.info("get {}", id);
+
         return inMemoryRepository.get(id);
     }
 

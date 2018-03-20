@@ -1,4 +1,4 @@
-package ru.voting.repository.MockRepository;
+package ru.voting.repository.MockRepositories;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;

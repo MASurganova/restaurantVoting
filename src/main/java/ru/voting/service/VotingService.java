@@ -9,13 +9,19 @@ import ru.voting.repository.DishRepository;
 import ru.voting.repository.HistoryRepository;
 import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
+import ru.voting.util.ValidationUtil;
+import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ru.voting.util.ValidationUtil.checkNotFound;
+import static ru.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VotingService {
@@ -78,8 +84,8 @@ public class VotingService {
         dishes.save(dish);
     }
 
-    public void removeDishFromLunch(Restaurant restaurant, int dishId) {
-        Dish dish = dishes.get(dishId);
+    public void removeDishFromLunch(Restaurant restaurant, int dishId) throws NotFoundException {
+        Dish dish = checkNotFoundWithId(dishes.get(dishId), dishId);
         restaurant.removeDish(dish);
         restaurants.save(restaurant);
         dishes.delete(dishId);
@@ -96,7 +102,55 @@ public class VotingService {
         }
     }
 
-    public void addVoice(int userId, int restaurantId) throws TimeDelayException {
-        addVoice(users.get(userId), restaurants.get(restaurantId));
+    public void addVoice(int userId, int restaurantId) throws TimeDelayException, NotFoundException {
+        addVoice(checkNotFoundWithId(users.get(userId), userId),
+                checkNotFoundWithId(restaurants.get(restaurantId), restaurantId));
+    }
+
+    public void addRestaurantToVote(int id) throws NotFoundException {
+        Restaurant restaurant = checkNotFoundWithId(restaurants.get(id), id);
+        restaurants.enabled(restaurant);
+    }
+
+    public Restaurant getRestaurantById(int id) throws NotFoundException {
+        return checkNotFoundWithId(restaurants.get(id), id);
+    }
+
+    public Restaurant getRestaurantByName(String name) throws NotFoundException {
+        return checkNotFound(restaurants.getByName(name), "name=" + name);
+    }
+
+    public List<Restaurant> getAllRestaurants() {
+        return restaurants.getAll();
+    }
+
+    public void updateRestaurant(Restaurant restaurant) throws NotFoundException {
+        checkNotFoundWithId(restaurant, restaurant.getId());
+        restaurants.save(restaurant);
+    }
+
+    public void createRestaurant(Restaurant restaurant) {
+        restaurants.save(restaurant);
+    }
+
+    public void deleteRestaurant(int id) throws NotFoundException {
+        checkNotFoundWithId(restaurants.delete(id), id);
+    }
+
+    public Dish getDishById(int id) throws NotFoundException {
+        return checkNotFoundWithId(dishes.get(id), id);
+    }
+
+    public void updateDish(Dish dish) throws NotFoundException {
+        checkNotFoundWithId(dish, dish.getId());
+        dishes.save(dish);
+    }
+
+    public void createDish(Dish dish) {
+        dishes.save(dish);
+    }
+
+    public void deleteDish(int id) throws NotFoundException {
+        checkNotFoundWithId(dishes.delete(id), id);
     }
 }

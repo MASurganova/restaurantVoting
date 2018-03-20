@@ -1,4 +1,4 @@
-package ru.voting.repository.MockRepository;
+package ru.voting.repository.MockRepositories;
 
 import org.springframework.stereotype.Repository;
 import ru.voting.model.Restaurant;

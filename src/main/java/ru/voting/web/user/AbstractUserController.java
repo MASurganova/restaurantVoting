@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.model.User;
-import ru.voting.repository.MockRepository.InMemoryUserRepository;
+import ru.voting.repository.MockRepositories.InMemoryUserRepository;
 
 import java.util.List;
 
