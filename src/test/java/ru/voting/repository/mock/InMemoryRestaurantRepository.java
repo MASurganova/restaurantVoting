@@ -1,12 +1,14 @@
-package ru.voting.repository.MockRepositories;
+package ru.voting.repository.mock;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
+import ru.voting.TestData;
 import ru.voting.model.Restaurant;
 import ru.voting.repository.RestaurantRepository;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.voting.util.RestaurantUtil.*;
 
 @Repository
 public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Restaurant> implements RestaurantRepository {
@@ -14,8 +16,18 @@ public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Res
 
     public InMemoryRestaurantRepository() {
         super();
-        save(MY);
-        save(OTHER);
+        inMemoryCount = new AtomicInteger(2);
+    }
+
+    public void init() {
+        inMemoryRepository.clear();
+        TestData.MY.addDish(TestData.DISH_1);
+        TestData.MY.addDish(TestData.DISH_2);
+        TestData.OTHER.addDish(TestData.DISH_3);
+        TestData.OTHER.addDish(TestData.DISH_4);
+        TestData.OTHER.addDish(TestData.DISH_5);
+        inMemoryRepository.put(TestData.MY.getId(), TestData.MY);
+        inMemoryRepository.put(TestData.OTHER.getId(), TestData.OTHER);
     }
 
     public Restaurant getByName(String name) {

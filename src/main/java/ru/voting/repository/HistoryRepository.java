@@ -4,7 +4,6 @@ import ru.voting.model.Restaurant;
 
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public interface HistoryRepository {
 

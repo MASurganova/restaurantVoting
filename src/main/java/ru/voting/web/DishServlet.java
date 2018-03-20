@@ -2,8 +2,8 @@ package ru.voting.web;
 
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
-import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
+import ru.voting.model.Dish;
 import ru.voting.service.VotingService;
 import ru.voting.util.ValidationUtil;
 
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.voting.util.RestaurantUtil.*;
 
 public class DishServlet extends HttpServlet {
     private static final Logger log = getLogger(DishServlet.class);
@@ -30,11 +29,6 @@ public class DishServlet extends HttpServlet {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
         service = springContext.getBean(VotingService.class);
-        service.addDishToLunch(MY, DISH_1);
-        service.addDishToLunch(MY, DISH_2);
-        service.addDishToLunch(OTHER, DISH_3);
-        service.addDishToLunch(OTHER, DISH_4);
-        service.addDishToLunch(OTHER, DISH_5);
     }
 
     @Override

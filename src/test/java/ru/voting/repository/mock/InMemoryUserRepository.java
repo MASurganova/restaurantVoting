@@ -1,11 +1,13 @@
-package ru.voting.repository.MockRepositories;
+package ru.voting.repository.mock;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
+import ru.voting.TestData;
 import ru.voting.model.Restaurant;
-import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -16,10 +18,13 @@ public class InMemoryUserRepository extends AbstractInMemoryRepository<User> imp
 
     public InMemoryUserRepository() {
         super();
-        save (new User(null, "USER", "user@mail.ru",
-                "password", Role.ROLE_USER));
-        save(new User(null, "ADMIN", "admin@mail.ru",
-                "password", Role.ROLE_ADMIN, Role.ROLE_USER));
+        inMemoryCount = new AtomicInteger(2);
+    }
+
+    public void init() {
+        inMemoryRepository.clear();
+        inMemoryRepository.put(TestData.USER_ID, TestData.USER);
+        inMemoryRepository.put(TestData.ADMIN_ID, TestData.ADMIN);
     }
 
     @Override

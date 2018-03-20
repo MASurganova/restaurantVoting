@@ -9,9 +9,9 @@ import ru.voting.repository.DishRepository;
 import ru.voting.repository.HistoryRepository;
 import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
-import ru.voting.util.ValidationUtil;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
+import ru.voting.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -103,7 +103,7 @@ public class VotingService {
     }
 
     public void addVoice(int userId, int restaurantId) throws TimeDelayException, NotFoundException {
-        addVoice(checkNotFoundWithId(users.get(userId), userId),
+        addVoice(ValidationUtil.checkNotFoundWithId(users.get(userId), userId),
                 checkNotFoundWithId(restaurants.get(restaurantId), restaurantId));
     }
 
@@ -125,7 +125,7 @@ public class VotingService {
     }
 
     public void updateRestaurant(Restaurant restaurant) throws NotFoundException {
-        checkNotFoundWithId(restaurant, restaurant.getId());
+        checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
         restaurants.save(restaurant);
     }
 
@@ -142,7 +142,7 @@ public class VotingService {
     }
 
     public void updateDish(Dish dish) throws NotFoundException {
-        checkNotFoundWithId(dish, dish.getId());
+        checkNotFoundWithId(dishes.get(dish.getId()), dish.getId());
         dishes.save(dish);
     }
 

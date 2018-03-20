@@ -1,9 +1,6 @@
 package ru.voting.model;
 
 
-import ru.voting.util.exception.TimeDelayException;
-
-import java.time.LocalTime;
 import java.util.EnumSet;
 import java.util.Set;
 

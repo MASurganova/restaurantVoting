@@ -3,8 +3,6 @@ package ru.voting.web;
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.voting.model.Restaurant;
-import ru.voting.repository.MockRepositories.InMemoryRestaurantRepository;
-import ru.voting.repository.RestaurantRepository;
 import ru.voting.service.VotingService;
 import ru.voting.util.ValidationUtil;
 

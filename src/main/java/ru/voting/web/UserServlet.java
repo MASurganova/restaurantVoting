@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.voting.model.Role;
 import ru.voting.model.User;
-import ru.voting.repository.MockRepositories.InMemoryUserRepository;
-import ru.voting.repository.UserRepository;
 import ru.voting.service.UserService;
 import ru.voting.util.ValidationUtil;
 
