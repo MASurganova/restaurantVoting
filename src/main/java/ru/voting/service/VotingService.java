@@ -55,7 +55,7 @@ public class VotingService {
     public void startVoting() {
         votingEnded = false;
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
-                "Голосование за ресторан, где мы будем обедать начато, проголосуйте пожалуйста"));
+                "Голосование за ресторан, где мы будем обедать, начато - проголосуйте пожалуйста"));
     }
 
 //    Нужно реализовать рассылку письма по email с переданным текстом
@@ -78,8 +78,8 @@ public class VotingService {
     }
 
     public void addDishToLunch(Restaurant restaurant, Dish dish) {
-        restaurant.addDish(dish);
         dish.setRestaurant(restaurant);
+        restaurant.addDish(dish);
         restaurants.save(restaurant);
         dishes.save(dish);
     }
@@ -91,8 +91,8 @@ public class VotingService {
         dishes.delete(dishId);
     }
 
-    public void addVoice(User user, Restaurant restaurant) throws TimeDelayException {
-        LocalTime time = LocalTime.now();
+    public void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
+        if (time == null) time = LocalTime.now();
         if (time.isAfter(LocalTime.of(12, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         if (user.getChoice() == null || !restaurant.equals(user.getChoice())) {
             if (user.getChoice() != null)
@@ -104,7 +104,7 @@ public class VotingService {
 
     public void addVoice(int userId, int restaurantId) throws TimeDelayException, NotFoundException {
         addVoice(ValidationUtil.checkNotFoundWithId(users.get(userId), userId),
-                checkNotFoundWithId(restaurants.get(restaurantId), restaurantId));
+                checkNotFoundWithId(restaurants.get(restaurantId), restaurantId), null);
     }
 
     public void addRestaurantToVote(int id) throws NotFoundException {

@@ -9,25 +9,31 @@ import ru.voting.repository.RestaurantRepository;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static ru.voting.TestData.*;
 
 @Repository
 public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Restaurant> implements RestaurantRepository {
-    private static final Logger log =getLogger(InMemoryUserRepository.class);
+    public static final Logger log = getLogger(InMemoryRestaurantRepository.class);
 
     public InMemoryRestaurantRepository() {
-        super();
+        super(log);
+        init();
         inMemoryCount = new AtomicInteger(2);
     }
 
     public void init() {
         inMemoryRepository.clear();
-        TestData.MY.addDish(TestData.DISH_1);
-        TestData.MY.addDish(TestData.DISH_2);
-        TestData.OTHER.addDish(TestData.DISH_3);
-        TestData.OTHER.addDish(TestData.DISH_4);
-        TestData.OTHER.addDish(TestData.DISH_5);
-        inMemoryRepository.put(TestData.MY.getId(), TestData.MY);
-        inMemoryRepository.put(TestData.OTHER.getId(), TestData.OTHER);
+        Restaurant my = new Restaurant(MY);
+        Restaurant other = new Restaurant(OTHER);
+        my.addDish(DISH_1);
+        my.addDish(DISH_2);
+        other.addDish(DISH_3);
+        other.addDish(DISH_4);
+        other.addDish(DISH_5);
+        my.setEnabled(true);
+        inMemoryRepository.put(my.getId(), my);
+        inMemoryRepository.put(other.getId(), other);
+        inMemoryCount = new AtomicInteger(2);
     }
 
     public Restaurant getByName(String name) {

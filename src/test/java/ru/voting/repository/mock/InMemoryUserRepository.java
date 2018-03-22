@@ -17,14 +17,16 @@ public class InMemoryUserRepository extends AbstractInMemoryRepository<User> imp
     private static final Logger log = getLogger(InMemoryUserRepository.class);
 
     public InMemoryUserRepository() {
-        super();
+        super(log);
+        init();
         inMemoryCount = new AtomicInteger(2);
     }
 
     public void init() {
         inMemoryRepository.clear();
-        inMemoryRepository.put(TestData.USER_ID, TestData.USER);
-        inMemoryRepository.put(TestData.ADMIN_ID, TestData.ADMIN);
+        inMemoryRepository.put(TestData.USER_ID, new User(TestData.USER));
+        inMemoryRepository.put(TestData.ADMIN_ID, new User(TestData.ADMIN));
+        inMemoryCount = new AtomicInteger(2);
     }
 
     @Override

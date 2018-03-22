@@ -44,8 +44,7 @@ public class DishServlet extends HttpServlet {
         Restaurant restaurant = service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")));
 
         Dish dish = new Dish(id.isEmpty() ? null : Integer.valueOf(id),
-                request.getParameter("description"), Integer.parseInt(request.getParameter("price")),
-                restaurant);
+                request.getParameter("description"), Integer.parseInt(request.getParameter("price")));
 
         log.info(dish.isNew() ? "Create {}" : "Update {}", dish);
         service.addDishToLunch(restaurant, dish);

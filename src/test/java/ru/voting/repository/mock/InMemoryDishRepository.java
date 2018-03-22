@@ -13,12 +13,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 @Repository
 public class InMemoryDishRepository extends AbstractInMemoryRepository<Dish> implements DishRepository {
 
-    private static final Logger log =getLogger(InMemoryDishRepository.class);
-
-
-
     public InMemoryDishRepository() {
-        super();
+        super(getLogger(InMemoryDishRepository.class));
+        init();
         inMemoryCount = new AtomicInteger(5);
     }
 
@@ -29,6 +26,7 @@ public class InMemoryDishRepository extends AbstractInMemoryRepository<Dish> imp
         inMemoryRepository.put(TestData.DISH_3.getId(), TestData.DISH_3);
         inMemoryRepository.put(TestData.DISH_4.getId(), TestData.DISH_4);
         inMemoryRepository.put(TestData.DISH_5.getId(), TestData.DISH_5);
+        inMemoryCount = new AtomicInteger(5);
     }
 
 }

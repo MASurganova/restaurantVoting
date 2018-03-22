@@ -1,5 +1,7 @@
 package ru.voting.model;
 
+import java.util.Objects;
+
 public class Dish extends AbstractBaseEntity {
 
     private String description;
@@ -11,6 +13,14 @@ public class Dish extends AbstractBaseEntity {
         this.description = description;
         this.price = price;
         this.restaurant = restaurant;
+    }
+
+    public Dish(String description, int price) {
+        this(null, description, price, null);
+    }
+
+    public Dish(int id, String description, int price) {
+        this(id, description, price, null);
     }
 
     public String getDescription() {
@@ -43,6 +53,26 @@ public class Dish extends AbstractBaseEntity {
                 "description='" + description + '\'' +
                 ", price=" + price +
                 ", restaurant=" + restaurant +
+                ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dish)) return false;
+
+        Dish dish = (Dish) o;
+
+        if (!Objects.equals(id, dish.getId())) return false;
+        if (price != dish.price) return false;
+        return description != null ? description.equals(dish.description) : dish.description == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = description != null ? description.hashCode() : 0;
+        result = 31 * result + price;
+        return result;
     }
 }

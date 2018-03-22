@@ -9,15 +9,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 public abstract class AbstractInMemoryRepository<T extends AbstractBaseEntity> {
-    protected static final Logger log = getLogger(AbstractInMemoryRepository.class);
+    private final Logger log;
 
     protected Map<Integer, T> inMemoryRepository;
     protected AtomicInteger inMemoryCount = new AtomicInteger(0);
 
-    public AbstractInMemoryRepository() {
+    public AbstractInMemoryRepository(Logger logger) {
+        log = logger;
         inMemoryRepository = new ConcurrentHashMap<>();
     }
 

@@ -10,7 +10,7 @@ public class Restaurant extends AbstractNamedEntity {
     private List<Dish> lunch;
     private int totalPrice;
 
-    private boolean enabled;
+    private boolean enabled = false;
 
     private AtomicInteger voters;
 
@@ -24,6 +24,12 @@ public class Restaurant extends AbstractNamedEntity {
         this(id, name);
         this.lunch = lunch;
         totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
+    }
+
+    public Restaurant(Restaurant restaurant) {
+        this(restaurant.getId(), restaurant.getName(), restaurant.getLunch());
+        this.voters = new AtomicInteger(restaurant.getVoters());
+        setEnabled(restaurant.enabled);
     }
 
     public void addDish(Dish dish) {
@@ -77,10 +83,31 @@ public class Restaurant extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Restaurant{" +
-                "lunch=" + lunch +
+                "lunch=" + lunch.size() +
                 ", totalPrice=" + totalPrice +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Restaurant)) return false;
+
+        Restaurant that = (Restaurant) o;
+        if (id == null ? that.getId() != null : !Objects.equals(id, that.id)) return false;
+        if (name == null ? that.name != null : !name.equals(that.name)) return false;
+        return (lunch != null || that.lunch == null) && that.lunch != null && lunch.size() == that.lunch.size() && lunch.containsAll(that.lunch);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + totalPrice;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (enabled ? 1 : 0);
+        result = 31 * result + (voters != null ? voters.hashCode() : 0);
+        return result;
     }
 }
