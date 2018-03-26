@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
-import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.ValidationUtil;
+import ru.voting.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static ru.voting.util.ValidationUtil.checkNotFound;
 import static ru.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -35,13 +34,13 @@ public class UserService {
         return ValidationUtil.checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
-    public void update(User user) throws NotFoundException {
+    public User update(User user) throws NotFoundException {
         checkNotFoundWithId(repository.get(user.getId()), user.getId());
-        repository.save(user);
+        return repository.save(user);
     }
 
-    public void create(User  user) {
-        repository.save(user);
+    public User create(User  user) {
+        return repository.save(user);
     }
 
 }
