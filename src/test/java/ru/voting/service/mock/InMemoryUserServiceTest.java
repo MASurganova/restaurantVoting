@@ -1,4 +1,4 @@
-package ru.voting.service;
+package ru.voting.service.mock;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,11 +11,13 @@ import ru.voting.TestData;
 import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.repository.mock.InMemoryUserRepository;
+import ru.voting.service.UserService;
 import ru.voting.util.exception.NotFoundException;
 
 import java.util.Collection;
 
-@ContextConfiguration("classpath:spring/spring-app.xml")
+@ContextConfiguration({"classpath:spring/mock.xml",
+                        "classpath:spring/spring-app.xml"} )
 @RunWith(SpringRunner.class)
 public class InMemoryUserServiceTest {
 
@@ -57,7 +59,7 @@ public class InMemoryUserServiceTest {
 
     @Test
     public void testGetByEmail() throws Exception {
-        User user = service.getByEmail("user@mail.ru");
+        User user = service.getByEmail("user@yandex.ru");
         Assert.assertEquals(user, TestData.USER);
     }
 

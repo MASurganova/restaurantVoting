@@ -14,6 +14,9 @@ public class Restaurant extends AbstractNamedEntity {
 
     private AtomicInteger voters;
 
+    public Restaurant() {
+    }
+
     public Restaurant(Integer id, String name) {
         super(id, name);
         this.lunch = new ArrayList<>();

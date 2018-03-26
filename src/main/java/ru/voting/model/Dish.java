@@ -8,6 +8,9 @@ public class Dish extends AbstractBaseEntity {
     private int price;
     private Restaurant restaurant;
 
+    public Dish() {
+    }
+
     public Dish(Integer id, String description, int price, Restaurant restaurant) {
         super(id);
         this.description = description;

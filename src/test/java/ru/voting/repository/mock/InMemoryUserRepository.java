@@ -19,14 +19,13 @@ public class InMemoryUserRepository extends AbstractInMemoryRepository<User> imp
     public InMemoryUserRepository() {
         super(log);
         init();
-        inMemoryCount = new AtomicInteger(2);
     }
 
     public void init() {
         inMemoryRepository.clear();
         inMemoryRepository.put(TestData.USER_ID, new User(TestData.USER));
         inMemoryRepository.put(TestData.ADMIN_ID, new User(TestData.ADMIN));
-        inMemoryCount = new AtomicInteger(2);
+        inMemoryCount = new AtomicInteger(100001);
     }
 
     @Override

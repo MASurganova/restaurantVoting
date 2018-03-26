@@ -2,7 +2,6 @@ package ru.voting.repository.mock;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
-import ru.voting.TestData;
 import ru.voting.model.Restaurant;
 import ru.voting.repository.RestaurantRepository;
 
@@ -18,7 +17,6 @@ public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Res
     public InMemoryRestaurantRepository() {
         super(log);
         init();
-        inMemoryCount = new AtomicInteger(2);
     }
 
     public void init() {
@@ -33,7 +31,7 @@ public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Res
         my.setEnabled(true);
         inMemoryRepository.put(my.getId(), my);
         inMemoryRepository.put(other.getId(), other);
-        inMemoryCount = new AtomicInteger(2);
+        inMemoryCount = new AtomicInteger(100001);
     }
 
     public Restaurant getByName(String name) {

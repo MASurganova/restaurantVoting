@@ -1,4 +1,4 @@
-package ru.voting.service;
+package ru.voting.service.mock;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +13,7 @@ import ru.voting.repository.mock.InMemoryDishRepository;
 import ru.voting.repository.mock.InMemoryHistoryRepository;
 import ru.voting.repository.mock.InMemoryRestaurantRepository;
 import ru.voting.repository.mock.InMemoryUserRepository;
+import ru.voting.service.VotingService;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
@@ -21,7 +22,8 @@ import java.util.Collection;
 
 import static ru.voting.TestData.*;
 
-@ContextConfiguration("classpath:spring/spring-app.xml")
+@ContextConfiguration({"classpath:spring/mock.xml",
+        "classpath:spring/spring-app.xml"} )
 @RunWith(SpringRunner.class)
 public class InMemoryVotingServiceTest {
 
@@ -73,57 +75,57 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void getCurrentChoiceTest() throws TimeDelayException {
-        service.addRestaurantToVote(2);
-        service.addVoice(users.get(1), service.getRestaurantById(1), LocalTime.of(10, 0,0));
+        service.addRestaurantToVote(100001);
+        service.addVoice(users.get(100000), service.getRestaurantById(100000), LocalTime.of(10, 0,0));
         Assert.assertEquals(service.getCurrentChoice(), MY);
     }
 
     @Test
     public void addDishToLunchTest() {
         Dish newDish = new Dish("newDish", 100);
-        service.addDishToLunch(service.getRestaurantById(1), newDish);
-        Assert.assertEquals(service.getRestaurantById(1).getLunch().size(), 3);
-        Assert.assertEquals(service.getDishById(6), newDish);
+        service.addDishToLunch(service.getRestaurantById(100000), newDish);
+        Assert.assertEquals(service.getRestaurantById(100000).getLunch().size(), 3);
+        Assert.assertEquals(service.getDishById(100005), newDish);
     }
 
     @Test(expected = NotFoundException.class)
     public void removeDishToLunchTest() throws NotFoundException {
-    service.removeDishFromLunch(service.getRestaurantById(2), 5);
-    Assert.assertEquals(service.getRestaurantById(2).getLunch().size(), 2);
-    service.getDishById(5);
+    service.removeDishFromLunch(service.getRestaurantById(100001), 100004);
+    Assert.assertEquals(service.getRestaurantById(100001).getLunch().size(), 2);
+    service.getDishById(100004);
     }
 
     @Test
     public void addVoiceTest() throws TimeDelayException {
-        service.addVoice(users.get(1), service.getRestaurantById(1), LocalTime.of(10,0));
-        Assert.assertEquals(users.get(1).getChoice(), service.getRestaurantById(1));
-        Assert.assertEquals(service.getRestaurantById(1).getVoters(), 1);
+        service.addVoice(users.get(100000), service.getRestaurantById(100000), LocalTime.of(10,0));
+        Assert.assertEquals(users.get(100000).getChoice(), service.getRestaurantById(100000));
+        Assert.assertEquals(service.getRestaurantById(100000).getVoters(), 1);
     }
 
     @Test(expected = TimeDelayException.class)
     public void addVoiceTimeDelayTest() throws TimeDelayException {
-        service.addVoice(users.get(1), service.getRestaurantById(1), LocalTime.of(13,0));
+        service.addVoice(users.get(100000), service.getRestaurantById(100000), LocalTime.of(13,0));
     }
 
     @Test(expected = NotFoundException.class)
     public void addRestaurantToVoteNotFoundTest() throws NotFoundException {
-        service.addRestaurantToVote(3);
+        service.addRestaurantToVote(100002);
     }
 
     @Test
     public void addRestaurantToVoteTest() throws NotFoundException {
-        service.addRestaurantToVote(2);
+        service.addRestaurantToVote(100001);
         Assert.assertEquals(service.getCurrentRestaurants().size(), 2);
     }
 
     @Test
     public void getRestaurantByIdTest() throws NotFoundException {
-        Assert.assertEquals(service.getRestaurantById(1), MY);
+        Assert.assertEquals(service.getRestaurantById(100000), MY);
     }
 
     @Test(expected = NotFoundException.class)
     public void getRestaurantByIdNotFoundTest() throws NotFoundException {
-        service.getRestaurantById(3);
+        service.getRestaurantById(100002);
     }
 
     @Test
@@ -143,9 +145,9 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void updateRestaurantTest() throws NotFoundException {
-        Restaurant newRestaurant = new Restaurant(1, "New");
+        Restaurant newRestaurant = new Restaurant(100000, "New");
         service.updateRestaurant(newRestaurant);
-        Assert.assertEquals(service.getRestaurantById(1), newRestaurant);
+        Assert.assertEquals(service.getRestaurantById(100000), newRestaurant);
     }
 
     @Test(expected = NotFoundException.class)
@@ -159,14 +161,14 @@ public class InMemoryVotingServiceTest {
         Restaurant newRestaurant = new Restaurant(null, "New");
         service.createRestaurant(newRestaurant);
         Assert.assertEquals(service.getAllRestaurants().size(), 3);
-        Assert.assertEquals(service.getRestaurantById(3), newRestaurant);
+        Assert.assertEquals(service.getRestaurantById(100002), newRestaurant);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteRestaurantTest() throws NotFoundException {
-        service.deleteRestaurant(1);
+        service.deleteRestaurant(100000);
         Assert.assertEquals(service.getAllRestaurants().size(), 1);
-        service.getRestaurantById(1);
+        service.getRestaurantById(100000);
 
     }
 
@@ -178,7 +180,7 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void getDishByIdTest() throws NotFoundException {
-        Assert.assertEquals(service.getDishById(4), DISH_4);
+        Assert.assertEquals(service.getDishById(100003), DISH_4);
     }
 
     @Test(expected = NotFoundException.class)
@@ -188,9 +190,9 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void updateDishTest() throws NotFoundException {
-        Dish newDish = new Dish(3, "newDish", 120);
+        Dish newDish = new Dish(100002, "newDish", 120);
         service.updateDish(newDish);
-        Assert.assertEquals(service.getDishById(3), newDish);
+        Assert.assertEquals(service.getDishById(100002), newDish);
     }
 
     @Test(expected = NotFoundException.class)
@@ -204,13 +206,13 @@ public class InMemoryVotingServiceTest {
         Dish newDish = new Dish("newDish", 120);
         service.createDish(newDish);
         System.out.println(newDish);
-        Assert.assertEquals(service.getDishById(6), newDish);
+        Assert.assertEquals(service.getDishById(100005), newDish);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteDishTest() throws NotFoundException {
-        service.deleteDish(1);
-        service.getDishById(1);
+        service.deleteDish(100000);
+        service.getDishById(100000);
     }
 
     @Test(expected = NotFoundException.class)

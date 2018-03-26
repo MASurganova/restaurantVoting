@@ -1,6 +1,5 @@
 package ru.voting.repository.mock;
 
-import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
 import ru.voting.TestData;
 import ru.voting.model.Dish;
@@ -16,7 +15,6 @@ public class InMemoryDishRepository extends AbstractInMemoryRepository<Dish> imp
     public InMemoryDishRepository() {
         super(getLogger(InMemoryDishRepository.class));
         init();
-        inMemoryCount = new AtomicInteger(5);
     }
 
     public void init() {
@@ -26,7 +24,7 @@ public class InMemoryDishRepository extends AbstractInMemoryRepository<Dish> imp
         inMemoryRepository.put(TestData.DISH_3.getId(), TestData.DISH_3);
         inMemoryRepository.put(TestData.DISH_4.getId(), TestData.DISH_4);
         inMemoryRepository.put(TestData.DISH_5.getId(), TestData.DISH_5);
-        inMemoryCount = new AtomicInteger(5);
+        inMemoryCount = new AtomicInteger(100004);
     }
 
 }
