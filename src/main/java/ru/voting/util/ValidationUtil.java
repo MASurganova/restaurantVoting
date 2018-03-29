@@ -11,7 +11,7 @@ public class ValidationUtil {
     private static ConfigurableApplicationContext springContext;
 
     public static ConfigurableApplicationContext getSpringContext() {
-        if (springContext == null) springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        if (springContext == null) springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
         return springContext;
     }
 

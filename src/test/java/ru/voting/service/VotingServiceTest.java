@@ -69,8 +69,8 @@ public class VotingServiceTest {
     @Test
     public void getCurrentChoice() throws Exception {
         service.addRestaurantToVote(OTHER.getId());
-        service.addVoice(ADMIN_ID, OTHER.getId());
-        service.addVoice(USER_ID, OTHER.getId());
+        service.addVoice(ADMIN_ID, OTHER.getId(), LocalTime.of(10,0));
+        service.addVoice(USER_ID, OTHER.getId(), LocalTime.of(10,0));
         Restaurant newOther = new Restaurant(OTHER);
         newOther.setEnabled(true);
         newOther.setVoters(2);
