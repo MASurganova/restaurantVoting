@@ -1,4 +1,4 @@
-package ru.voting.repository.repositoryImpl;
+package ru.voting.repository.jdbc;
 
 import org.springframework.stereotype.Repository;
 import ru.voting.model.Restaurant;
@@ -8,9 +8,9 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @Repository
-public class HistoryrepositoryImpl implements HistoryRepository {
+public class JdbcHistoryrepositoryImpl implements HistoryRepository {
 
-    public HistoryrepositoryImpl() {
+    public JdbcHistoryrepositoryImpl() {
     }
 
     @Override

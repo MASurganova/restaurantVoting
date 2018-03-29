@@ -1,4 +1,4 @@
-package ru.voting.repository.repositoryImpl;
+package ru.voting.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class RestaurantRepositoryImpl implements RestaurantRepository {
+public class JdbcRestaurantRepositoryImpl implements RestaurantRepository {
 
     private static final BeanPropertyRowMapper<Restaurant> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Restaurant.class);
 
@@ -26,7 +26,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     private final SimpleJdbcInsert insertRestaurant;
 
     @Autowired
-    public RestaurantRepositoryImpl(DataSource dataSource, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public JdbcRestaurantRepositoryImpl(DataSource dataSource, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertRestaurant = new SimpleJdbcInsert(dataSource)
                 .withTableName("restaurants")
                 .usingGeneratedKeyColumns("id");
@@ -53,9 +53,10 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
             Number newKey = insertRestaurant.executeAndReturnKey(map);
             restaurant.setId(newKey.intValue());
         } else {
-            namedParameterJdbcTemplate.update(
+            if (namedParameterJdbcTemplate.update(
                     "UPDATE restaurants SET name=:name, enabled=:enabled, voters=:voters" +
-                            " WHERE id=:id", map);
+                            " WHERE id=:id", map) == 0)
+                return null;
         }
         return restaurant;
     }

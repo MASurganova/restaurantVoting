@@ -1,4 +1,4 @@
-package ru.voting.repository.repositoryImpl;
+package ru.voting.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class DishRepositoryImpl implements DishRepository {
+public class JdbcDishRepositoryImpl implements DishRepository {
 
     private static final BeanPropertyRowMapper<Dish> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Dish.class);
 
@@ -26,7 +26,7 @@ public class DishRepositoryImpl implements DishRepository {
     private final SimpleJdbcInsert insertDish;
 
     @Autowired
-    public DishRepositoryImpl(DataSource dataSource, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public JdbcDishRepositoryImpl(DataSource dataSource, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertDish = new SimpleJdbcInsert(dataSource)
                 .withTableName("dishes")
                 .usingGeneratedKeyColumns("id");
@@ -52,9 +52,10 @@ public class DishRepositoryImpl implements DishRepository {
             Number newKey = insertDish.executeAndReturnKey(map);
             dish.setId(newKey.intValue());
         } else {
-            namedParameterJdbcTemplate.update(
+            if (namedParameterJdbcTemplate.update(
                     "UPDATE dishes SET description=:description, price=:price, " +
-                            "restaurant_id=:restaurant WHERE id=:id", map);
+                            "restaurant_id=:restaurant WHERE id=:id", map) == 0)
+                return null;
         }
         return dish;
     }
