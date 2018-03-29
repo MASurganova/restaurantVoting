@@ -6,9 +6,9 @@ ALTER SEQUENCE user_seq RESTART WITH 100000;
 ALTER SEQUENCE restaurant_seq RESTART WITH 100000;
 ALTER SEQUENCE dish_seq RESTART WITH 100000;
 
-INSERT INTO restaurants (name) VALUES
-  ('My'),
-  ('Other');
+INSERT INTO restaurants (name, enabled, voters) VALUES
+  ('My', true, 1),
+  ('Other', false, 0);
 
 INSERT INTO dishes (restaurant_id, description, price) VALUES
   (100000, 'Чечевичный суп', 150),

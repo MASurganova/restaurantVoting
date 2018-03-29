@@ -88,7 +88,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .addValue("name", user.getName())
                 .addValue("email", user.getEmail())
                 .addValue("password", user.getPassword())
-                .addValue("choice", restaurant.getId());
+                .addValue("choice", restaurant == null ? null : restaurant.getId());
 
         namedParameterJdbcTemplate.update(
                     "UPDATE users SET name=:name, email=:email, password=:password, " +

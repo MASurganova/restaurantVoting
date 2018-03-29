@@ -23,23 +23,23 @@
                 <th></th>
             </tr>
             </thead>
-            <c:forEach items="${restaurants}" var="restaurant">
-                <jsp:useBean id="restaurant" scope="page" type="ru.voting.model.Restaurant"/>
+            <c:forEach items="${restaurants}" var="restaurantId">
+                <jsp:useBean id="restaurantId" scope="page" type="ru.voting.model.Restaurant"/>
                 <tr>
-                    <td><c:out value="${restaurant.name}"/></td>
+                    <td><c:out value="${restaurantId.name}"/></td>
                     <td>
                         <ul>
-                            <c:forEach items="${restaurant.lunch}" var="dish">
+                            <c:forEach items="${restaurantId.lunch}" var="dish">
                                 <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
                                 <li><c:out value="${dish.description}"/></li>
                             </c:forEach>
                         </ul>
                     </td>
-                    <td>${restaurant.totalPrice}</td>
-                    <td>${restaurant.enabled}</td>
-                    <td><a href="restaurants?action=update&id=${restaurant.id}">Обновить</a></td>
-                    <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
-                    <td><a href="restaurants?action=enabled&id=${restaurant.id}">Добавить в голосование</a></td>
+                    <td>${restaurantId.totalPrice}</td>
+                    <td>${restaurantId.enabled}</td>
+                    <td><a href="restaurants?action=update&id=${restaurantId.id}">Обновить</a></td>
+                    <td><a href="restaurants?action=delete&id=${restaurantId.id}">Удалить</a></td>
+                    <td><a href="restaurants?action=enabled&id=${restaurantId.id}">Добавить в голосование</a></td>
                 </tr>
             </c:forEach>
         </table>

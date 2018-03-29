@@ -70,9 +70,9 @@ public class InMemoryUserServiceTest {
 
     @Test
     public void testCreate() {
-        service.create(new User(null, "Marina", "marina@mail.ru", "marina", Role.ROLE_USER));
+        User user = service.create(new User(null, "Marina", "marina@mail.ru", "marina", Role.ROLE_USER));
         Assert.assertEquals(service.getAll().size(), 3);
-        Assert.assertEquals(Long.valueOf(service.getByEmail("marina@mail.ru").getId()), Long.valueOf(3));
+        Assert.assertEquals(service.getByEmail("marina@mail.ru").getId(), user.getId());
     }
 
     @Test

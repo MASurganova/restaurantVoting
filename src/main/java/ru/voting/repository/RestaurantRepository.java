@@ -15,13 +15,30 @@ public interface RestaurantRepository {
 
     Restaurant getByName(String name);
 
-    void addVoter(Restaurant restaurant);
+    default void addVoter(Restaurant restaurant) {
+        restaurant.addVoter();
+        save(restaurant);
+    }
 
-    void removeVoter(Restaurant restaurant);
+    default void removeVoter(Restaurant restaurant) {
+        restaurant.removeVoter();
+        save(restaurant);
+    }
 
-    void updateVoters(Restaurant restaurant);
+    default void updateVoters(Restaurant restaurant) {
+        restaurant.setVoters(0);
+        save(restaurant);
+    }
 
-    void enabled(Restaurant restaurant);
+    default void enabled(Restaurant restaurant) {
+        restaurant.setEnabled(true);
+        save(restaurant);
+    }
 
-    void disabled(Restaurant restaurant);
+    default void disabled(Restaurant restaurant) {
+        restaurant.setEnabled(false);
+        save(restaurant);
+    }
+
+    List<Restaurant> getEnabledRestaurants();
 }

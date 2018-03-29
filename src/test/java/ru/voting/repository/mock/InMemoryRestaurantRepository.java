@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.voting.model.Restaurant;
 import ru.voting.repository.RestaurantRepository;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.voting.TestData.*;
@@ -73,5 +75,10 @@ public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Res
         log.info("disabled {}", restaurant);
         restaurant.setEnabled(false);
         save(restaurant);
+    }
+
+    @Override
+    public List<Restaurant> getEnabledRestaurants() {
+        return getAll().stream().filter(Restaurant::isEnabled).collect(Collectors.toList());
     }
 }

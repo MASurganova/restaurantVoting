@@ -6,24 +6,28 @@ public class Dish extends AbstractBaseEntity {
 
     private String description;
     private int price;
-    private Restaurant restaurant;
+    private Integer restaurantId;
 
     public Dish() {
     }
 
-    public Dish(Integer id, String description, int price, Restaurant restaurant) {
+    public Dish(Integer id, String description, int price, Integer restaurantId) {
         super(id);
         this.description = description;
         this.price = price;
-        this.restaurant = restaurant;
+        this.restaurantId = restaurantId;
+    }
+
+    public Dish(String description, int price, int restaurantId) {
+        this(null, description, price, restaurantId);
+    }
+
+    public Dish(Integer id, String description, int price) {
+        this(id, description, price, null);
     }
 
     public Dish(String description, int price) {
         this(null, description, price, null);
-    }
-
-    public Dish(int id, String description, int price) {
-        this(id, description, price, null);
     }
 
     public String getDescription() {
@@ -42,12 +46,12 @@ public class Dish extends AbstractBaseEntity {
         this.price = price;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public int getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     @Override
@@ -55,7 +59,7 @@ public class Dish extends AbstractBaseEntity {
         return "Dish{" +
                 "description='" + description + '\'' +
                 ", price=" + price +
-                ", restaurant=" + restaurant +
+                ", restaurantId=" + restaurantId +
                 ", id=" + id +
                 '}';
     }

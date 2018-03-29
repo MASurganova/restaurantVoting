@@ -99,7 +99,7 @@ public class InMemoryVotingServiceTest {
     public void addVoiceTest() throws TimeDelayException {
         service.addVoice(users.get(100000), service.getRestaurantById(100000), LocalTime.of(10,0));
         Assert.assertEquals(users.get(100000).getChoice(), service.getRestaurantById(100000));
-        Assert.assertEquals(service.getRestaurantById(100000).getVoters(), 1);
+        Assert.assertEquals(service.getRestaurantById(100000).getVoters(), 2);
     }
 
     @Test(expected = TimeDelayException.class)
@@ -199,14 +199,6 @@ public class InMemoryVotingServiceTest {
     public void updateDishNotFoundTest() throws NotFoundException {
         Dish newDish = new Dish(7, "newDish", 120);
         service.updateDish(newDish);
-    }
-
-    @Test
-    public void createDishTest() {
-        Dish newDish = new Dish("newDish", 120);
-        service.createDish(newDish);
-        System.out.println(newDish);
-        Assert.assertEquals(service.getDishById(100005), newDish);
     }
 
     @Test(expected = NotFoundException.class)

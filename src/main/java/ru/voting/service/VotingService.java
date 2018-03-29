@@ -9,16 +9,14 @@ import ru.voting.repository.DishRepository;
 import ru.voting.repository.HistoryRepository;
 import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
+import ru.voting.util.ValidationUtil;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
-import ru.voting.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static ru.voting.util.ValidationUtil.checkNotFound;
 import static ru.voting.util.ValidationUtil.checkNotFoundWithId;
@@ -65,20 +63,20 @@ public class VotingService {
         return history.getHistory();
     }
 
-    public Set<Restaurant> getCurrentRestaurants() {
-        return restaurants.getAll().stream().filter(Restaurant::isEnabled).collect(Collectors.toSet());
+    public List<Restaurant> getCurrentRestaurants() {
+        return restaurants.getEnabledRestaurants();
     }
 
     public Restaurant getCurrentChoice() {
-        Set<Restaurant> currentRestorants = getCurrentRestaurants();
-        int maxVoters = currentRestorants.stream().map(Restaurant::getVoters)
+        List<Restaurant> currentRestorants = getCurrentRestaurants();
+        Integer maxVoters = currentRestorants.stream().map(Restaurant::getVoters)
                 .max(Integer::compareTo).orElseGet(null);
         return currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
                 .findFirst().orElseGet(null);
     }
 
     public void addDishToLunch(Restaurant restaurant, Dish dish) {
-        dish.setRestaurant(restaurant);
+        dish.setRestaurantId(restaurant.getId());
         restaurant.addDish(dish);
         restaurants.save(restaurant);
         dishes.save(dish);
@@ -94,7 +92,7 @@ public class VotingService {
     public void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
         if (time == null) time = LocalTime.now();
         if (time.isAfter(LocalTime.of(12, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
-        if (user.getChoice() == null || !restaurant.equals(user.getChoice())) {
+        if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
                 restaurants.removeVoter(user.getChoice());
             users.setChoice(user, restaurant);
@@ -103,8 +101,12 @@ public class VotingService {
     }
 
     public void addVoice(int userId, int restaurantId) throws TimeDelayException, NotFoundException {
+        addVoice(userId, restaurantId, null);
+    }
+
+    public void addVoice(int userId, int restaurantId, LocalTime time) throws TimeDelayException {
         addVoice(ValidationUtil.checkNotFoundWithId(users.get(userId), userId),
-                checkNotFoundWithId(restaurants.get(restaurantId), restaurantId), null);
+                checkNotFoundWithId(restaurants.get(restaurantId), restaurantId), time);
     }
 
     public void addRestaurantToVote(int id) throws NotFoundException {
@@ -146,11 +148,13 @@ public class VotingService {
         dishes.save(dish);
     }
 
-    public void createDish(Dish dish) {
-        dishes.save(dish);
-    }
-
     public void deleteDish(int id) throws NotFoundException {
         checkNotFoundWithId(dishes.delete(id), id);
     }
+
+    public List<Dish> getAllDishes() {
+        return dishes.getAll();
+    }
+
+
 }

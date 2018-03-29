@@ -10,11 +10,12 @@ public class Restaurant extends AbstractNamedEntity {
     private List<Dish> lunch;
     private int totalPrice;
 
-    private boolean enabled = false;
+    private boolean enabled;
 
     private AtomicInteger voters;
 
     public Restaurant() {
+        this.voters = new AtomicInteger(0);
     }
 
     public Restaurant(Integer id, String name) {
@@ -29,9 +30,15 @@ public class Restaurant extends AbstractNamedEntity {
         totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
     }
 
+    public Restaurant(Integer id, String name, boolean enabled, int voters) {
+        this(id, name);
+        setEnabled(enabled);
+        setVoters(voters);
+    }
+
     public Restaurant(Restaurant restaurant) {
         this(restaurant.getId(), restaurant.getName(), restaurant.getLunch());
-        this.voters = new AtomicInteger(restaurant.getVoters());
+        setVoters(restaurant.getVoters());
         setEnabled(restaurant.enabled);
     }
 
@@ -55,7 +62,7 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     public int getVoters() {
-        return voters.get();
+        return voters == null ? 0 : voters.get();
     }
 
     public int addVoter() {
@@ -86,8 +93,9 @@ public class Restaurant extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Restaurant{" +
-                "lunch=" + lunch.size() +
-                ", totalPrice=" + totalPrice +
+                " totalPrice=" + getTotalPrice() +
+                ", enabled=" + enabled +
+                ", voters=" + getVoters() +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 '}';
