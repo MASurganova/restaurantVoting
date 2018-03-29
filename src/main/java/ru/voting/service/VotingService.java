@@ -2,6 +2,7 @@ package ru.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.model.User;
@@ -76,6 +77,8 @@ public class VotingService {
     }
 
     public void addDishToLunch(Restaurant restaurant, Dish dish) {
+        Assert.notNull(restaurant, "restaurant must not be null");
+        Assert.notNull(dish, "dish must not be null");
         dish.setRestaurantId(restaurant.getId());
         restaurant.addDish(dish);
         restaurants.save(restaurant);
@@ -83,6 +86,7 @@ public class VotingService {
     }
 
     public void removeDishFromLunch(Restaurant restaurant, int dishId) throws NotFoundException {
+        Assert.notNull(restaurant, "restaurant must not be null");
         Dish dish = checkNotFoundWithId(dishes.get(dishId), dishId);
         restaurant.removeDish(dish);
         restaurants.save(restaurant);
@@ -90,6 +94,8 @@ public class VotingService {
     }
 
     public void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
+        Assert.notNull(user, "user must not be null");
+        Assert.notNull(restaurant, "restaurant must not be null");
         if (time == null) time = LocalTime.now();
         if (time.isAfter(LocalTime.of(12, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
@@ -127,11 +133,13 @@ public class VotingService {
     }
 
     public void updateRestaurant(Restaurant restaurant) throws NotFoundException {
+        Assert.notNull(restaurant, "restaurant must not be null");
         checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
         restaurants.save(restaurant);
     }
 
     public void createRestaurant(Restaurant restaurant) {
+        Assert.notNull(restaurant, "restaurant must not be null");
         restaurants.save(restaurant);
     }
 
@@ -144,6 +152,7 @@ public class VotingService {
     }
 
     public void updateDish(Dish dish) throws NotFoundException {
+        Assert.notNull(dish, "dish must not be null");
         checkNotFoundWithId(dishes.get(dish.getId()), dish.getId());
         dishes.save(dish);
     }

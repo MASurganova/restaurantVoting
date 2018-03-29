@@ -3,6 +3,7 @@ package ru.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
 import ru.voting.util.ValidationUtil;
@@ -35,6 +36,7 @@ public class UserService {
     }
 
     public User update(User user) throws NotFoundException {
+        Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.get(user.getId()), user.getId());
         return repository.save(user);
     }
