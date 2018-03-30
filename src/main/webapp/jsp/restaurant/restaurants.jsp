@@ -35,7 +35,7 @@
                             </c:forEach>
                         </ul>
                     </td>
-                    <td>${restaurant.totalPrice}</td>
+                    <td>${restaurant.getTotalPrice}</td>
                     <td>${restaurant.enabled}</td>
                     <td><a href="restaurants?action=update&id=${restaurant.id}">Обновить</a></td>
                     <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>

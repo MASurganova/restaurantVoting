@@ -83,21 +83,6 @@ public class InMemoryVotingServiceTest {
     }
 
     @Test
-    public void addDishToLunchTest() {
-        Dish newDish = new Dish("newDish", 100);
-        service.addDishToLunch(service.getRestaurantById(START_SEQ), newDish);
-        Assert.assertEquals(service.getRestaurantById(START_SEQ).getLunch().size(), 3);
-        Assert.assertEquals(service.getDishById(newDish.getId()), newDish);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void removeDishToLunchTest() throws NotFoundException {
-    service.removeDishFromLunch(service.getRestaurantById(START_SEQ + 1), START_SEQ + 4);
-    Assert.assertEquals(service.getRestaurantById(START_SEQ + 11).getLunch().size(), 2);
-    service.getDishById(START_SEQ + 4);
-    }
-
-    @Test
     public void addVoiceTest() throws TimeDelayException {
         service.addVoice(users.get(START_SEQ + 7), service.getRestaurantById(START_SEQ), LocalTime.of(10,0));
         Assert.assertEquals(users.get(START_SEQ + 7).getChoice(), service.getRestaurantById(START_SEQ));

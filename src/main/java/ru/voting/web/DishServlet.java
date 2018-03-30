@@ -45,9 +45,10 @@ public class DishServlet extends HttpServlet {
 
         Dish dish = new Dish(id.isEmpty() ? null : Integer.valueOf(id),
                 request.getParameter("description"), Integer.parseInt(request.getParameter("price")));
-
+        dish.setRestaurant(restaurant);
         log.info(dish.isNew() ? "Create {}" : "Update {}", dish);
-        service.addDishToLunch(restaurant, dish);
+        if (dish.isNew()) service.createDish(dish);
+        else service.updateDish(dish);
         request.setAttribute("restaurant", restaurant);
         request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
 
@@ -62,7 +63,7 @@ public class DishServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
-                service.removeDishFromLunch(restaurant, id);
+                service.deleteDish(id);
                 request.setAttribute("restaurant", restaurant);
                 request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
                 break;

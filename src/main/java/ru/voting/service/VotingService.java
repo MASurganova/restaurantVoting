@@ -76,23 +76,6 @@ public class VotingService {
                 .findFirst().orElseGet(null);
     }
 
-    public void addDishToLunch(Restaurant restaurant, Dish dish) {
-        Assert.notNull(restaurant, "restaurant must not be null");
-        Assert.notNull(dish, "dish must not be null");
-        dish.setRestaurant(restaurant);
-        restaurant.addDish(dish);
-        restaurants.save(restaurant);
-        dishes.save(dish);
-    }
-
-    public void removeDishFromLunch(Restaurant restaurant, int dishId) throws NotFoundException {
-        Assert.notNull(restaurant, "restaurant must not be null");
-        Dish dish = checkNotFoundWithId(dishes.get(dishId), dishId);
-        restaurant.removeDish(dish);
-        restaurants.save(restaurant);
-        dishes.delete(dishId);
-    }
-
     public void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
         Assert.notNull(user, "user must not be null");
         Assert.notNull(restaurant, "restaurant must not be null");
@@ -149,6 +132,10 @@ public class VotingService {
 
     public Dish getDishById(int id) throws NotFoundException {
         return checkNotFoundWithId(dishes.get(id), id);
+    }
+
+    public void createDish(Dish dish) {
+        dishes.save(dish);
     }
 
     public void updateDish(Dish dish) throws NotFoundException {

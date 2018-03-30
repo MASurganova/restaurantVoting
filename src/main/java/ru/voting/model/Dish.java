@@ -7,9 +7,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@NamedQueries({
+        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id"),
+        @NamedQuery(name = Dish.ALL_SORTED, query = "SELECT d FROM Dish d ORDER BY d.id")
+})
 @Entity
 @Table(name = "dishes")
 public class Dish extends AbstractBaseEntity {
+
+    public static final String DELETE = "Dish.delete";
+    public static final String ALL_SORTED = "Dish.getAllSorted";
 
     @Column(name = "description", nullable = false)
     @NotBlank

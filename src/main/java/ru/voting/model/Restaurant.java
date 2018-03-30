@@ -7,21 +7,31 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@NamedQueries({
+        @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
+        @NamedQuery(name = Restaurant.BY_NAME, query = "SELECT r FROM Restaurant r WHERE r.name=?1"),
+        @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT r FROM Restaurant r ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.ALL_ENABLED_SORTED, query = "SELECT r FROM Restaurant r WHERE r.enabled=true ORDER BY r.name"),
+})
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 public class Restaurant extends AbstractNamedEntity {
 
-    @OneToMany(mappedBy = "restaurant")
+    public static final String DELETE = "Restaurant.delete";
+    public static final String BY_NAME = "Restaurant.getByEmail";
+    public static final String ALL_SORTED = "Restaurant.getAllSorted";
+    public static final String ALL_ENABLED_SORTED = "Restaurant.getAllEnabled";
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OrderBy("id")
     private List<Dish> lunch;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
     @NotNull
     private boolean enabled;
 
-    @Column(name = "price", columnDefinition = "int default 0")
+    @Column(name = "voters", columnDefinition = "int default 0")
     private AtomicInteger voters;
-
-    private int totalPrice;
 
     public Restaurant() {
         this.lunch = new ArrayList<>();
@@ -37,7 +47,6 @@ public class Restaurant extends AbstractNamedEntity {
     public Restaurant(Integer id, String name, List<Dish> lunch) {
         this(id, name);
         this.lunch = lunch;
-        setTotalPrice();
     }
 
     public Restaurant(Integer id, String name, boolean enabled, int voters) {
@@ -55,12 +64,10 @@ public class Restaurant extends AbstractNamedEntity {
     public void addDish(Dish dish) {
         this.lunch.removeIf(d -> Objects.equals(d.getId(), dish.getId()));
         this.lunch.add(dish);
-        setTotalPrice();
     }
 
     public void removeDish(Dish dish) {
         this.lunch.remove(dish);
-        setTotalPrice();
     }
 
     public void setEnabled(boolean enabeled) {
@@ -93,27 +100,21 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setLunch(List<Dish> lunch) {
         this.lunch = lunch;
-        setTotalPrice();
-    }
-
-    private void setTotalPrice() {
-        if (this.lunch != null && this.lunch.size() != 0)
-            totalPrice = this.lunch.stream().mapToInt(Dish::getPrice).sum();
     }
 
     public int getTotalPrice() {
-        setTotalPrice();
-        return this.totalPrice;
+        if (lunch == null || lunch.size() == 0) return 0;
+        return lunch.stream().mapToInt(Dish::getPrice).sum();
     }
 
     @Override
     public String toString() {
         return "Restaurant{" +
-                " totalPrice=" + getTotalPrice() +
-                ", enabled=" + enabled +
+                " enabled=" + enabled +
                 ", voters=" + getVoters() +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 '}';
     }
+
 }

@@ -80,18 +80,6 @@ public class VotingServiceTest {
     }
 
     @Test
-    public void addDishToLunch() throws Exception {
-        //to do later
-        assertMatch(service.getRestaurantByName("My"), MY);
-    }
-
-    @Test
-    public void removeDishFromLunch() throws Exception {
-        //to do later
-        assertMatch(service.getRestaurantByName("My"), MY);
-    }
-
-    @Test
     public void addVoice() throws Exception {
         service.addVoice(ADMIN_ID, MY.getId(), LocalTime.of(10,0));
         Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 2);
@@ -190,6 +178,13 @@ public class VotingServiceTest {
     @Test(expected = NotFoundException.class)
     public void getDishByIdNotFound() throws Exception {
         service.getDishById(5);
+    }
+
+    @Test
+    public void createDish() throws Exception {
+        Dish newDish = new Dish(null, "new", 120, MY);
+        service.createDish(newDish);
+        assertMatch(service.getDishById(newDish.getId()), newDish);
     }
 
     @Test
