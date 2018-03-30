@@ -1,25 +1,42 @@
 package ru.voting.model;
 
-import java.util.Objects;
+import org.hibernate.validator.constraints.Range;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "dishes")
 public class Dish extends AbstractBaseEntity {
 
+    @Column(name = "description", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 120)
     private String description;
+
+    @Column(name = "price", nullable = false)
+    @Range(min = 10, max = 10000)
     private int price;
-    private Integer restaurantId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    @NotNull
+    private Restaurant restaurant;
 
     public Dish() {
     }
 
-    public Dish(Integer id, String description, int price, Integer restaurantId) {
+    public Dish(Integer id, String description, int price, Restaurant restaurant) {
         super(id);
         this.description = description;
         this.price = price;
-        this.restaurantId = restaurantId;
+        this.restaurant = restaurant;
     }
 
-    public Dish(String description, int price, int restaurantId) {
-        this(null, description, price, restaurantId);
+    public Dish(String description, int price, Restaurant restaurant) {
+        this(null, description, price, restaurant);
     }
 
     public Dish(Integer id, String description, int price) {
@@ -46,12 +63,12 @@ public class Dish extends AbstractBaseEntity {
         this.price = price;
     }
 
-    public int getRestaurantId() {
-        return restaurantId;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -59,27 +76,9 @@ public class Dish extends AbstractBaseEntity {
         return "Dish{" +
                 "description='" + description + '\'' +
                 ", price=" + price +
-                ", restaurantId=" + restaurantId +
                 ", id=" + id +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Dish)) return false;
 
-        Dish dish = (Dish) o;
-
-        if (!Objects.equals(id, dish.getId())) return false;
-        if (price != dish.price) return false;
-        return description != null ? description.equals(dish.description) : dish.description == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = description != null ? description.hashCode() : 0;
-        result = 31 * result + price;
-        return result;
-    }
 }

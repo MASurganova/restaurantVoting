@@ -1,20 +1,30 @@
 package ru.voting.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Entity
+@Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 public class Restaurant extends AbstractNamedEntity {
 
+    @OneToMany(mappedBy = "restaurant")
     private List<Dish> lunch;
-    private int totalPrice;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default false")
+    @NotNull
     private boolean enabled;
 
+    @Column(name = "price", columnDefinition = "int default 0")
     private AtomicInteger voters;
 
+    private int totalPrice;
+
     public Restaurant() {
+        this.lunch = new ArrayList<>();
         this.voters = new AtomicInteger(0);
     }
 
@@ -27,7 +37,7 @@ public class Restaurant extends AbstractNamedEntity {
     public Restaurant(Integer id, String name, List<Dish> lunch) {
         this(id, name);
         this.lunch = lunch;
-        totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
+        setTotalPrice();
     }
 
     public Restaurant(Integer id, String name, boolean enabled, int voters) {
@@ -45,12 +55,12 @@ public class Restaurant extends AbstractNamedEntity {
     public void addDish(Dish dish) {
         this.lunch.removeIf(d -> Objects.equals(d.getId(), dish.getId()));
         this.lunch.add(dish);
-        totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
+        setTotalPrice();
     }
 
     public void removeDish(Dish dish) {
         this.lunch.remove(dish);
-        totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
+        setTotalPrice();
     }
 
     public void setEnabled(boolean enabeled) {
@@ -83,10 +93,16 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setLunch(List<Dish> lunch) {
         this.lunch = lunch;
-        totalPrice = lunch.stream().mapToInt(Dish::getPrice).sum();
+        setTotalPrice();
+    }
+
+    private void setTotalPrice() {
+        if (this.lunch != null && this.lunch.size() != 0)
+            totalPrice = this.lunch.stream().mapToInt(Dish::getPrice).sum();
     }
 
     public int getTotalPrice() {
+        setTotalPrice();
         return this.totalPrice;
     }
 
@@ -99,26 +115,5 @@ public class Restaurant extends AbstractNamedEntity {
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Restaurant)) return false;
-
-        Restaurant that = (Restaurant) o;
-        if (id == null ? that.getId() != null : !Objects.equals(id, that.id)) return false;
-        if (name == null ? that.name != null : !name.equals(that.name)) return false;
-        return (lunch != null || that.lunch == null) && that.lunch != null && lunch.size() == that.lunch.size() && lunch.containsAll(that.lunch);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + totalPrice;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + (enabled ? 1 : 0);
-        result = 31 * result + (voters != null ? voters.hashCode() : 0);
-        return result;
     }
 }

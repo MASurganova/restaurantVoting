@@ -1,24 +1,22 @@
 package ru.voting;
 
-import ru.voting.model.Dish;
-import ru.voting.model.Restaurant;
-import ru.voting.model.Role;
-import ru.voting.model.User;
+import ru.voting.model.*;
 
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.voting.model.AbstractBaseEntity.START_SEQ;
 
 public class TestData {
-    public static final int USER_ID = 100000;
-    public static final int ADMIN_ID = 100001;
-    public static final Restaurant MY = new Restaurant(100000, "My", true, 1);
-    public static final Restaurant OTHER = new Restaurant(100001, "Other");
-    public static final Dish DISH_1 = new Dish(100000,"Чечевичный суп", 150, MY.getId());
-    public static final Dish DISH_2 = new Dish(100001,"Салат с семгой", 250, MY.getId());
-    public static final Dish DISH_3 = new Dish(100002,"Борщ", 250, OTHER.getId());
-    public static final Dish DISH_4 = new Dish(100003,"Оливье", 150, OTHER.getId());
-    public static final Dish DISH_5 = new Dish(100004,"Овощное рагу", 200, OTHER.getId());
+    public static final int USER_ID = START_SEQ+7;
+    public static final int ADMIN_ID = USER_ID + 1;
+    public static final Restaurant MY = new Restaurant(START_SEQ , "My", true, 1);
+    public static final Restaurant OTHER = new Restaurant(START_SEQ + 1, "Other");
+    public static final Dish DISH_1 = new Dish(START_SEQ + 2,"Чечевичный суп", 150, MY);
+    public static final Dish DISH_2 = new Dish(START_SEQ + 3,"Салат с семгой", 250, MY);
+    public static final Dish DISH_3 = new Dish(START_SEQ + 4,"Борщ", 250, OTHER);
+    public static final Dish DISH_4 = new Dish(START_SEQ + 5,"Оливье", 150, OTHER);
+    public static final Dish DISH_5 = new Dish(START_SEQ + 6,"Овощное рагу", 200, OTHER);
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru",
             "password",Role.ROLE_USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com",

@@ -79,7 +79,7 @@ public class VotingService {
     public void addDishToLunch(Restaurant restaurant, Dish dish) {
         Assert.notNull(restaurant, "restaurant must not be null");
         Assert.notNull(dish, "dish must not be null");
-        dish.setRestaurantId(restaurant.getId());
+        dish.setRestaurant(restaurant);
         restaurant.addDish(dish);
         restaurants.save(restaurant);
         dishes.save(dish);

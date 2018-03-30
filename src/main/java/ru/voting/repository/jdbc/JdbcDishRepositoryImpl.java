@@ -45,16 +45,15 @@ public class JdbcDishRepositoryImpl implements DishRepository {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", dish.getId())
                 .addValue("description", dish.getDescription())
-                .addValue("price", dish.getPrice())
-                .addValue("restaurant", dish.getRestaurantId());
+                .addValue("price", dish.getPrice());
 
         if (dish.isNew()) {
             Number newKey = insertDish.executeAndReturnKey(map);
             dish.setId(newKey.intValue());
         } else {
             if (namedParameterJdbcTemplate.update(
-                    "UPDATE dishes SET description=:description, price=:price, " +
-                            "restaurant_id=:restaurant WHERE id=:id", map) == 0)
+                    "UPDATE dishes SET description=:description, price=:price " +
+                            "WHERE id=:id", map) == 0)
                 return null;
         }
         return dish;

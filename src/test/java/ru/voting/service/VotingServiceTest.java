@@ -194,14 +194,14 @@ public class VotingServiceTest {
 
     @Test
     public void updateDish() throws Exception {
-        Dish updateDish = new Dish(DISH_1.getId(), "update", 120, MY.getId());
+        Dish updateDish = new Dish(DISH_1.getId(), "update", 120, MY);
         service.updateDish(updateDish);
         assertMatch(service.getDishById(DISH_1.getId()), updateDish);
     }
 
     @Test(expected = NotFoundException.class)
     public void updateDishNotFound() throws Exception {
-        Dish updateDish = new Dish(5, "update", 120, MY.getId());
+        Dish updateDish = new Dish(5, "update", 120, MY);
         service.updateDish(updateDish);
     }
 

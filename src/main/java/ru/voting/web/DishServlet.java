@@ -69,7 +69,8 @@ public class DishServlet extends HttpServlet {
             case "create":
             case "update":
                 final Dish dish = "create".equals(action) ?
-                        new Dish(null, "", 0, Integer.valueOf(request.getParameter("restaurant"))) :
+                        new Dish(null, "", 0,
+                                service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")))) :
                         service.getDishById(getId(request));
                 request.setAttribute("dish", dish);
                 request.getRequestDispatcher("/jsp/restaurant/dishForm.jsp").forward(request, response);
