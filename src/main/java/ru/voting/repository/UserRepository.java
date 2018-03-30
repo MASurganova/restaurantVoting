@@ -17,6 +17,9 @@ public interface UserRepository {
 
     User save(User user);
 
-    void setChoice(User user, Restaurant restaurant);
+    default void setChoice(User user, Restaurant restaurant) {
+        user.setChoice(restaurant);
+        save(user);
+    }
 
 }

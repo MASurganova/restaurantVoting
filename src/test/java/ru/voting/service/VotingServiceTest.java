@@ -207,13 +207,13 @@ public class VotingServiceTest {
 
     @Test
     public void deleteDish() throws Exception {
-        service.deleteDish(100000);
+        service.deleteDish(DISH_1.getId());
         assertMatch(service.getAllDishes(), DISH_2, DISH_3, DISH_4, DISH_5);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteDishNotFound() throws Exception {
-        service.deleteDish(100009);
+        service.deleteDish(9);
     }
 
 }

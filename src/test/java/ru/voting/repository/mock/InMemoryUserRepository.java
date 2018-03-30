@@ -3,7 +3,6 @@ package ru.voting.repository.mock;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
 import ru.voting.TestData;
-import ru.voting.model.Restaurant;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
 
@@ -26,13 +25,6 @@ public class InMemoryUserRepository extends AbstractInMemoryRepository<User> imp
         inMemoryRepository.put(TestData.USER_ID, new User(TestData.USER));
         inMemoryRepository.put(TestData.ADMIN_ID, new User(TestData.ADMIN));
         inMemoryCount = new AtomicInteger(100001);
-    }
-
-    @Override
-    public void setChoice(User user, Restaurant restaurant) {
-        log.info("set choice {} by {}", restaurant, user);
-        user.setChoice(restaurant);
-        save(user);
     }
 
     @Override
