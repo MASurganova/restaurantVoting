@@ -40,6 +40,7 @@ public class UserServiceTest {
         newUser.setChoice(MY);
         User created = service.create(newUser);
         newUser.setId(created.getId());
+        assertMatch(service.get(created.getId()), newUser);
         assertMatch(service.getAll(), ADMIN, newUser, USER);
     }
 
@@ -80,6 +81,7 @@ public class UserServiceTest {
     public void update() throws Exception {
         User updated = new User(USER);
         updated.setName("UpdatedName");
+        updated.setChoice(MY);
         service.update(updated);
         assertMatch(service.get(USER_ID), updated);
     }

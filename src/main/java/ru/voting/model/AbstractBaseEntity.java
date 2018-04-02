@@ -1,5 +1,7 @@
 package ru.voting.model;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -42,7 +44,7 @@ public abstract class AbstractBaseEntity {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || getClass() != Hibernate.getClass(0)) {
             return false;
         }
         AbstractBaseEntity that = (AbstractBaseEntity) o;

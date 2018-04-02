@@ -23,7 +23,7 @@ public class TestData {
             "admin", Role.ROLE_ADMIN, Role.ROLE_USER);
 
     public static void assertMatch(User actual, User expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "roles");
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "roles", "choice");
     }
 
     public static void assertMatch(Iterable<User> actual, User... expected) {
@@ -31,7 +31,7 @@ public class TestData {
     }
 
     public static void assertMatchUser(Iterable<User> actual, Iterable<User> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("roles").isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("roles", "choice").isEqualTo(expected);
     }
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {

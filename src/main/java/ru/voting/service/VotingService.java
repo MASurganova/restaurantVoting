@@ -48,7 +48,10 @@ public class VotingService {
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
                 String.format("Голосование за ресторан, где мы будем обедать завершено, выбран ресторан - %s"
                         , currentChoice.getName())));
-        users.getAll().forEach(u -> users.setChoice(u, null));
+        users.getAll().forEach(u -> {
+            u.setChoice(null);
+            users.save(u);
+        });
     }
 
     public void startVoting() {
@@ -84,7 +87,8 @@ public class VotingService {
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
                 restaurants.removeVoter(user.getChoice());
-            users.setChoice(user, restaurant);
+            user.setChoice(restaurant);
+            users.save(user);
             restaurants.addVoter(restaurant);
         }
     }
