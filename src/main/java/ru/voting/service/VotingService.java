@@ -111,6 +111,10 @@ public class VotingService {
         return checkNotFound(restaurants.getByName(name), "name=" + name);
     }
 
+    public Restaurant getRestaurantByIdWithLunch(int id) throws NotFoundException {
+        return checkNotFound(restaurants.getWithLunch(id), "id=" + id);
+    }
+
     public List<Restaurant> getAllRestaurants() {
         return restaurants.getAll();
     }

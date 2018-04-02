@@ -5,13 +5,13 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @NamedQueries({
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
         @NamedQuery(name = Restaurant.BY_NAME, query = "SELECT r FROM Restaurant r WHERE r.name=?1"),
         @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT r FROM Restaurant r ORDER BY r.name"),
         @NamedQuery(name = Restaurant.ALL_ENABLED_SORTED, query = "SELECT r FROM Restaurant r WHERE r.enabled=true ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.BY_ID_WITH_LUNCH, query = "SELECT DISTINCT r FROM Restaurant r LEFT JOIN FETCH r.lunch WHERE r.id=?1")
 })
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
@@ -21,6 +21,7 @@ public class Restaurant extends AbstractNamedEntity {
     public static final String BY_NAME = "Restaurant.getByEmail";
     public static final String ALL_SORTED = "Restaurant.getAllSorted";
     public static final String ALL_ENABLED_SORTED = "Restaurant.getAllEnabled";
+    public static final String BY_ID_WITH_LUNCH = "Restaurant.getByIdWithLunch";
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("id")
@@ -31,17 +32,15 @@ public class Restaurant extends AbstractNamedEntity {
     private boolean enabled;
 
     @Column(name = "voters", columnDefinition = "int default 0")
-    private AtomicInteger voters;
+    private int voters;
 
     public Restaurant() {
         this.lunch = new ArrayList<>();
-        this.voters = new AtomicInteger(0);
     }
 
     public Restaurant(Integer id, String name) {
         super(id, name);
         this.lunch = new ArrayList<>();
-        this.voters = new AtomicInteger(0);
     }
 
     public Restaurant(Integer id, String name, List<Dish> lunch) {
@@ -79,19 +78,19 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     public int getVoters() {
-        return voters == null ? 0 : voters.get();
+        return voters;
     }
 
     public int addVoter() {
-        return voters.incrementAndGet();
+        return voters++;
     }
 
     public int removeVoter() {
-        return voters.decrementAndGet();
+        return voters++;
     }
 
     public void setVoters(int voters) {
-        this.voters.set(voters);
+        this.voters = voters;
     }
 
     public List<Dish> getLunch() {
@@ -116,5 +115,4 @@ public class Restaurant extends AbstractNamedEntity {
                 ", id=" + id +
                 '}';
     }
-
 }

@@ -185,6 +185,7 @@ public class VotingServiceTest {
         Dish newDish = new Dish(null, "new", 120, MY);
         service.createDish(newDish);
         assertMatch(service.getDishById(newDish.getId()), newDish);
+        Assert.assertEquals(service.getRestaurantByIdWithLunch(MY.getId()).getLunch().size(), 3);
     }
 
     @Test

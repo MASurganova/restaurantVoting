@@ -40,5 +40,10 @@ public interface RestaurantRepository {
         save(restaurant);
     }
 
+    default Restaurant getWithLunch(int id) {
+        throw new UnsupportedOperationException();
+    }
+
     List<Restaurant> getEnabledRestaurants();
+
 }

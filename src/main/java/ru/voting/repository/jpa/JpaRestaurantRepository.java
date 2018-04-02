@@ -58,4 +58,12 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     public List<Restaurant> getEnabledRestaurants() {
         return em.createNamedQuery(Restaurant.ALL_ENABLED_SORTED, Restaurant.class).getResultList();
     }
+
+    @Override
+    public Restaurant getWithLunch(int id) {
+        List<Restaurant> restarants = em.createNamedQuery(Restaurant.BY_ID_WITH_LUNCH, Restaurant.class)
+                .setParameter(1, id)
+                .getResultList();
+        return DataAccessUtils.singleResult(restarants);
+    }
 }
