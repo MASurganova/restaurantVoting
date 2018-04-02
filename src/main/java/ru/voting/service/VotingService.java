@@ -119,15 +119,15 @@ public class VotingService {
         return restaurants.getAll();
     }
 
-    public void updateRestaurant(Restaurant restaurant) throws NotFoundException {
+    public Restaurant updateRestaurant(Restaurant restaurant) throws NotFoundException {
         Assert.notNull(restaurant, "restaurant must not be null");
         checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
-        restaurants.save(restaurant);
+        return restaurants.save(restaurant);
     }
 
-    public void createRestaurant(Restaurant restaurant) {
+    public Restaurant createRestaurant(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        restaurants.save(restaurant);
+        return restaurants.save(restaurant);
     }
 
     public void deleteRestaurant(int id) throws NotFoundException {
@@ -138,14 +138,14 @@ public class VotingService {
         return checkNotFoundWithId(dishes.get(id), id);
     }
 
-    public void createDish(Dish dish) {
-        dishes.save(dish);
+    public Dish createDish(Dish dish) {
+        return dishes.save(dish);
     }
 
-    public void updateDish(Dish dish) throws NotFoundException {
+    public Dish updateDish(Dish dish) throws NotFoundException {
         Assert.notNull(dish, "dish must not be null");
         checkNotFoundWithId(dishes.get(dish.getId()), dish.getId());
-        dishes.save(dish);
+        return dishes.save(dish);
     }
 
     public void deleteDish(int id) throws NotFoundException {

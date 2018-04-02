@@ -4,7 +4,6 @@ package ru.voting.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.EnumSet;
 import java.util.Set;
@@ -34,7 +33,7 @@ public class User extends AbstractNamedEntity {
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "restaurant_id")
     private Restaurant choice;
 
     @Enumerated(EnumType.STRING)

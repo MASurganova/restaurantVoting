@@ -37,6 +37,7 @@ public class UserServiceTest {
     @Test
     public void create() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", Role.ROLE_USER);
+        newUser.setChoice(MY);
         User created = service.create(newUser);
         newUser.setId(created.getId());
         assertMatch(service.getAll(), ADMIN, newUser, USER);
