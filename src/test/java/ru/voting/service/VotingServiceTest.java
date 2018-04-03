@@ -46,9 +46,8 @@ public class VotingServiceTest {
         Assert.assertEquals(service.getCurrentRestaurants().size(), 0);
         Assert.assertEquals(service.getAllRestaurants().stream()
                 .filter(restaurant -> restaurant.getVoters() != 0).count(), 0);
-//        after add choice(restaurant) in user
-//        Assert.assertEquals(users.getAll().stream()
-//                .filter(user -> user.getChoice() != null).count(), 0);
+        Assert.assertEquals(users.getAll().stream()
+                .filter(user -> user.getChoice() != null).count(), 0);
     }
 
     @Test

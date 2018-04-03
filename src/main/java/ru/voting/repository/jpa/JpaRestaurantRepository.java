@@ -91,7 +91,7 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     @Transactional
     @Override
     public void disabled(Restaurant restaurant) {
-        restaurant.setEnabled(true);
+        restaurant.setEnabled(false);
         em.merge(restaurant);
     }
 
