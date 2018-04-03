@@ -103,7 +103,7 @@ public class VotingService {
     }
 
     public void addRestaurantToVote(int id) throws NotFoundException {
-        Restaurant restaurant = checkNotFoundWithId(restaurants.get(id), id);
+        Restaurant restaurant = checkNotFoundWithId(restaurants.getWithLunch(id), id);
         restaurants.enabled(restaurant);
     }
 

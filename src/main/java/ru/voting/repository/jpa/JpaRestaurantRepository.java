@@ -66,4 +66,39 @@ public class JpaRestaurantRepository implements RestaurantRepository {
                 .getResultList();
         return DataAccessUtils.singleResult(restarants);
     }
+
+    @Transactional
+    @Override
+    public void enabled(Restaurant restaurant) {
+        restaurant.setEnabled(true);
+        em.merge(restaurant);
+    }
+
+    @Transactional
+    @Override
+    public void addVoter(Restaurant restaurant) {
+        restaurant.addVoter();
+        em.merge(restaurant);
+    }
+
+    @Transactional
+    @Override
+    public void removeVoter(Restaurant restaurant) {
+        restaurant.removeVoter();
+        em.merge(restaurant);
+    }
+
+    @Transactional
+    @Override
+    public void disabled(Restaurant restaurant) {
+        restaurant.setEnabled(true);
+        em.merge(restaurant);
+    }
+
+    @Transactional
+    @Override
+    public void updateVoters(Restaurant restaurant) {
+        restaurant.setVoters(0);
+        em.merge(restaurant);
+    }
 }
