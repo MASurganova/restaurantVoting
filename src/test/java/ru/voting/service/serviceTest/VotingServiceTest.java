@@ -1,17 +1,13 @@
-package ru.voting.service;
+package ru.voting.service.serviceTest;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
+import ru.voting.service.UserService;
+import ru.voting.service.VotingService;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
@@ -19,19 +15,7 @@ import java.time.LocalTime;
 
 import static ru.voting.TestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-public class VotingServiceTest {
-
-    static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
-        SLF4JBridgeHandler.install();
-    }
+public class VotingServiceTest extends ServiceTest {
 
     @Autowired
     VotingService service;
