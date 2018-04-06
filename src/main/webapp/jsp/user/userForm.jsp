@@ -31,6 +31,7 @@
     <jsp:useBean id="user" type="ru.voting.model.User" scope="request"/>
     <form method="post" action="users">
         <input type="hidden" name="id" value="${user.id}">
+        <input type="hidden" value="${user.choice == null ? null : user.choice.id}" name="restaurantId">
         <dl>
             <dt>Имя:</dt>
             <dd><input type="text" value="${user.name}" name="name" required></dd>

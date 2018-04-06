@@ -86,7 +86,7 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     public int removeVoter() {
-        return voters++;
+        return voters--;
     }
 
     public void setVoters(int voters) {

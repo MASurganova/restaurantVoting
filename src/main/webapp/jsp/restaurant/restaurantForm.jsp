@@ -42,7 +42,7 @@
                 </c:forEach>
             </table>
             <dl>
-                <a href="dishes?action=create&restaurant=${restaurant.id}">Добавить блюдо</a>
+                <a href="dishes?action=create&restaurantId=${restaurant.id}">Добавить блюдо</a>
             </dl>
         </c:if>
         <button type="submit">Save</button>

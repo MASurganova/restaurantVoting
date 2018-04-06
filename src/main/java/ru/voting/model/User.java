@@ -11,8 +11,8 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
-        @NamedQuery(name = User.WITH_CHOICE, query = "SELECT u FROM User u LEFT JOIN FETCH u.choice WHERE u.id=?1"),
-        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.choice ORDER BY u.name, u.email"),
+        @NamedQuery(name = User.WITH_CHOICE, query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.choice WHERE u.id=?1"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.choice ORDER BY u.name, u.email"),
 })
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
@@ -49,6 +49,13 @@ public class User extends AbstractNamedEntity {
 
     public User(Integer id, String name, String email, String password, Role role, Role ... roles) {
         this(id, name, email, password, EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password, Restaurant choice) {
+        super(id, name);
+        this.password = password;
+        this.email = email;
+        this.choice = choice;
     }
 
     public User(Integer id, String name, String email, String password, Set<Role> roles) {

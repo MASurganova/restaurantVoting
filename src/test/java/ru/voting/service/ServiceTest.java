@@ -1,4 +1,4 @@
-package ru.voting.service.serviceTest;
+package ru.voting.service;
 
 import org.junit.AfterClass;
 import org.junit.Rule;

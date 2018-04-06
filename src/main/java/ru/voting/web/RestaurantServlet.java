@@ -53,7 +53,9 @@ public class RestaurantServlet extends HttpServlet {
         log.info(restaurant.isNew() ? "Create {}" : "Update {}", restaurant);
         if (restaurant.isNew()) service.createRestaurant(restaurant);
         else service.updateRestaurant(restaurant);
-        response.sendRedirect("restaurants");
+        request.setAttribute("restaurants", service.getAllRestaurants());
+        request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
+
     }
 
     @Override
@@ -71,7 +73,7 @@ public class RestaurantServlet extends HttpServlet {
             case "update":
                 final Restaurant restaurant = "create".equals(action) ?
                         new Restaurant(null, "") :
-                        service.getRestaurantById(getId(request));
+                        service.getRestaurantByIdWithLunch(getId(request));
                 request.setAttribute("restaurant", restaurant);
                 request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
                 break;

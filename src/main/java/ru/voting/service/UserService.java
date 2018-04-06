@@ -45,4 +45,6 @@ public class UserService {
         return repository.save(user);
     }
 
+    public User getWithChoice(int id) { return repository.getWithChoice(id); }
+
 }

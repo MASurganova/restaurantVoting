@@ -1,11 +1,10 @@
-package ru.voting.service.serviceTest;
+package ru.voting.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.voting.model.Role;
 import ru.voting.model.User;
-import ru.voting.service.UserService;
 import ru.voting.util.exception.NotFoundException;
 
 import java.util.List;
@@ -60,6 +59,12 @@ public class UserServiceTest extends ServiceTest {
     public void getByEmail() throws Exception {
         User user = service.getByEmail("user@yandex.ru");
         assertMatch(user, USER);
+    }
+
+    @Test
+    public void getWithChoice() {
+        User user = service.getWithChoice(100007);
+        assertMatch(user.getChoice(), MY);
     }
 
     @Test

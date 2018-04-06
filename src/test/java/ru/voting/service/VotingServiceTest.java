@@ -1,4 +1,4 @@
-package ru.voting.service.serviceTest;
+package ru.voting.service;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.service.UserService;
-import ru.voting.service.VotingService;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
@@ -79,13 +77,14 @@ public class VotingServiceTest extends ServiceTest {
         service.addRestaurantToVote(OTHER.getId());
         service.addVoice(USER_ID, OTHER.getId(), LocalTime.of(10,0));
         Assert.assertEquals(service.getRestaurantById(OTHER.getId()).getVoters(), 1);
+        Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
 //        after add choice(restaurant) in user
 //        Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
     }
 
     @Test(expected = TimeDelayException.class)
     public void addVoiceTimeDelay() throws Exception {
-        service.addVoice(ADMIN_ID, MY.getId(), LocalTime.of(13,0));
+        service.addVoice(ADMIN_ID, MY.getId(), LocalTime.of(19,0));
     }
 
     @Test
@@ -147,8 +146,8 @@ public class VotingServiceTest extends ServiceTest {
 
     @Test
     public void deleteRestaurant() throws Exception {
-        service.deleteRestaurant(MY.getId());
-        assertMatch(service.getAllRestaurants(), OTHER);
+        service.deleteRestaurant(OTHER.getId());
+        assertMatch(service.getAllRestaurants(), MY);
     }
 
     @Test(expected = NotFoundException.class)

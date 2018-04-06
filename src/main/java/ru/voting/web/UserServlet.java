@@ -5,6 +5,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.service.UserService;
+import ru.voting.service.VotingService;
 import ru.voting.util.ValidationUtil;
 
 import javax.servlet.ServletConfig;
@@ -24,11 +25,14 @@ public class UserServlet extends HttpServlet {
 
     private UserService service;
 
+    private VotingService votingService;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         springContext = ValidationUtil.getSpringContext();
         service = springContext.getBean(UserService.class);
+        votingService = springContext.getBean(VotingService.class);
     }
 
     @Override
@@ -45,7 +49,8 @@ public class UserServlet extends HttpServlet {
         User user = new User(id.isEmpty() ? null : Integer.valueOf(id),
                 request.getParameter("name"),
                 request.getParameter("email"),
-                request.getParameter("password"), Role.ROLE_USER);
+                request.getParameter("password"), request.getParameter("restaurantId").isEmpty() ? null :
+                votingService.getRestaurantById(Integer.parseInt(request.getParameter("restaurantId"))));
 
         log.info(user.isNew() ? "Create {}" : "Update {}", user);
         if (user.isNew()) service.create(user);
@@ -68,7 +73,7 @@ public class UserServlet extends HttpServlet {
             case "update":
                 final User user = "create".equals(action) ?
                         new User(null, "", "", "",  Role.ROLE_USER) :
-                        service.get(getId(request));
+                        service.getWithChoice(getId(request));
                 request.setAttribute("user", user);
                 request.getRequestDispatcher("/jsp/user/userForm.jsp").forward(request, response);
                 break;

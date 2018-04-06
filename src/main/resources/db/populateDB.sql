@@ -15,9 +15,9 @@ INSERT INTO dishes (restaurant_id, description, price) VALUES
   (100001, 'Оливье', 150),
   (100001, 'Овощное рагу', 200);
 
-INSERT INTO users (name, email, password) VALUES
-  ('User', 'user@yandex.ru', 'password'),
-  ('Admin', 'admin@gmail.com', 'admin');
+INSERT INTO users (name, email, password, restaurant_id) VALUES
+  ('User', 'user@yandex.ru', 'password', 100000),
+  ('Admin', 'admin@gmail.com', 'admin', null);
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100007),

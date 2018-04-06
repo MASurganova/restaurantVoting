@@ -41,7 +41,7 @@ public class DishServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-        Restaurant restaurant = service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")));
+        Restaurant restaurant = service.getRestaurantByIdWithLunch(Integer.valueOf(request.getParameter("restaurantId")));
 
         Dish dish = new Dish(id.isEmpty() ? null : Integer.valueOf(id),
                 request.getParameter("description"), Integer.parseInt(request.getParameter("price")));
@@ -49,29 +49,29 @@ public class DishServlet extends HttpServlet {
         log.info(dish.isNew() ? "Create {}" : "Update {}", dish);
         if (dish.isNew()) service.createDish(dish);
         else service.updateDish(dish);
-        request.setAttribute("restaurant", restaurant);
-        request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
+//        request.setAttribute("restaurant", restaurant);
+        response.sendRedirect("restaurants?action=update&id=" + restaurant.getId());
+//        request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
 
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        Restaurant restaurant = service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")));
+        Restaurant restaurant = service.getRestaurantByIdWithLunch(Integer.valueOf(request.getParameter("restaurantId")));
 
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
                 log.info("Delete {}", id);
                 service.deleteDish(id);
-                request.setAttribute("restaurant", restaurant);
-                request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
+                response.sendRedirect("restaurants?action=update&id=" + restaurant.getId());
                 break;
             case "create":
             case "update":
                 final Dish dish = "create".equals(action) ?
                         new Dish(null, "", 0,
-                                service.getRestaurantById(Integer.valueOf(request.getParameter("restaurant")))) :
+                                service.getRestaurantById(Integer.valueOf(request.getParameter("restaurantId")))) :
                         service.getDishById(getId(request));
                 request.setAttribute("dish", dish);
                 request.getRequestDispatcher("/jsp/restaurant/dishForm.jsp").forward(request, response);
