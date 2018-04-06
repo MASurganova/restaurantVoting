@@ -43,7 +43,7 @@ public class JpaRestaurantRepository implements RestaurantRepository {
 
     @Override
     public List<Restaurant> getAll() {
-        return em.createNamedQuery(Restaurant.ALL_SORTED, Restaurant.class).getResultList();
+        return em.createNamedQuery(Restaurant.ALL_WITH_LUNCH_SORTED, Restaurant.class).getResultList();
     }
 
     @Override
@@ -69,35 +69,40 @@ public class JpaRestaurantRepository implements RestaurantRepository {
 
     @Transactional
     @Override
-    public void enabled(Restaurant restaurant) {
+    public void enabled(int id) {
+        Restaurant restaurant = getWithLunch(id);
         restaurant.setEnabled(true);
         em.merge(restaurant);
     }
 
     @Transactional
     @Override
-    public void addVoter(Restaurant restaurant) {
+    public void addVoter(int id) {
+        Restaurant restaurant = getWithLunch(id);
         restaurant.addVoter();
         em.merge(restaurant);
     }
 
     @Transactional
     @Override
-    public void removeVoter(Restaurant restaurant) {
+    public void removeVoter(int id) {
+        Restaurant restaurant = getWithLunch(id);
         restaurant.removeVoter();
         em.merge(restaurant);
     }
 
     @Transactional
     @Override
-    public void disabled(Restaurant restaurant) {
+    public void disabled(int id) {
+        Restaurant restaurant = getWithLunch(id);
         restaurant.setEnabled(false);
         em.merge(restaurant);
     }
 
     @Transactional
     @Override
-    public void updateVoters(Restaurant restaurant) {
+    public void updateVoters(int id) {
+        Restaurant restaurant = getWithLunch(id);
         restaurant.setVoters(0);
         em.merge(restaurant);
     }

@@ -43,8 +43,8 @@ public class VotingService {
         Restaurant currentChoice = getCurrentChoice();
         history.addInHistory(LocalDate.now(), currentChoice);
         votingEnded = false;
-        restaurants.getAll().forEach(restaurants::updateVoters);
-        restaurants.getAll().forEach(r -> restaurants.disabled(r));
+        restaurants.getAll().stream().map(Restaurant::getId).forEach(restaurants::updateVoters);
+        restaurants.getAll().forEach(r -> restaurants.disabled(r.getId()));
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
                 String.format("Голосование за ресторан, где мы будем обедать завершено, выбран ресторан - %s"
                         , currentChoice.getName())));
@@ -83,13 +83,13 @@ public class VotingService {
         Assert.notNull(user, "user must not be null");
         Assert.notNull(restaurant, "restaurant must not be null");
         if (time == null) time = LocalTime.now();
-        if (time.isAfter(LocalTime.of(12, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
+        if (time.isAfter(LocalTime.of(15, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
-                restaurants.removeVoter(user.getChoice());
+                restaurants.removeVoter(user.getChoice().getId());
             user.setChoice(restaurant);
             users.save(user);
-            restaurants.addVoter(restaurant);
+            restaurants.addVoter(restaurant.getId());
         }
     }
 
@@ -103,8 +103,8 @@ public class VotingService {
     }
 
     public void addRestaurantToVote(int id) throws NotFoundException {
-        Restaurant restaurant = checkNotFoundWithId(restaurants.getWithLunch(id), id);
-        restaurants.enabled(restaurant);
+        checkNotFoundWithId(restaurants.getWithLunch(id), id);
+        restaurants.enabled(id);
     }
 
     public Restaurant getRestaurantById(int id) throws NotFoundException {

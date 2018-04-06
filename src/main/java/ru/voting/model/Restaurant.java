@@ -9,8 +9,8 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
         @NamedQuery(name = Restaurant.BY_NAME, query = "SELECT r FROM Restaurant r WHERE r.name=?1"),
-        @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT r FROM Restaurant r ORDER BY r.name"),
-        @NamedQuery(name = Restaurant.ALL_ENABLED_SORTED, query = "SELECT r FROM Restaurant r WHERE r.enabled=true ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.ALL_WITH_LUNCH_SORTED, query = "SELECT DISTINCT r FROM Restaurant r LEFT JOIN FETCH r.lunch ORDER BY r.name"),
+        @NamedQuery(name = Restaurant.ALL_ENABLED_SORTED, query = "SELECT DISTINCT r FROM Restaurant r LEFT JOIN FETCH r.lunch WHERE r.enabled=true ORDER BY r.name"),
         @NamedQuery(name = Restaurant.BY_ID_WITH_LUNCH, query = "SELECT DISTINCT r FROM Restaurant r LEFT JOIN FETCH r.lunch WHERE r.id=?1")
 })
 @Entity
@@ -19,7 +19,7 @@ public class Restaurant extends AbstractNamedEntity {
 
     public static final String DELETE = "Restaurant.delete";
     public static final String BY_NAME = "Restaurant.getByEmail";
-    public static final String ALL_SORTED = "Restaurant.getAllSorted";
+    public static final String ALL_WITH_LUNCH_SORTED = "Restaurant.getAllSorted";
     public static final String ALL_ENABLED_SORTED = "Restaurant.getAllEnabled";
     public static final String BY_ID_WITH_LUNCH = "Restaurant.getByIdWithLunch";
 

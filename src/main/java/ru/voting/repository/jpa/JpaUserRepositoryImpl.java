@@ -51,6 +51,14 @@ public class JpaUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User getWithChoice(int id) {
+        List<User> users = em.createNamedQuery(User.WITH_CHOICE, User.class)
+                .setParameter(1, id)
+                .getResultList();
+        return DataAccessUtils.singleResult(users);
+    }
+
+    @Override
     public List<User> getAll() {
         return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }

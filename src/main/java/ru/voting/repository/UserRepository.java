@@ -15,4 +15,8 @@ public interface UserRepository {
     User getByEmail(String email);
 
     User save(User user);
+
+    default User getWithChoice(int id) {
+        throw new UnsupportedOperationException();
+    }
 }
