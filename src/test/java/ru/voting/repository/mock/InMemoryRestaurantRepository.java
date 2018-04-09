@@ -43,41 +43,6 @@ public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Res
     }
 
     @Override
-    public void addVoter(Restaurant restaurant) {
-        log.info("add voter by {}", restaurant);
-        restaurant.addVoter();
-        save(restaurant);
-    }
-
-    @Override
-    public void removeVoter(Restaurant restaurant) {
-        log.info("remove voter by {}", restaurant);
-        restaurant.removeVoter();
-        save(restaurant);
-    }
-
-    @Override
-    public void updateVoters(Restaurant restaurant) {
-        log.info("update voter by {}", restaurant);
-        restaurant.setVoters(0);
-        save(restaurant);
-    }
-
-    @Override
-    public void enabled(Restaurant restaurant) {
-        log.info("enabled {}", restaurant);
-        restaurant.setEnabled(true);
-        save(restaurant);
-    }
-
-    @Override
-    public void disabled(Restaurant restaurant) {
-        log.info("disabled {}", restaurant);
-        restaurant.setEnabled(false);
-        save(restaurant);
-    }
-
-    @Override
     public List<Restaurant> getEnabledRestaurants() {
         return getAll().stream().filter(Restaurant::isEnabled).collect(Collectors.toList());
     }
