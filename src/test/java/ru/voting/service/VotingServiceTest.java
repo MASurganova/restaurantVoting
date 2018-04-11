@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.test.context.ActiveProfiles;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.util.exception.NotFoundException;
@@ -11,8 +12,10 @@ import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalTime;
 
+import static ru.voting.Profiles.REPOSITORY_IMPLEMENTATION;
 import static ru.voting.TestData.*;
 
+@ActiveProfiles(REPOSITORY_IMPLEMENTATION)
 public class VotingServiceTest extends ServiceTest {
 
     @Autowired
@@ -50,14 +53,14 @@ public class VotingServiceTest extends ServiceTest {
     @Test
     public void getCurrentChoice() throws Exception {
         service.addRestaurantToVote(OTHER.getId());
-//        service.addVoice(ADMIN_ID, OTHER.getId(), LocalTime.of(10,0));
-//        service.addVoice(USER_ID, OTHER.getId(), LocalTime.of(10,0));
-//        Restaurant newOther = new Restaurant(OTHER);
-//        newOther.setEnabled(true);
-//        newOther.setVoters(2);
-        assertMatch(service.getCurrentChoice(), MY);
-//        after add choice(restaurant) in user
-//        Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
+        Assert.assertEquals(service.getRestaurantById(OTHER.getId()).isEnabled(), true);
+        service.addVoice(ADMIN_ID, OTHER.getId(), LocalTime.of(10,0));
+        service.addVoice(USER_ID, OTHER.getId(), LocalTime.of(10,0));
+        Restaurant newOther = new Restaurant(OTHER);
+        newOther.setEnabled(true);
+        newOther.setVoters(2);
+        assertMatch(service.getCurrentChoice(), newOther);
+        Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
     }
 
     @Test

@@ -1,6 +1,9 @@
 package ru.voting;
 
-import ru.voting.model.*;
+import ru.voting.model.Dish;
+import ru.voting.model.Restaurant;
+import ru.voting.model.Role;
+import ru.voting.model.User;
 
 import java.util.Arrays;
 

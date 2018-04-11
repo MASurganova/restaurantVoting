@@ -16,31 +16,31 @@ public interface RestaurantRepository {
     Restaurant getByName(String name);
 
     default void addVoter(int id) {
-        Restaurant restaurant = get(id);
+        Restaurant restaurant = getWithLunch(id);
         restaurant.addVoter();
         save(restaurant);
     }
 
     default void removeVoter(int id) {
-        Restaurant restaurant = get(id);
+        Restaurant restaurant = getWithLunch(id);
         restaurant.removeVoter();
         save(restaurant);
     }
 
     default void updateVoters(int id) {
-        Restaurant restaurant = get(id);
+        Restaurant restaurant = getWithLunch(id);
         restaurant.setVoters(0);
         save(restaurant);
     }
 
     default void enabled(int id) {
-        Restaurant restaurant = get(id);
+        Restaurant restaurant = getWithLunch(id);
         restaurant.setEnabled(true);
         save(restaurant);
     }
 
     default void disabled(int id) {
-        Restaurant restaurant = get(id);
+        Restaurant restaurant = getWithLunch(id);
         restaurant.setEnabled(false);
         save(restaurant);
     }

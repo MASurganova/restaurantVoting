@@ -10,10 +10,10 @@ import ru.voting.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static ru.voting.Profiles.JDBC;
+import static ru.voting.Profiles.REPOSITORY_IMPLEMENTATION;
 import static ru.voting.TestData.*;
 
-@ActiveProfiles(JDBC)
+@ActiveProfiles(REPOSITORY_IMPLEMENTATION)
 public class UserServiceTest extends ServiceTest {
 
     @Autowired
