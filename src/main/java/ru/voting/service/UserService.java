@@ -2,6 +2,8 @@ package ru.voting.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.voting.model.User;
@@ -19,6 +21,7 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) throws NotFoundException {
         ValidationUtil.checkNotFoundWithId(repository.delete(id), id);
     }
@@ -27,6 +30,7 @@ public class UserService {
         return ValidationUtil.checkNotFoundWithId(repository.get(id), id);
     }
 
+    @Cacheable("users")
     public List<User> getAll() {
         return repository.getAll();
     }
@@ -35,12 +39,14 @@ public class UserService {
         return ValidationUtil.checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public User update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.get(user.getId()), user.getId());
         return repository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public User create(User  user) {
         return repository.save(user);
     }
