@@ -7,7 +7,6 @@ import ru.voting.repository.DishRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
@@ -39,8 +38,4 @@ public class JpaDishRepository implements DishRepository {
         return em.find(Dish.class, id);
     }
 
-    @Override
-    public List<Dish> getAll() {
-        return em.createNamedQuery(Dish.ALL_SORTED, Dish.class).getResultList();
-    }
 }

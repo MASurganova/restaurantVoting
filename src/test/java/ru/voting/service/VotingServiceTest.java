@@ -173,7 +173,7 @@ public class VotingServiceTest extends ServiceTest {
         Dish newDish = new Dish(null, "new", 120, MY);
         Dish createDish = service.createDish(newDish);
         newDish.setId(createDish.getId());
-        assertMatch(service.getAllDishes(), DISH_1, DISH_2, DISH_3, DISH_4, DISH_5, newDish);
+        assertMatch(service.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_1, DISH_2,newDish);
         Assert.assertEquals(service.getRestaurantByIdWithLunch(MY.getId()).getLunch().size(), 3);
     }
 
@@ -193,7 +193,7 @@ public class VotingServiceTest extends ServiceTest {
     @Test
     public void deleteDish() throws Exception {
         service.deleteDish(DISH_1.getId());
-        assertMatch(service.getAllDishes(), DISH_2, DISH_3, DISH_4, DISH_5);
+        assertMatch(service.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_2);
     }
 
     @Test(expected = NotFoundException.class)

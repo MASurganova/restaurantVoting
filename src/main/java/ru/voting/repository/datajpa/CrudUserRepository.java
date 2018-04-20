@@ -23,6 +23,7 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     Optional<User> findById(Integer id);
 
     @Override
+    @EntityGraph(attributePaths = "choice")
     List<User> findAll(Sort sort);
 
     User getByEmail(String email);

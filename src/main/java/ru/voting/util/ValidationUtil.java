@@ -3,6 +3,7 @@ package ru.voting.util;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.voting.Profiles;
 import ru.voting.model.AbstractBaseEntity;
 import ru.voting.util.exception.NotFoundException;
 
@@ -11,7 +12,11 @@ public class ValidationUtil {
     private static ConfigurableApplicationContext springContext;
 
     public static ConfigurableApplicationContext getSpringContext() {
-        if (springContext == null) springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        if (springContext == null) {
+            springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
+            springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+            springContext.refresh();
+        }
         return springContext;
     }
 

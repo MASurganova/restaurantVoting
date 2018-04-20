@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.voting.model.Dish;
 import ru.voting.repository.DishRepository;
 
-import java.util.List;
-
 @Repository
 public class DataJpaDishRepositoryImpl implements DishRepository {
 
@@ -31,8 +29,4 @@ public class DataJpaDishRepositoryImpl implements DishRepository {
         return repository.findById(id).orElse(null);
     }
 
-    @Override
-    public List<Dish> getAll() {
-        return repository.findAll(SORT_ID);
-    }
 }

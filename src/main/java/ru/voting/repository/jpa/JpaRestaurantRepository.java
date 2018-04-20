@@ -67,6 +67,9 @@ public class JpaRestaurantRepository implements RestaurantRepository {
         return DataAccessUtils.singleResult(restarants);
     }
 
+//    Переопределются, хотя и смысл как в интерфейсе - достать вместе с ланчем,
+// изменить и сохранить заново, но с интерфейсными(default) не работает
+
     @Transactional
     @Override
     public void enabled(int id) {

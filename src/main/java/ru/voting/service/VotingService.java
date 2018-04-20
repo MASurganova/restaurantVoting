@@ -42,7 +42,7 @@ public class VotingService {
     public void endVoting() {
         Restaurant currentChoice = getCurrentChoice();
         history.addInHistory(LocalDate.now(), currentChoice);
-        votingEnded = false;
+        votingEnded = true;
         restaurants.getAll().stream().map(Restaurant::getId).forEach(restaurants::updateVoters);
         restaurants.getAll().forEach(r -> restaurants.disabled(r.getId()));
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
@@ -84,7 +84,7 @@ public class VotingService {
         Assert.notNull(restaurant, "restaurant must not be null");
         if (time == null) time = LocalTime.now();
 //        Change time for 11:00
-        if (time.isAfter(LocalTime.of(17, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
+        if (time.isAfter(LocalTime.of(11, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
                 restaurants.removeVoter(user.getChoice().getId());
@@ -156,10 +156,5 @@ public class VotingService {
     public void deleteDish(int id) throws NotFoundException {
         checkNotFoundWithId(dishes.delete(id), id);
     }
-
-    public List<Dish> getAllDishes() {
-        return dishes.getAll();
-    }
-
 
 }

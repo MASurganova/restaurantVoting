@@ -27,7 +27,7 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
 
     Restaurant getByName(String name);
 
-    Restaurant findById(int id);
+//    Restaurant findById(int id);
 
     @EntityGraph(attributePaths = "lunch")
     Optional<Restaurant> getById(int id);

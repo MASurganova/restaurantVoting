@@ -65,8 +65,4 @@ public class JdbcDishRepositoryImpl implements DishRepository {
         return DataAccessUtils.singleResult(dishes);
     }
 
-    @Override
-    public List<Dish> getAll() {
-        return jdbcTemplate.query("SELECT * FROM dishes ORDER BY restaurant_id, id", ROW_MAPPER);
-    }
 }
