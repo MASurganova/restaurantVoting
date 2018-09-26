@@ -9,11 +9,12 @@ import ru.voting.model.Restaurant;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalTime;
 
 import static ru.voting.TestData.*;
 
-public class AbstractVotingServiceTest extends AbstractServiceTest {
+public abstract class AbstractVotingServiceTest extends AbstractServiceTest {
 
     @Autowired
     VotingService service;
@@ -196,6 +197,14 @@ public class AbstractVotingServiceTest extends AbstractServiceTest {
     @Test(expected = NotFoundException.class)
     public void deleteDishNotFound() throws Exception {
         service.deleteDish(9);
+    }
+
+    @Test
+    public void testValidation() throws Exception {
+        validateRootCause(() -> service.createDish(new Dish(" ", 100)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createDish(new Dish("soap", 1)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createDish(new Dish("soap", 10001)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createRestaurant(new Restaurant(null, " ")), ConstraintViolationException.class);
     }
 
 }
