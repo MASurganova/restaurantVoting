@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.util.exception.NotFoundException;
@@ -12,11 +11,9 @@ import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalTime;
 
-import static ru.voting.Profiles.REPOSITORY_IMPLEMENTATION;
 import static ru.voting.TestData.*;
 
-@ActiveProfiles(REPOSITORY_IMPLEMENTATION)
-public class VotingServiceTest extends ServiceTest {
+public class AbstractVotingServiceTest extends AbstractServiceTest {
 
     @Autowired
     VotingService service;

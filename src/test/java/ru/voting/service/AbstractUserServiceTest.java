@@ -3,18 +3,15 @@ package ru.voting.service;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
 import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static ru.voting.Profiles.REPOSITORY_IMPLEMENTATION;
 import static ru.voting.TestData.*;
 
-@ActiveProfiles(REPOSITORY_IMPLEMENTATION)
-public class UserServiceTest extends ServiceTest {
+public class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService service;
