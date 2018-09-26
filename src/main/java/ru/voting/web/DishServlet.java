@@ -1,15 +1,10 @@
 package ru.voting.web;
 
 import org.slf4j.Logger;
-import org.springframework.context.ConfigurableApplicationContext;
-import ru.voting.model.Restaurant;
 import ru.voting.model.Dish;
-import ru.voting.service.VotingService;
-import ru.voting.util.ValidationUtil;
+import ru.voting.model.Restaurant;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,25 +12,8 @@ import java.util.Objects;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class DishServlet extends HttpServlet {
+public class DishServlet extends AbstractServlet {
     private static final Logger log = getLogger(DishServlet.class);
-
-    private ConfigurableApplicationContext springContext;
-
-    private VotingService service;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        springContext = ValidationUtil.getSpringContext();
-        service = springContext.getBean(VotingService.class);
-    }
-
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
