@@ -1,10 +1,13 @@
 package ru.voting.service;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.voting.model.Role;
 import ru.voting.model.User;
+import ru.voting.repository.JpaUtil;
 import ru.voting.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -16,6 +19,18 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
+    protected JpaUtil jpaUtil;
+
+    @Before
+    public void setUp() throws Exception {
+        cacheManager.getCache("users").clear();
+        jpaUtil.clear2ndLevelHibernateCache();
+    }
 
     @Test
     public void create() throws Exception {
