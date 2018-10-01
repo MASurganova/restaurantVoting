@@ -17,6 +17,6 @@ public interface UserRepository {
     User save(User user);
 
     default User getWithChoice(int id) {
-        return get(id);
+        throw new UnsupportedOperationException();
     }
 }
