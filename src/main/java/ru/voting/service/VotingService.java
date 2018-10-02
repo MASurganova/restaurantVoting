@@ -83,8 +83,8 @@ public class VotingService {
         Assert.notNull(user, "user must not be null");
         Assert.notNull(restaurant, "restaurant must not be null");
         if (time == null) time = LocalTime.now();
-//        Change time for 11:00
-        if (time.isAfter(LocalTime.of(11, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
+//        Change time for 11:00!!!
+        if (time.isAfter(LocalTime.of(17, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
                 restaurants.removeVoter(user.getChoice().getId());

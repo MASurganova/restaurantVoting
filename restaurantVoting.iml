@@ -30,7 +30,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="Entities" value="3943bb1e-4102-4de5-b5d3-95e6ed7ecf7f" />
-          <factory-entry name="entityManagerFactory" value="dataSource" />
+          <factory-entry name="entityManagerFactory" value="7cda2bf3-45f2-4aac-ad6a-77e14c03b5a3" />
         </datasource-mapping>
       </configuration>
     </facet>
@@ -83,12 +83,15 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish:javax.el:3.0.1-b08" level="project" />
     <orderEntry type="library" name="Maven: javax.cache:cache-api:1.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.ehcache:ehcache:3.4.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:4.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:5.0.1.RELEASE" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.tomcat:tomcat-servlet-api:8.5.15" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-test:5.0.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.assertj:assertj-core:3.8.0" level="project" />
-    <orderEntry type="library" name="Maven: org.hsqldb:hsqldb:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.1.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.tomcat:tomcat-jdbc:8.5.15" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.tomcat:tomcat-juli:8.5.15" level="project" />
   </component>
 </module>

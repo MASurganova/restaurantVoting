@@ -1,28 +1,24 @@
 package ru.voting.web;
 
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.voting.service.VotingService;
-import ru.voting.util.ValidationUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 public class AbstractServlet extends HttpServlet {
-    protected ConfigurableApplicationContext springContext;
 
     protected VotingService service;
+
+    protected WebApplicationContext springContext;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = ValidationUtil.getSpringContext();
-        service = springContext.getBean(VotingService.class);
+        if (springContext == null) springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        if (service == null) service = springContext.getBean(VotingService.class);
     }
 
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
-    }
 }
