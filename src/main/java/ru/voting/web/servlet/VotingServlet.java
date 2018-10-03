@@ -1,4 +1,4 @@
-package ru.voting.web;
+package ru.voting.web.servlet;
 
 import org.slf4j.Logger;
 import ru.voting.AuthorizedUser;
@@ -33,7 +33,7 @@ public class VotingServlet extends AbstractServlet {
             log.info("getAll");
             request.setAttribute("restaurants", service.getCurrentRestaurants());
             request.setAttribute("userId", AuthorizedUser.id());
-            request.getRequestDispatcher("/jsp/voting.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/voting.jsp").forward(request, response);
         } catch (TimeDelayException e) { request.getRequestDispatcher("/jsp/errors.jsp").forward(request, response); }
     }
 
@@ -42,7 +42,7 @@ public class VotingServlet extends AbstractServlet {
         int userId = Integer.valueOf(request.getParameter("userId"));
         AuthorizedUser.setId(userId);
         request.setAttribute("userId", AuthorizedUser.id());
-        request.getRequestDispatcher("/jsp/start.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/start.jsp").forward(request, response);
     }
 
     private int getId(HttpServletRequest request) {

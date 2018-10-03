@@ -1,4 +1,4 @@
-package ru.voting.web;
+package ru.voting.web.servlet;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

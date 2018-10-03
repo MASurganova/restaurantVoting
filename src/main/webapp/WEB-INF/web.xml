@@ -24,8 +24,22 @@
     </listener>
 
     <servlet>
+        <servlet-name>mvc-dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>mvc-dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!--<servlet>
         <servlet-name>userServlet</servlet-name>
-        <servlet-class>ru.voting.web.UserServlet</servlet-class>
+        <servlet-class>ru.voting.web.servlet.UserServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -35,7 +49,7 @@
 
     <servlet>
         <servlet-name>restaurantServlet</servlet-name>
-        <servlet-class>ru.voting.web.RestaurantServlet</servlet-class>
+        <servlet-class>ru.voting.web.servlet.RestaurantServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -45,7 +59,7 @@
 
     <servlet>
         <servlet-name>dishServlet</servlet-name>
-        <servlet-class>ru.voting.web.DishServlet</servlet-class>
+        <servlet-class>ru.voting.web.servlet.DishServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -55,12 +69,12 @@
 
     <servlet>
         <servlet-name>votingServlet</servlet-name>
-        <servlet-class>ru.voting.web.VotingServlet</servlet-class>
+        <servlet-class>ru.voting.web.servlet.VotingServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>votingServlet</servlet-name>
         <url-pattern>/voting</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
 </web-app>

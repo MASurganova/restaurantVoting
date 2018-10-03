@@ -1,4 +1,4 @@
-package ru.voting.web;
+package ru.voting.web.servlet;
 
 import org.slf4j.Logger;
 import ru.voting.model.Dish;
@@ -52,7 +52,7 @@ public class DishServlet extends AbstractServlet {
                                 service.getRestaurantById(Integer.valueOf(request.getParameter("restaurantId")))) :
                         service.getDishById(getId(request));
                 request.setAttribute("dish", dish);
-                request.getRequestDispatcher("/jsp/restaurant/dishForm.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/dishForm.jsp").forward(request, response);
                 break;
         }
     }

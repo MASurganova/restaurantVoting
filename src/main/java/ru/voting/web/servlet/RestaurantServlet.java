@@ -1,4 +1,4 @@
-package ru.voting.web;
+package ru.voting.web.servlet;
 
 import org.slf4j.Logger;
 import ru.voting.model.Restaurant;
@@ -32,7 +32,7 @@ public class RestaurantServlet extends AbstractServlet {
         if (restaurant.isNew()) service.createRestaurant(restaurant);
         else service.updateRestaurant(restaurant);
         request.setAttribute("restaurants", service.getAllRestaurants());
-        request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/restaurants.jsp").forward(request, response);
 
     }
 
@@ -53,18 +53,18 @@ public class RestaurantServlet extends AbstractServlet {
                         new Restaurant(null, "") :
                         service.getRestaurantByIdWithLunch(getId(request));
                 request.setAttribute("restaurant", restaurant);
-                request.getRequestDispatcher("/jsp/restaurant/restaurantForm.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/restaurantForm.jsp").forward(request, response);
                 break;
             case "enabled":
                 service.addRestaurantToVote(getId(request));
                 request.setAttribute("restaurants", service.getAllRestaurants());
-                request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/restaurants.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
                 request.setAttribute("restaurants", service.getAllRestaurants());
-                request.getRequestDispatcher("/jsp/restaurant/restaurants.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/restaurants.jsp").forward(request, response);
                 break;
         }
     }

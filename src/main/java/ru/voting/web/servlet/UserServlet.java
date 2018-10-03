@@ -1,4 +1,4 @@
-package ru.voting.web;
+package ru.voting.web.servlet;
 
 import org.slf4j.Logger;
 import ru.voting.model.Role;
@@ -59,13 +59,13 @@ public class UserServlet extends AbstractServlet {
                         new User(null, "", "", "",  Role.ROLE_USER) :
                         userService.getWithChoice(getId(request));
                 request.setAttribute("user", user);
-                request.getRequestDispatcher("/jsp/user/userForm.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/userForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
                 request.setAttribute("users", userService.getAll());
-                request.getRequestDispatcher("/jsp/user/users.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/jsp/users.jsp").forward(request, response);
                 break;
         }
     }
