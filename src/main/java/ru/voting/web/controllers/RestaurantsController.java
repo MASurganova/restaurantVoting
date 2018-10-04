@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.service.VotingService;
 
@@ -19,8 +20,29 @@ public class RestaurantsController {
     @Autowired
     VotingService service;
 
+    @GetMapping("dishes/delete")
+    public String deleteDish(Model model, HttpServletRequest request) {
+        service.deleteDish(getId(request));
+        model.addAttribute("id", request.getParameter("restaurantId"));
+        return "redirect:/restaurantForm";
+    }
+
+    @GetMapping("dishes/update")
+    public String updateDish(Model model, HttpServletRequest request) {
+        model.addAttribute("dish", service.getDishById(getId(request)));
+        model.addAttribute("restaurantId", request.getParameter("restaurantId"));
+        return "dishForm";
+    }
+
+    @GetMapping("dishes/create")
+    public String createDish(Model model, HttpServletRequest request) {
+        model.addAttribute("dish", new Dish());
+        model.addAttribute("restaurantId", request.getParameter("restaurantId"));
+        return "dishForm";
+    }
+
     @GetMapping("/delete")
-    public String delete(HttpServletRequest request) {
+    public String delete(Model model, HttpServletRequest request) {
         service.deleteRestaurant(getId(request));
         return "redirect:/restaurants";
     }
@@ -33,7 +55,7 @@ public class RestaurantsController {
 
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
-        model.addAttribute("restaurant", service.getRestaurantById(getId(request)));
+        model.addAttribute("restaurant", service.getRestaurantByIdWithLunch(getId(request)));
         return "restaurantForm";
     }
 
@@ -44,7 +66,7 @@ public class RestaurantsController {
     }
 
     @PostMapping
-    public String updateOrCreate(HttpServletRequest request) {
+    public String updateOrCreate(Model model, HttpServletRequest request) {
         String name = request.getParameter("name");
 
         if (request.getParameter("id").isEmpty()) {
@@ -54,7 +76,22 @@ public class RestaurantsController {
             restaurant.setName(name);
             service.updateRestaurant(restaurant);
         }
-        return "redirect:/restaurants";
+        return "restaurants";
+    }
+
+    @PostMapping ("/dishes")
+    public String updateOrCreateDish(Model model, HttpServletRequest request) {
+        Dish dish = new Dish(request.getParameter("id").isEmpty() ? null : getId(request),
+                request.getParameter("description"), Integer.parseInt(request.getParameter("price")));
+        Restaurant restaurant = service.getRestaurantById(Integer.parseInt(request.getParameter("restaurantId")));
+        dish.setRestaurant(restaurant);
+        if (dish.isNew()) {
+            service.createDish(dish);
+        } else {
+            service.updateDish(dish);
+        }
+        model.addAttribute("restaurantId", request.getParameter("restaurantId"));
+        return "restaurantForm";
     }
 
     private int getId(HttpServletRequest request) {

@@ -10,7 +10,7 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
     <h2><fmt:message key="restaurant.title"/></h2>
-    <a href="restaurants?action=create"><fmt:message key="restaurant.add"/></a>
+    <a href="restaurants/create"><fmt:message key="restaurant.add"/></a>
     <section>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
