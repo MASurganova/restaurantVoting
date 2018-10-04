@@ -2,20 +2,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<<fmt:setBundle basename="messages.app"/>
+
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Restaurant Voting</title>
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<h3>Проект <a href="https://github.com/MASurganova/restaurantVoting" target="_blank">Restaurant Voting</a></h3>
-<hr>
+<jsp:include page="fragments/bodyHeader.jsp"/>
+<section>
 <ul>
-    <li><a href="voting">Голосование</a></li>
+    <li><a href="voting"><fmt:message key="app.voting"/></a></li>
     <c:if test="${userId == 100008}">
-        <li><a href="users">Пользоваетли</a></li>
-        <li><a href="restaurants">Рестораны</a></li>
+        <li><a href="users"><fmt:message key="user.title"/></a></li>
+        <li><a href="restaurants"><fmt:message key="restaurant.title"/></a></li>
     </c:if>
 </ul>
+</section>
 </body>
 </html>

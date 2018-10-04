@@ -2,23 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setBundle basename="messages.app"/>
+
 <html>
-<head>
-    <title>Restaurants</title>
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <h2>Рестораны</h2>
-    <a href="restaurants?action=create">Добавить ресторан</a>
+    <h2><fmt:message key="restaurant.title"/></h2>
+    <a href="restaurants?action=create"><fmt:message key="restaurant.add"/></a>
     <section>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>
-                <th>Название</th>
-                <th>Список блюд на ланч</th>
-                <th>Цена ланча</th>
-                <th>Участие в голосовании</th>
+                <th><fmt:message key="restaurant.name"/></th>
+                <th><fmt:message key="restaurant.lunch"/></th>
+                <th><fmt:message key="restaurant.totalPrice"/></th>
+                <th><fmt:message key="restaurant.enabled"/></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -37,9 +37,9 @@
                     </td>
                     <td>${restaurant.getTotalPrice()}</td>
                     <td>${restaurant.enabled}</td>
-                    <td><a href="restaurants?action=update&id=${restaurant.id}">Обновить</a></td>
-                    <td><a href="restaurants?action=delete&id=${restaurant.id}">Удалить</a></td>
-                    <td><a href="restaurants?action=enabled&id=${restaurant.id}">Добавить в голосование</a></td>
+                    <td><a href="restaurants/update?id=${restaurant.id}"><fmt:message key="common.update"/></a></td>
+                    <td><a href="restaurants/delete?id=${restaurant.id}"><fmt:message key="common.delete"/></a></td>
+                    <td><a href="restaurants/enabled?id=${restaurant.id}"><fmt:message key="restaurant.enabled"/></a></td>
                 </tr>
             </c:forEach>
         </table>

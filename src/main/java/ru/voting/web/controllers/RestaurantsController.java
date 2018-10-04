@@ -25,6 +25,12 @@ public class RestaurantsController {
         return "redirect:/restaurants";
     }
 
+    @GetMapping("/enabled")
+    public String enabled(HttpServletRequest request) {
+        service.addRestaurantToVote(getId(request));
+        return "redirect:/restaurants";
+    }
+
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
         model.addAttribute("restaurant", service.getRestaurantById(getId(request)));
@@ -39,13 +45,13 @@ public class RestaurantsController {
 
     @PostMapping
     public String updateOrCreate(HttpServletRequest request) {
-        Restaurant restaurant =
-                new Restaurant(request.getParameter("id").isEmpty()? null : getId(request),
-                request.getParameter("name"));
+        String name = request.getParameter("name");
 
-        if (restaurant.getId() == null) {
-            service.createRestaurant(restaurant);
+        if (request.getParameter("id").isEmpty()) {
+            service.createRestaurant(new Restaurant(null, name));
         } else {
+            Restaurant restaurant = service.getRestaurantByIdWithLunch(getId(request));
+            restaurant.setName(name);
             service.updateRestaurant(restaurant);
         }
         return "redirect:/restaurants";
