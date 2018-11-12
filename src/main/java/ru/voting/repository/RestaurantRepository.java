@@ -35,7 +35,8 @@ public interface RestaurantRepository {
 
     default void enabled(int id) {
         Restaurant restaurant = getWithLunch(id);
-        restaurant.setEnabled(true);
+        if(restaurant.isEnabled()) restaurant.setEnabled(false);
+        else restaurant.setEnabled(true);
         save(restaurant);
     }
 

@@ -39,10 +39,11 @@
                     <td>${restaurant.enabled}</td>
                     <td><a href="restaurants/update?id=${restaurant.id}"><fmt:message key="common.update"/></a></td>
                     <td><a href="restaurants/delete?id=${restaurant.id}"><fmt:message key="common.delete"/></a></td>
-                    <td><a href="restaurants/enabled?id=${restaurant.id}"><fmt:message key="restaurant.enabled"/></a></td>
+                    <td><a href="restaurants/enabled?id=${restaurant.id}"><c:if test="${restaurant.enabled == false}"><fmt:message key="restaurant.enabled"/></c:if><c:if test="${restaurant.enabled == true}"><fmt:message key="restaurant.disabled"/></c:if></a></td>
                 </tr>
             </c:forEach>
         </table>
     </section>
+</section>
 </body>
 </html>
