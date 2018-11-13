@@ -12,12 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.voting.ActiveDbProfileResolver;
+import ru.voting.Profiles;
 import ru.voting.TimingRules;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -35,12 +37,16 @@ public abstract class AbstractServiceTest {
     private static final Logger log = getLogger("result");
 
     @Autowired
+    public Environment env;
+
+    @Autowired
     private CacheManager cacheManager;
 
     @Before
     public void setUp() throws Exception {
         cacheManager.getCache("users").clear();
     }
+
 
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
@@ -54,6 +60,10 @@ public abstract class AbstractServiceTest {
     static {
         // needed only for java.util.logging (postgres driver)
         SLF4JBridgeHandler.install();
+    }
+
+    public boolean isJpaBased() {
+        return env.acceptsProfiles(Profiles.JPA, Profiles.DATAJPA);
     }
 
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
