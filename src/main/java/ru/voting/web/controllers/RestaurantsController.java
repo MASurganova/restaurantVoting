@@ -76,7 +76,7 @@ public class RestaurantsController {
             restaurant.setName(name);
             service.updateRestaurant(restaurant);
         }
-        return "restaurants";
+        return "redirect:/restaurants";
     }
 
     @PostMapping ("/dishes")

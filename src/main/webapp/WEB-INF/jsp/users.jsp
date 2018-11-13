@@ -2,23 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<<fmt:setBundle basename="messages.app"/>
+
 <html>
-<head>
-    <title>Users</title>
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <h2>Пользователи</h2>
-    <a href="users?action=create">Добавить пользователя</a>
+    <h2><fmt:message key="user.title"/></h2>
+    <a href="users/create"><fmt:message key="user.add"/></a>
     <section>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>
-                <th>Имя</th>
-                <th>Email</th>
-                <th>Роли</th>
-                <th>Выбор</th>
+                <th><fmt:message key="user.name"/></th>
+                <th><fmt:message key="user.email"/></th>
+                <th><fmt:message key="user.roles"/></th>
+                <th><fmt:message key="user.choice"/></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -30,11 +30,12 @@
                     <td><a href="mailto:${user.email}">${user.email}</a></td>
                     <td>${user.roles}</td>
                     <td>${user.choice == null ? null : user.choice.name}</td>
-                    <td><a href="users?action=update&id=${user.id}">Update</a></td>
-                    <td><a href="users?action=delete&id=${user.id}">Delete</a></td>
+                    <td><a href="users/update?id=${user.id}"><fmt:message key="common.update"/></a></td>
+                    <td><a href="users/delete?id=${user.id}"><fmt:message key="common.delete"/></a></td>
                 </tr>
             </c:forEach>
         </table>
     </section>
+</section>
 </body>
 </html>
