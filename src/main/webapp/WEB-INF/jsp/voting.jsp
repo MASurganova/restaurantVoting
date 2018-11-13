@@ -2,23 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setBundle basename="messages.app"/>
+
 <html>
-<head>
-    <title>Voting</title>
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <h2>Голосование</h2>
+    <h2><fmt:message key="app.voting"/></h2>
     <section>
         <table border="1" cellpadding="8" cellspacing="0">
             <thead>
             <tr>
-                <th>Название</th>
-                <th>Список блюд на ланч</th>
-                <th>Цена ланча</th>
-                <th>Колличество проголосовавших</th>
-                <th>Выбрать</th>
+                <th><fmt:message key="restaurant.name"/></th>
+                <th><fmt:message key="restaurant.lunch"/></th>
+                <th><fmt:message key="restaurant.totalPrice"/></th>
+                <th><fmt:message key="restaurant.voters"/></th>
+                <th><fmt:message key="common.select"/></th>
             </tr>
             </thead>
             <c:forEach items="${restaurants}" var="restaurant">
@@ -35,13 +35,13 @@
                     </td>
                     <td>${restaurant.totalPrice}</td>
                     <td>${restaurant.voters}</td>
-                    <td><a href="voting?action=choose&id=${restaurant.id}">Choose</a></td>
+                    <td><a href="voting/choose?id=${restaurant.id}"><fmt:message key="common.select"/></a></td>
                 </tr>
             </c:forEach>
         </table>
     </section>
     <c:if test="${userId == 100008}">
-        <a href="voting?action=endVoting">Закончить голосование</a>
+        <a href="voting/endVoting"><th><fmt:message key="app.end"/></th></a>
     </c:if>
 </body>
 </html>

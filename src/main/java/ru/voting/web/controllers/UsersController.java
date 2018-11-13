@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/users")
-public class UsersController {
+public class UsersController extends AbstractController{
 
     @Autowired
     UserService service;
@@ -51,10 +51,5 @@ public class UsersController {
             service.update(user);
         }
         return "redirect:/users";
-    }
-
-    private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.valueOf(paramId);
     }
 }

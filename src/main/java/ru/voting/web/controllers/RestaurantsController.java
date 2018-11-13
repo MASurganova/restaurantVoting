@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/restaurants")
-public class RestaurantsController {
+public class RestaurantsController extends AbstractController{
 
     @Autowired
     VotingService service;
@@ -95,10 +95,5 @@ public class RestaurantsController {
         }
         model.addAttribute("id", request.getParameter("restaurantId"));
         return "redirect:/restaurants/update";
-    }
-
-    private int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.valueOf(paramId);
     }
 }

@@ -35,6 +35,12 @@ public class RootController {
     public String restaurants(Model model) {
         model.addAttribute("restaurants", votingService.getAllRestaurants());
         return "restaurants";
+
+    }@GetMapping("/voting")
+    public String voting(Model model) {
+        model.addAttribute("restaurants", votingService.getCurrentRestaurants());
+        model.addAttribute("userId", AuthorizedUser.id());
+        return "voting";
     }
 
     @PostMapping("/start")
