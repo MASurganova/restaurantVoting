@@ -11,7 +11,7 @@
 <section>
     <jsp:useBean id="restaurant" type="ru.voting.model.Restaurant" scope="request"/>
     <h3><spring:message code="${restaurant.id == null ? 'restaurant.add' : 'restaurant.update'}"/></h3>
-    <form method="post" action="restaurants">
+    <form method="post" action="restaurantForm">
         <input type="hidden" name="id" value="${restaurant.id}">
         <dl>
             <dt><fmt:message key="restaurant.name"/></dt>
@@ -36,13 +36,13 @@
                     <tr class="normal">
                         <td><c:out value="${dish.description}"/></td>
                         <td>${dish.price}</td>
-                        <td><a href="restaurants/dishes/update?id=${dish.id}?restaurantId=${restaurant.id}"><fmt:message key="common.update"/></a></td>
-                        <td><a href="restaurants/dishes/delete?id=${dish.id}?restaurantId=${restaurant.id}"><fmt:message key="common.delete"/></a></td>
+                        <td><a href="dishes/update?id=${dish.id}&restaurantId=${restaurant.id}"><fmt:message key="common.update"/></a></td>
+                        <td><a href="dishes/delete?id=${dish.id}&restaurantId=${restaurant.id}"><fmt:message key="common.delete"/></a></td>
                     </tr>
                 </c:forEach>
             </table>
             <dl>
-                <a href="restaurants/dishes/create?restaurantId=${restaurant.id}"><fmt:message key="dish.add"/></a>
+                <a href="dishes/create?restaurantId=${restaurant.id}"><fmt:message key="dish.add"/></a>
             </dl>
         </c:if>
         <button type="submit"><fmt:message key="common.save"/></button>

@@ -12,7 +12,7 @@
     <jsp:useBean id="dish" type="ru.voting.model.Dish" scope="request"/>
     <h3><spring:message code="${dish.isNew() ? 'dish.add' : 'dish.update'}"/></h3>
     <hr>
-    <form method="post" action="dishes">
+    <form method="post" action="dishForm">
         <input type="hidden" name="id" value="${dish.id}">
         <input type="hidden" name="restaurantId" value="${param.restaurantId}">
         <dl>

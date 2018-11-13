@@ -1,5 +1,6 @@
 package ru.voting.web.controllers;
 
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,21 +21,23 @@ public class RestaurantsController {
     @Autowired
     VotingService service;
 
-    @GetMapping("dishes/delete")
+    @GetMapping("/dishes/delete")
     public String deleteDish(Model model, HttpServletRequest request) {
         service.deleteDish(getId(request));
+        model.addAttribute("restaurant", service.getRestaurantByIdWithLunch(
+                Integer.valueOf(request.getParameter("restaurantId"))));
         model.addAttribute("id", request.getParameter("restaurantId"));
-        return "redirect:/restaurantForm";
+        return "redirect:/restaurants/update";
     }
 
-    @GetMapping("dishes/update")
+    @GetMapping("/dishes/update")
     public String updateDish(Model model, HttpServletRequest request) {
         model.addAttribute("dish", service.getDishById(getId(request)));
         model.addAttribute("restaurantId", request.getParameter("restaurantId"));
         return "dishForm";
     }
 
-    @GetMapping("dishes/create")
+    @GetMapping("/dishes/create")
     public String createDish(Model model, HttpServletRequest request) {
         model.addAttribute("dish", new Dish());
         model.addAttribute("restaurantId", request.getParameter("restaurantId"));
@@ -65,7 +68,7 @@ public class RestaurantsController {
         return "restaurantForm";
     }
 
-    @PostMapping
+    @PostMapping("/restaurantForm")
     public String updateOrCreate(Model model, HttpServletRequest request) {
         String name = request.getParameter("name");
 
@@ -79,7 +82,7 @@ public class RestaurantsController {
         return "redirect:/restaurants";
     }
 
-    @PostMapping ("/dishes")
+    @PostMapping ("dishes/dishForm")
     public String updateOrCreateDish(Model model, HttpServletRequest request) {
         Dish dish = new Dish(request.getParameter("id").isEmpty() ? null : getId(request),
                 request.getParameter("description"), Integer.parseInt(request.getParameter("price")));
@@ -90,8 +93,8 @@ public class RestaurantsController {
         } else {
             service.updateDish(dish);
         }
-        model.addAttribute("restaurantId", request.getParameter("restaurantId"));
-        return "restaurantForm";
+        model.addAttribute("id", request.getParameter("restaurantId"));
+        return "redirect:/restaurants/update";
     }
 
     private int getId(HttpServletRequest request) {

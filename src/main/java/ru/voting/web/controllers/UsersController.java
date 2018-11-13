@@ -38,7 +38,7 @@ public class UsersController {
         return "userForm";
     }
 
-    @PostMapping
+    @PostMapping("/userForm")
     public String updateOrCreate(HttpServletRequest request) {
        User user =
                 new User(request.getParameter("id").isEmpty()? null : getId(request),

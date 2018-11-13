@@ -11,9 +11,9 @@
 <section>
     <jsp:useBean id="user" type="ru.voting.model.User" scope="request"/>
     <h3><spring:message code="${user.id == null ? 'user.add' : 'user.update'}"/></h3>
-    <form method="post" action="users">
+    <form method="post" action="userForm">
         <input type="hidden" name="id" value="${user.id}">
-        <input type="hidden" value="${user.choice == null ? null : user.choice.id}" name="restaurantId">
+        <input type="hidden" name="restaurantId" value="${user.choice == null ? null : user.choice.id}">
         <dl>
             <dt><fmt:message key="user.name"/></dt>
             <dd><input type="text" value="${user.name}" name="name" required></dd>
