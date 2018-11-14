@@ -11,24 +11,20 @@ import ru.voting.model.User;
 import ru.voting.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/users")
 public class UsersController extends AbstractController{
 
-    @Autowired
-    UserService service;
-
     @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
-        service.delete(getId(request));
+        userService.delete(getId(request));
         return "redirect:/users";
     }
 
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
-        model.addAttribute("user", service.get(getId(request)));
+        model.addAttribute("user", userService.get(getId(request)));
         return "userForm";
     }
 
@@ -43,12 +39,15 @@ public class UsersController extends AbstractController{
        User user =
                 new User(request.getParameter("id").isEmpty()? null : getId(request),
                     request.getParameter("name"), request.getParameter("email"),
-                        request.getParameter("password"), Role.ROLE_USER);
+                        request.getParameter("password"),
+                        request.getParameter("restaurantId").isEmpty()? null
+                                : votingService.getRestaurantById(Integer.valueOf(request.getParameter("restaurantId"))),
+                        Role.ROLE_USER);
 
         if (user.getId() == null) {
-            service.create(user);
+            userService.create(user);
         } else {
-            service.update(user);
+            userService.update(user);
         }
         return "redirect:/users";
     }

@@ -1,6 +1,7 @@
 package ru.voting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.voting.model.Dish;
@@ -39,6 +40,7 @@ public class VotingService {
     @Autowired
     private HistoryRepository history;
 
+    @CacheEvict(value = "users", allEntries = true)
     public void endVoting() {
         Restaurant currentChoice = getCurrentChoice();
         history.addInHistory(LocalDate.now(), currentChoice);
@@ -79,6 +81,7 @@ public class VotingService {
                 .findFirst().orElseGet(null);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
         Assert.notNull(user, "user must not be null");
         Assert.notNull(restaurant, "restaurant must not be null");

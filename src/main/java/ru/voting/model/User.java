@@ -56,6 +56,11 @@ public class User extends AbstractNamedEntity {
         this(id, name, email, password, EnumSet.of(role, roles));
     }
 
+    public User(Integer id, String name, String email, String password,Restaurant choice, Role role, Role ... roles) {
+        this(id, name, email, password, EnumSet.of(role, roles));
+        this.choice = choice;
+    }
+
     public User(Integer id, String name, String email, String password, Restaurant choice) {
         super(id, name);
         this.password = password;

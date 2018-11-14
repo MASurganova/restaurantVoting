@@ -12,13 +12,7 @@ import ru.voting.service.VotingService;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class RootController {
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    VotingService votingService;
+public class RootController extends AbstractController{
 
     @GetMapping("/")
     public String root() {
