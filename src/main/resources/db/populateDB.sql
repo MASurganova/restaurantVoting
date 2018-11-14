@@ -21,4 +21,5 @@ INSERT INTO users (name, email, password, restaurant_id) VALUES
 
 INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100007),
+  ('ROLE_USER', 100008),
   ('ROLE_ADMIN', 100008);

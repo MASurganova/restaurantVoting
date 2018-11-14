@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.voting.model.Restaurant;
 import ru.voting.repository.RestaurantRepository;
 
@@ -15,6 +16,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class JdbcRestaurantRepositoryImpl implements RestaurantRepository {
 
     private static final BeanPropertyRowMapper<Restaurant> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Restaurant.class);
@@ -37,11 +39,13 @@ public class JdbcRestaurantRepositoryImpl implements RestaurantRepository {
 
 
     @Override
+    @Transactional
     public boolean delete(int id) {
         return jdbcTemplate.update("DELETE FROM restaurants WHERE id=?", id) != 0;
     }
 
     @Override
+    @Transactional
     public Restaurant save(Restaurant restaurant) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", restaurant.getId())
