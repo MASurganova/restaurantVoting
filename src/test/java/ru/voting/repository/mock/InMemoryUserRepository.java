@@ -29,8 +29,14 @@ public class InMemoryUserRepository extends AbstractInMemoryRepository<User> imp
 
     @Override
     public User getByEmail(String email) {
-        log.info("getByEmail {}", email);
+        log.info("get by email {}", email);
         return inMemoryRepository.values().stream().filter(user -> user.getEmail().equals(email))
                 .findFirst().orElse(null);
+    }
+
+    @Override
+    public User getWithChoice(int id) {
+        log.info("get with choice {}", id);
+        return get(id);
     }
 }

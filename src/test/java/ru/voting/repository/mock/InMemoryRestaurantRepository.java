@@ -46,4 +46,10 @@ public class InMemoryRestaurantRepository extends AbstractInMemoryRepository<Res
     public List<Restaurant> getEnabledRestaurants() {
         return getAll().stream().filter(Restaurant::isEnabled).collect(Collectors.toList());
     }
+
+    @Override
+    public Restaurant getWithLunch(int id) {
+        log.info("get with lunch {}", id);
+        return get(id);
+    }
 }

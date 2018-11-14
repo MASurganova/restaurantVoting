@@ -20,8 +20,7 @@ import ru.voting.util.exception.TimeDelayException;
 import java.time.LocalTime;
 import java.util.Collection;
 
-import static ru.voting.TestData.DISH_4;
-import static ru.voting.TestData.MY;
+import static ru.voting.TestData.*;
 import static ru.voting.model.AbstractBaseEntity.START_SEQ;
 
 @ContextConfiguration({"classpath:spring/mock.xml",
@@ -53,17 +52,6 @@ public class InMemoryVotingServiceTest {
     }
 
     @Test
-    public void endVotingTest() {
-        service.endVoting();
-        Assert.assertEquals(service.getHistoryVoting().size(), 3);
-        Assert.assertEquals(service.getCurrentRestaurants().size(), 0);
-        Assert.assertEquals(service.getAllRestaurants().stream()
-                .filter(restaurant -> restaurant.getVoters() != 0).count(), 0);
-        Assert.assertEquals(users.getAll().stream()
-                .filter(user -> user.getChoice() != null).count(), 0);
-    }
-
-    @Test
     public void getHistoryVotingTest() {
         Assert.assertEquals(service.getHistoryVoting().size(), 2);
     }
@@ -72,26 +60,27 @@ public class InMemoryVotingServiceTest {
     public void getCurrentRestaurants() {
         Collection<Restaurant> restaurants = service.getCurrentRestaurants();
         Assert.assertEquals(restaurants.size(), 1);
-        Assert.assertEquals(restaurants.iterator().next(), MY);
+        Assert.assertEquals(restaurants.iterator().next(), service.getRestaurantByName("My"));
+        service.addRestaurantToVote(OTHER.getId());
+        restaurants = service.getCurrentRestaurants();
+        Assert.assertEquals(restaurants.size(), 2);
     }
 
     @Test
     public void getCurrentChoiceTest() throws TimeDelayException {
-        service.addRestaurantToVote(START_SEQ + 1);
-        service.addVoice(users.get(START_SEQ + 7), service.getRestaurantById(START_SEQ), LocalTime.of(10, 0,0));
-        Assert.assertEquals(service.getCurrentChoice(), MY);
+        Assert.assertEquals(service.getCurrentChoice(), service.getRestaurantById(MY.getId()));
     }
 
     @Test
     public void addVoiceTest() throws TimeDelayException {
-        service.addVoice(users.get(START_SEQ + 7), service.getRestaurantById(START_SEQ), LocalTime.of(10,0));
-        Assert.assertEquals(users.get(START_SEQ + 7).getChoice(), service.getRestaurantById(START_SEQ));
+        service.addVoice(ADMIN_ID, MY.getId());
+        Assert.assertEquals(users.get(ADMIN_ID).getChoice(), service.getRestaurantByName("My"));
         Assert.assertEquals(service.getRestaurantById(START_SEQ).getVoters(), 2);
     }
 
     @Test(expected = TimeDelayException.class)
     public void addVoiceTimeDelayTest() throws TimeDelayException {
-        service.addVoice(users.get(START_SEQ + 7), service.getRestaurantById(START_SEQ), LocalTime.of(13,0));
+        service.addVoice(users.get(START_SEQ + 7), service.getRestaurantById(START_SEQ), LocalTime.of(20,0));
     }
 
     @Test(expected = NotFoundException.class)
@@ -107,7 +96,7 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void getRestaurantByIdTest() throws NotFoundException {
-        Assert.assertEquals(service.getRestaurantById(START_SEQ), MY);
+        Assert.assertEquals(service.getRestaurantById(START_SEQ), service.getRestaurantByName("My"));
     }
 
     @Test(expected = NotFoundException.class)
@@ -117,7 +106,7 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void getRestaurantByNameTest() throws NotFoundException {
-        Assert.assertEquals(service.getRestaurantByName("My"), MY);
+        Assert.assertEquals(service.getRestaurantByName("My"), service.getRestaurantById(MY.getId()));
     }
 
     @Test(expected = NotFoundException.class)

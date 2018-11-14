@@ -77,9 +77,10 @@ public class InMemoryUserServiceTest {
 
     @Test
     public void testUpdate() {
-        TestData.USER.setName("Marina");
-        service.update(TestData.USER);
-        Assert.assertEquals(service.get(TestData.USER_ID), TestData.USER);
+        User user = service.get(TestData.USER_ID);
+        user.setName("Marina");
+        service.update(user);
+        Assert.assertEquals(service.get(TestData.USER_ID), user);
     }
 
     @Test(expected = NotFoundException.class)
