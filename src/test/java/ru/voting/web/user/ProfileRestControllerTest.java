@@ -2,6 +2,7 @@ package ru.voting.web.user;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.voting.TestUtil;
 import ru.voting.model.Role;
 import ru.voting.model.User;
@@ -43,5 +44,10 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk());
 
         assertMatch(new User(userService.getByEmail("newemail@ya.ru")), updated);
+    }
+
+    @GetMapping(value = "/text")
+    public String testUTF() {
+        return "Русский текст";
     }
 }
