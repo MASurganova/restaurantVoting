@@ -11,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.*;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -42,7 +43,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "registered", columnDefinition = "timestamp default now()")
     @NotNull
-    private Date registered = new Date();
+    private LocalDate registered = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
@@ -103,11 +104,11 @@ public class User extends AbstractNamedEntity {
         this.password = password;
     }
 
-    public Date getRegistered() {
+    public LocalDate getRegistered() {
         return registered;
     }
 
-    public void setRegistered(Date registered) {
+    public void setRegistered(LocalDate registered) {
         this.registered = registered;
     }
 
