@@ -1,4 +1,4 @@
-package ru.voting.web.controllers;
+package ru.voting.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.service.UserService;

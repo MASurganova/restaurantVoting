@@ -1,6 +1,5 @@
-package ru.voting.web.controllers;
+package ru.voting.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,13 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.voting.model.Role;
 import ru.voting.model.User;
-import ru.voting.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/users")
-public class UsersController extends AbstractController{
+public class UsersController extends AbstractController {
 
     @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
