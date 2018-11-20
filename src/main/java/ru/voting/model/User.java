@@ -9,6 +9,7 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -38,6 +39,10 @@ public class User extends AbstractNamedEntity {
     @NotBlank
     @Size(min = 5, max = 64)
     private String password;
+
+    @Column(name = "registered", columnDefinition = "timestamp default now()")
+    @NotNull
+    private Date registered = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
@@ -97,6 +102,15 @@ public class User extends AbstractNamedEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Date getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(Date registered) {
+        this.registered = registered;
+    }
+
 
     public Restaurant getChoice() {
         return choice;

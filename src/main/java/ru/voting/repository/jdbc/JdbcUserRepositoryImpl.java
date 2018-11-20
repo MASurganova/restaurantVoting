@@ -48,6 +48,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 .addValue("name", user.getName())
                 .addValue("email", user.getEmail())
                 .addValue("password", user.getPassword())
+                .addValue("registered", user.getRegistered())
                 .addValue("choice", user.getChoice() == null ? null : user.getChoice().getId());
 
         if (user.isNew()) {
@@ -56,7 +57,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 insertRoles(user);
         } else {
             if (namedParameterJdbcTemplate.update(
-                    "UPDATE users SET name=:name, email=:email, password=:password, " +
+                    "UPDATE users SET name=:name, email=:email, password=:password, registered=:registered," +
                             "restaurant_id=:choice WHERE id=:id", map) == 0)
                 return null;
             deleteRoles(user);

@@ -18,6 +18,7 @@
                 <th><fmt:message key="user.name"/></th>
                 <th><fmt:message key="user.email"/></th>
                 <th><fmt:message key="user.roles"/></th>
+                <th><fmt:message key="user.registered"/></th>
                 <th><fmt:message key="user.choice"/></th>
                 <th></th>
                 <th></th>
@@ -29,6 +30,7 @@
                     <td><c:out value="${user.name}"/></td>
                     <td><a href="mailto:${user.email}">${user.email}</a></td>
                     <td>${user.roles}</td>
+                    <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
                     <td>${user.choice == null ? null : user.choice.name}</td>
                     <td><a href="users/update?id=${user.id}"><fmt:message key="common.update"/></a></td>
                     <td><a href="users/delete?id=${user.id}"><fmt:message key="common.delete"/></a></td>

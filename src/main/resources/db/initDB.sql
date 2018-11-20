@@ -31,6 +31,7 @@ CREATE TABLE users
   name             VARCHAR                 NOT NULL,
   email            VARCHAR                 NOT NULL,
   password         VARCHAR                 NOT NULL,
+  registered       TIMESTAMP DEFAULT now() NOT NULL,
   restaurant_id     INTEGER,
   FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)
 );

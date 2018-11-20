@@ -14,6 +14,7 @@
     <form method="post" action="userForm">
         <input type="hidden" name="id" value="${user.id}">
         <input type="hidden" name="restaurantId" value="${user.choice == null ? null : user.choice.id}">
+        <input type="hidden" name="registered" value="${user.registered}">
         <dl>
             <dt><fmt:message key="user.name"/></dt>
             <dd><input type="text" value="${user.name}" name="name" required></dd>
