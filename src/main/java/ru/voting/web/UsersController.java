@@ -9,6 +9,8 @@ import ru.voting.model.Role;
 import ru.voting.model.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/users")
@@ -41,7 +43,7 @@ public class UsersController extends AbstractController {
                         request.getParameter("restaurantId").isEmpty()? null
                                 : votingService.getRestaurantById(Integer.valueOf(request.getParameter("restaurantId"))),
                         Role.ROLE_USER);
-
+        user.setRegistered(LocalDate.parse((request.getParameter("registered"))));
         if (user.getId() == null) {
             userService.create(user);
         } else {

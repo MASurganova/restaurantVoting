@@ -43,12 +43,8 @@ public class AdminRestController extends AbstractUserController {
     }
 
     @Override
-    public User create(User user) {
-        return super.create(user);
-    }
-
-    @Override
-    public void delete(int id) {
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable int id) {
         super.delete(id);
     }
 
