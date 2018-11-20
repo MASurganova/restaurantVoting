@@ -3,9 +3,11 @@ package ru.voting;
 
 import ru.voting.model.Restaurant;
 
+import static ru.voting.model.AbstractBaseEntity.START_SEQ;
+
 public class AuthorizedUser {
 
-    private static int id;
+    private static int id = START_SEQ+7;
 
     public static int id() {
         return id;

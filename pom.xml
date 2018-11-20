@@ -21,6 +21,7 @@
         <spring.version>5.0.1.RELEASE</spring.version>
         <spring-data-jpa.version>2.0.2.RELEASE</spring-data-jpa.version>
         <jackson-json.version>2.9.3</jackson-json.version>
+        <jsonassert.version>1.5.0</jsonassert.version>
 
         <!-- Logging -->
         <logback.version>1.2.3</logback.version>
@@ -242,6 +243,12 @@
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
             <scope>test</scope>
         </dependency>
 

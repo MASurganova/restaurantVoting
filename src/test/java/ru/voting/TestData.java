@@ -1,5 +1,6 @@
 package ru.voting;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.model.Role;
@@ -8,7 +9,9 @@ import ru.voting.model.User;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.voting.model.AbstractBaseEntity.START_SEQ;
+import static ru.voting.web.json.JsonUtil.writeIgnoreProps;
 
 public class TestData {
     public static final int USER_ID = START_SEQ+7;
@@ -59,5 +62,13 @@ public class TestData {
 
     public static void assertMatchDish(Iterable<Dish> actual, Iterable<Dish> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+    }
+
+    public static ResultMatcher contentJson(User... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "registered"));
+    }
+
+    public static ResultMatcher contentJson(User expected) {
+        return content().json(writeIgnoreProps(expected, "registered"));
     }
 }
