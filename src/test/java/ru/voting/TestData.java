@@ -71,4 +71,12 @@ public class TestData {
     public static ResultMatcher contentJson(User expected) {
         return content().json(writeIgnoreProps(expected, "registered"));
     }
+
+    public static ResultMatcher contentJson(Restaurant expected) {
+        return content().json(writeIgnoreProps(expected, "lunch"));
+    }
+
+    public static ResultMatcher contentJson(Restaurant ... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "lunch"));
+    }
 }
