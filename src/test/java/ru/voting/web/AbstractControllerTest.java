@@ -16,6 +16,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.voting.AllActiveProfileResolver;
 import ru.voting.repository.JpaUtil;
 import ru.voting.service.UserService;
+import ru.voting.service.VotingService;
 
 import javax.annotation.PostConstruct;
 
@@ -47,6 +48,9 @@ abstract public class AbstractControllerTest {
 
     @Autowired
     protected UserService userService;
+
+    @Autowired
+    protected VotingService votingService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;

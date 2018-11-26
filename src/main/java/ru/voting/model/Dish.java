@@ -1,5 +1,8 @@
 package ru.voting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -57,6 +60,10 @@ public class Dish extends AbstractBaseEntity {
         this(null, description, price, null);
     }
 
+    public Dish(Dish dish) {
+        this(dish.getId(), dish.getDescription(), dish.getPrice(), dish.getRestaurant());
+    }
+
     public String getDescription() {
         return description;
     }
@@ -86,9 +93,8 @@ public class Dish extends AbstractBaseEntity {
         return "Dish{" +
                 "description='" + description + '\'' +
                 ", price=" + price +
+                ", restaurant=" + restaurant +
                 ", id=" + id +
                 '}';
     }
-
-
 }

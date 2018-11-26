@@ -8,6 +8,7 @@ import ru.voting.model.Restaurant;
 import ru.voting.model.User;
 import ru.voting.service.UserService;
 import ru.voting.service.VotingService;
+import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalTime;
@@ -73,6 +74,13 @@ public abstract class AbstractVotingController {
         service.updateRestaurant(restaurant);
     }
 
+    public Dish getDish(int id, int restaurantId) {
+        log.info("getDish with id={} in restaurant with id={}", id, restaurantId);
+        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(dish -> dish.getId() == id).count() != 0,
+                String.format("restaurant id={} and dishId={}", restaurantId, id));
+        return service.getDishById(id);
+    }
+
     public Dish createDish(Dish dish, int restaurantId) {
         log.info("createDish {} in restaurant with id= {}", dish, restaurantId);
         checkNew(dish);
@@ -82,16 +90,17 @@ public abstract class AbstractVotingController {
 
     public void deleteDish(int restaurantId, int dishId) {
         log.info("deleteDish with id={} in restaurant with id={}", dishId, restaurantId);
-        Dish deleted = service.getDishById(dishId);
-        if (deleted != null && deleted.getRestaurant() != null && deleted.getRestaurant().getId() == restaurantId)
-            service.deleteDish(dishId);
+        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(dish -> dish.getId() == dishId).count() != 0,
+                String.format("restaurant id={} and dishId={}", restaurantId, dishId));
+        service.deleteDish(dishId);
     }
 
     public void updateDish(int restaurantId, Dish dish, int id) {
         log.info("updateDish {} with id={} in restaurant with id={}", dish, id, restaurantId);
         assureIdConsistent(dish, id);
-        if (dish.getRestaurant() != null && dish.getRestaurant().getId() == restaurantId)
-            service.updateDish(dish);
+        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(d -> d.getId() == id).count() != 0,
+                String.format("restaurant id={} and dishId={}", restaurantId, id));
+        service.updateDish(dish);
     }
 
     public void endVoting() {
