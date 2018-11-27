@@ -91,7 +91,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    //    Почему-то не создается - у ресторана так и остается два блюда
+//    Почему-то не создается - у ресторана так и остается два блюда, хотя в SoapUI работает
     public void testCreateDish() throws Exception{
         Dish expected = new Dish("new", 120);
         expected.setRestaurant(MY);
@@ -104,6 +104,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
         expected.setId(returned.getId());
 
         assertMatch(returned, expected);
+
         assertMatch(votingService.getRestaurantById(MY.getId()).getLunch(), DISH_1, DISH_2, expected);
     }
 
@@ -116,11 +117,14 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-//    Почему-то не удаляется - у ресторана так и остается два блюда
+//    Почему-то не удаляется - у ресторана так и остается два блюда, хотя в SoapUI работает
     public void testDeleteDish() throws Exception {
         mockMvc.perform(delete(REST_URL + MY.getId() + "/" + DISH_1.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
+//        mockMvc.perform(get(REST_URL + MY.getId() + "/" + DISH_1.getId()))
+//                .andDo(print())
+//                .andExpect(status().is4xxClientError());
         assertMatch(votingService.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_2);
     }
 
