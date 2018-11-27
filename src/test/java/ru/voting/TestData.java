@@ -79,4 +79,12 @@ public class TestData {
     public static ResultMatcher contentJson(Restaurant ... expected) {
         return content().json(writeIgnoreProps(Arrays.asList(expected), "lunch"));
     }
+
+    public static ResultMatcher contentJson(Dish expected) {
+        return content().json(writeIgnoreProps(expected, "restaurant"));
+    }
+
+    public static ResultMatcher contentJson(Dish ... expected) {
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "restaurant"));
+    }
 }

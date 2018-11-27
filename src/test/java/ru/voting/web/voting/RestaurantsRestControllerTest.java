@@ -5,10 +5,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import ru.voting.TestUtil;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.service.VotingService;
 import ru.voting.web.AbstractControllerTest;
 import ru.voting.web.json.JsonUtil;
 
@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.TestData.*;
+
 
 public class RestaurantsRestControllerTest extends AbstractControllerTest {
 
@@ -104,6 +105,14 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, expected);
         assertMatch(votingService.getRestaurantById(MY.getId()).getLunch(), DISH_1, DISH_2, expected);
+    }
+
+    @Test
+    public void getDish() throws Exception{
+        mockMvc.perform(get(REST_URL + MY.getId() + "/" + DISH_1.getId()))
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(DISH_1));
     }
 
     @Test
