@@ -3,6 +3,7 @@ package ru.voting.web.voting;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import ru.voting.AuthorizedUser;
 import ru.voting.TestUtil;
 import ru.voting.model.Restaurant;
 import ru.voting.web.AbstractControllerTest;
@@ -23,7 +24,7 @@ public class VotingRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void getEnabledRestaurants() throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL + USER_ID))
+        TestUtil.print(mockMvc.perform(get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(Arrays.asList(MY))));
@@ -31,7 +32,8 @@ public class VotingRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void addVote() throws Exception{
-        mockMvc.perform(put(REST_URL + ADMIN_ID)
+        AuthorizedUser.setId(ADMIN_ID);
+        mockMvc.perform(put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(MY)))
                 .andExpect(status().isOk());
