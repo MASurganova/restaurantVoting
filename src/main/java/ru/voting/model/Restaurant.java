@@ -35,29 +35,30 @@ public class Restaurant extends AbstractNamedEntity {
     private int voters;
 
     public Restaurant() {
-        this.lunch = new ArrayList<>();
+        this(null, null, null, false, 0);
     }
 
     public Restaurant(Integer id, String name) {
-        super(id, name);
-        this.lunch = new ArrayList<>();
+        this(id, name, null, false, 0);
     }
 
     public Restaurant(Integer id, String name, List<Dish> lunch) {
-        this(id, name);
-        this.lunch = lunch;
+        this(id, name, lunch, false, 0);
     }
 
     public Restaurant(Integer id, String name, boolean enabled, int voters) {
-        this(id, name);
-        setEnabled(enabled);
-        setVoters(voters);
+        this(id, name, null, enabled, voters);
     }
 
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getLunch());
-        setVoters(restaurant.getVoters());
-        setEnabled(restaurant.enabled);
+        this(restaurant.getId(), restaurant.getName(), restaurant.getLunch(), restaurant.isEnabled(), restaurant.getVoters());
+    }
+
+    public Restaurant(Integer id, String name, List<Dish> lunch, boolean enabled, int voters) {
+        super(id, name);
+        this.lunch = lunch == null ? new ArrayList<>() : lunch;
+        this.enabled = enabled;
+        this.voters= voters;
     }
 
     public void addDish(Dish dish) {
@@ -98,7 +99,8 @@ public class Restaurant extends AbstractNamedEntity {
     }
 
     public void setLunch(List<Dish> lunch) {
-        this.lunch = lunch;
+        if (lunch == null) this.lunch.clear();
+        else this.lunch = lunch;
     }
 
     public int getTotalPrice() {
@@ -109,10 +111,11 @@ public class Restaurant extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Restaurant{" +
-                " enabled=" + enabled +
-                ", voters=" + getVoters() +
-                ", name='" + name + '\'' +
-                ", id=" + id +
+                "id=" + id +
+                ", name='" + name +
+                ", lunch=" + lunch +
+                ", enabled=" + enabled +
+                ", voters=" + voters +
                 '}';
     }
 }

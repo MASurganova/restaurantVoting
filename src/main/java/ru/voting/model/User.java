@@ -47,7 +47,6 @@ public class User extends AbstractNamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
-//    @JsonIgnore
     private Restaurant choice;
 
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -60,33 +59,40 @@ public class User extends AbstractNamedEntity {
     public User() {
     }
 
-    public User(Integer id, String name, String email, String password, Role role, Role ... roles) {
-        this(id, name, email, password, EnumSet.of(role, roles));
-    }
-
-    public User(Integer id, String name, String email, String password,Restaurant choice, Role role, Role ... roles) {
-        this(id, name, email, password, EnumSet.of(role, roles));
-        this.choice = choice;
-    }
-
     public User(Integer id, String name, String email, String password, Restaurant choice) {
-        super(id, name);
-        this.password = password;
-        this.email = email;
-        this.choice = choice;
+       this(id, name, email,password, choice, null);
     }
 
     public User(Integer id, String name, String email, String password, Set<Role> roles) {
-        super(id, name);
-        this.password = password;
-        this.roles = roles;
-        this.email = email;
+        this(id, name, email, password,null, roles);
+    }
+
+    public User(Integer id, String name, String email, String password, Role role, Role ... roles) {
+        this(id, name, email, password, null, role, roles);
+    }
+
+    public User(Integer id, String name, String email, String password,Restaurant choice, Role role, Role ... roles) {
+        this(id, name, email,password, choice, EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password,Restaurant choice, Set<Role> roles) {
+        this(id, name, email, password, null, choice,roles);
     }
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRoles());
-        setChoice(user.getChoice());
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRegistered(), user.getChoice(), user.getRoles());
     }
+
+    public User(Integer id, String name, String email, String password, LocalDate registered, Restaurant choice, Set<Role> roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.registered = registered == null ? LocalDate.now() : registered;
+        this.choice = choice;
+        setRoles(roles);
+    }
+
+
 
     public String getEmail() {
         return email;

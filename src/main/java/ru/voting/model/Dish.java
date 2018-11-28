@@ -92,10 +92,10 @@ public class Dish extends AbstractBaseEntity {
     @Override
     public String toString() {
         return "Dish{" +
-                "description='" + description + '\'' +
+                "id=" + id +
+                ", description='" + description + '\'' +
                 ", price=" + price +
-                ", restaurant=" + restaurant +
-                ", id=" + id +
+                ", restaurantId=" + (restaurant==null ? null : restaurant.getId()) +
                 '}';
     }
 }
