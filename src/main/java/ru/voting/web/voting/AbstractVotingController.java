@@ -5,18 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.model.User;
 import ru.voting.service.UserService;
 import ru.voting.service.VotingService;
-import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalTime;
 import java.util.List;
 
-import static ru.voting.util.ValidationUtil.assureIdConsistent;
-import static ru.voting.util.ValidationUtil.checkNew;
-import static ru.voting.util.ValidationUtil.checkNotFound;
+import static ru.voting.util.ValidationUtil.*;
 
 public abstract class AbstractVotingController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -76,8 +72,7 @@ public abstract class AbstractVotingController {
 
     public Dish getDish(int id, int restaurantId) {
         log.info("getDish with id={} in restaurant with id={}", id, restaurantId);
-        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(dish -> dish.getId() == id).count() != 0,
-                String.format("restaurant id={} and dishId={}", restaurantId, id));
+        checkDishInRestaurant(id, restaurantId);
         return service.getDishById(id);
     }
 
@@ -90,16 +85,14 @@ public abstract class AbstractVotingController {
 
     public void deleteDish(int restaurantId, int dishId) {
         log.info("deleteDish with id={} in restaurant with id={}", dishId, restaurantId);
-        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(dish -> dish.getId() == dishId).count() != 0,
-                String.format("restaurant id={} and dishId={}", restaurantId, dishId));
+        checkDishInRestaurant(dishId, restaurantId);
         service.deleteDish(dishId);
     }
 
     public void updateDish(int restaurantId, Dish dish, int id) {
         log.info("updateDish {} with id={} in restaurant with id={}", dish, id, restaurantId);
         assureIdConsistent(dish, id);
-        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(d -> d.getId() == id).count() != 0,
-                String.format("restaurant id={} and dishId={}", restaurantId, id));
+        checkDishInRestaurant(id, restaurantId);
         service.updateDish(dish);
     }
 
@@ -118,5 +111,8 @@ public abstract class AbstractVotingController {
         service.addVoice(userService.get(userId), restaurant, time);
     }
 
-
+    private void checkDishInRestaurant(int id, int restaurantId) {
+        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(dish -> dish.getId() == id).count() != 0,
+                String.format("restaurant id=%s and dishId=%s", restaurantId, id));
+    }
 }

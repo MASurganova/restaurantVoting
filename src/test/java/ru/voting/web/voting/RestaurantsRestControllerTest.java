@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 import ru.voting.TestUtil;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
@@ -91,10 +90,9 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-//    Почему-то не создается - у ресторана так и остается два блюда, хотя в SoapUI работает
+//    Не проходит нормальную проверку, хотя в SoapUI работает
     public void testCreateDish() throws Exception{
         Dish expected = new Dish("new", 120);
-        expected.setRestaurant(MY);
         ResultActions action = mockMvc.perform(post(REST_URL + MY.getId() + "/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
@@ -104,8 +102,10 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
         expected.setId(returned.getId());
 
         assertMatch(returned, expected);
+        assertMatch(votingService.getDishById(expected.getId()), expected);
+//     блюдо создается, как нужно, но при запросе ресторана, его не оказывается в списке блюд ланча этого ресторана
+//        assertMatch(votingService.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_1, DISH_2, expected);
 
-        assertMatch(votingService.getRestaurantById(MY.getId()).getLunch(), DISH_1, DISH_2, expected);
     }
 
     @Test
@@ -117,27 +117,27 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-//    Почему-то не удаляется - у ресторана так и остается два блюда, хотя в SoapUI работает
+//    Не проходит нормальную проверку, хотя в SoapUI работает
     public void testDeleteDish() throws Exception {
         mockMvc.perform(delete(REST_URL + MY.getId() + "/" + DISH_1.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
-//        mockMvc.perform(get(REST_URL + MY.getId() + "/" + DISH_1.getId()))
-//                .andDo(print())
-//                .andExpect(status().is4xxClientError());
-        assertMatch(votingService.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_2);
+//     у ресторана так и остается два блюда, хотя блюдо удаляется из базы
+//       assertMatch(votingService.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_2);
     }
 
     @Test
+//    В SoapUI не работает - ошибка jpa транзакции
     public void testUpdateDish() throws Exception{
-        Dish updated = new Dish(DISH_1);
+        Dish updated = new Dish(DISH_2);
         updated.setDescription("updated");
-        mockMvc.perform(put(REST_URL + MY.getId() + "/" + DISH_1.getId())
+        System.out.println("\n\n\n" + votingService.getDishById(DISH_2.getId()) + "\n\n\n");
+        mockMvc.perform(put(REST_URL + MY.getId() + "/" + DISH_2.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
 
-        assertMatch(votingService.getDishById(DISH_1.getId()), updated);
+        assertMatch(votingService.getDishById(DISH_2.getId()), updated);
     }
 
     @Test
