@@ -20,25 +20,15 @@ public class VotingRestController extends AbstractVotingController {
 
 
     @Override
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getEnabledRestaurants() {
-        return super. getEnabledRestaurants(); }
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
-        Restaurant created = super.create(restaurant);
-
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        return super. getEnabledRestaurants();
     }
 
 
-    @GetMapping(value = "/{id}/voting", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addVote(@PathVariable("id") int id, @RequestBody Restaurant restaurant) throws TimeDelayException {
-        super.addVoice(id, restaurant, LocalTime.now());
+        super.addVoice(id, restaurant, LocalTime.of(10, 20));
     }
 
 }

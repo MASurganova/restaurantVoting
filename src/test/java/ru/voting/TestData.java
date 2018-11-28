@@ -7,6 +7,7 @@ import ru.voting.model.Role;
 import ru.voting.model.User;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -78,6 +79,10 @@ public class TestData {
 
     public static ResultMatcher contentJson(Restaurant ... expected) {
         return content().json(writeIgnoreProps(Arrays.asList(expected), "lunch"));
+    }
+
+    public static ResultMatcher contentJson(Collection<Restaurant> expected) {
+        return content().json(writeIgnoreProps(expected, "lunch"));
     }
 
     public static ResultMatcher contentJson(Dish expected) {
