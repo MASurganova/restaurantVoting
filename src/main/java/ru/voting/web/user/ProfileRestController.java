@@ -4,7 +4,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.voting.AuthorizedUser;
 import ru.voting.model.User;
-import ru.voting.web.user.abstractController.AbstractUserController;
 
 @RestController
 @RequestMapping(ProfileRestController.REST_URL)

@@ -1,10 +1,11 @@
-package ru.voting.web.user.abstractController;
+package ru.voting.web.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.model.User;
 import ru.voting.service.UserService;
+import ru.voting.service.VotingService;
 
 import java.util.List;
 

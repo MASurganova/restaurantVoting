@@ -15,10 +15,14 @@ dd {
     vertical-align: top;
 }
 
-.normal {
+.enabled {
     color: green;
 }
 
-.exceeded {
+.disabled {
     color: red;
+}
+
+.glyphicon {
+    cursor: pointer;
 }
