@@ -1,8 +1,10 @@
 package ru.voting.web;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.voting.AuthorizedUser;
 
@@ -45,6 +47,12 @@ public class RootController extends AbstractController{
     @GetMapping("/index")
     public String index() {
         return "start";
+    }
+
+    @GetMapping("restaurants/{id}")
+    public String getRestaurant(@PathVariable("id") int id, Model model) {
+        model.addAttribute("restaurant", votingService.getRestaurantByIdWithLunch(id));
+        return "restaurantForm";
     }
 
 }
