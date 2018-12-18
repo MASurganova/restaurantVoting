@@ -9,6 +9,7 @@
 <body>
 <script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/restaurantDatatables.js" defer></script>
+<script type="text/javascript" src="resources/js/noteUtil.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <div class="jumbotron">
     <div class="container">
@@ -34,14 +35,16 @@
                 <jsp:useBean id="restaurant" scope="page" type="ru.voting.model.Restaurant"/>
                 <tr>
                     <td><c:out value="${restaurant.name}"/></td>
-                    <td>
-                        <ul>
-                            <c:forEach items="${restaurant.lunch}" var="dish">
-                                <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
-                                <li><c:out value="${dish.description}"/></li>
-                            </c:forEach>
-                        </ul>
-                    </td>
+                    <c:if test="${restaurant.lunch.size() != 0}">
+                        <td>
+                            <ul>
+                                <c:forEach items="${restaurant.lunch}" var="dish">
+                                    <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
+                                    <li><c:out value="${dish.description}"/></li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </c:if>
                     <td>${restaurant.getTotalPrice()}</td>
                     <td><input type="checkbox"
                                <c:if test="${restaurant.enabled}">checked</c:if> onclick="enable($(this), ${restaurant.id})"/>
@@ -64,7 +67,6 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="detailsForm">
-                    <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
                         <label for="name" class="control-label col-xs-3"><spring:message code="restaurant.name"/></label>
@@ -76,7 +78,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="button" onclick="save()" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
                         </div>

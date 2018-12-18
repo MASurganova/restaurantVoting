@@ -9,6 +9,7 @@
 <body>
 <script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/userDatatables.js" defer></script>
+<script type="text/javascript" src="resources/js/noteUtil.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <div class="jumbotron">
     <div class="container">
@@ -38,9 +39,11 @@
                     <td><a href="mailto:${user.email}">${user.email}</a></td>
                     <td>${user.roles}</td>
                     <td>${user.registered}</td>
-                    <td>${user.choice == null ? null : user.choice.name}</td>
+                    <td>${user.choice == null ? " " : user.choice.name}</td>
                     <td><a><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
-                    <td><a class="delete" id=${user.id}><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                    <td><a onclick="deleteRow(${user.id})">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
@@ -56,6 +59,7 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="detailsForm">
                     <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="choice" name="choice" value=" ">
 
                     <div class="form-group">
                         <label for="name" class="control-label col-xs-3"><spring:message code="user.name"/></label>
@@ -83,7 +87,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="button" onclick="save()" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             </button>
                         </div>

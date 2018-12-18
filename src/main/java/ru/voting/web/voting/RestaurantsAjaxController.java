@@ -23,6 +23,11 @@ public class RestaurantsAjaxController extends AbstractVotingController {
         return super.getAllRestaurants();
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Dish> getAllDishes(@PathVariable("id") int id) {
+        return super.getWithLunch(id).getLunch();
+    }
+
     @Override
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id) {
@@ -42,22 +47,24 @@ public class RestaurantsAjaxController extends AbstractVotingController {
     }
 
     @PostMapping
-    public void create(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name) {
+    public void create(@RequestParam("name") String name) {
 
-        Restaurant restaurant = new Restaurant(id, name);
-        if (restaurant.isNew()) {
-            super.create(restaurant);
-        }
+        Restaurant restaurant = new Restaurant(null, name);
+        super.create(restaurant);
     }
 
     @PostMapping("/{id}")
-    public void createOrUpdateDish(@RequestParam("id") Integer id, @RequestParam("dishId") Integer dishId,
+    public void createOrUpdateDish(@PathVariable("id") Integer id, @RequestParam("dishId") Integer dishId,
                                @RequestParam("description") String description, @RequestParam("price") Integer price) {
-
-        Dish dish = new Dish(dishId, description, price );
+        Dish dish = new Dish(dishId, description, price);
         if (dish.isNew()) {
             super.createDish(dish, id);
         } else super.updateDish(id, dish, dishId);
+    }
+
+    @PutMapping("/{id}")
+    public void updateRestaurant(@PathVariable("id") Integer id, @RequestParam("name") String name) {
+        Restaurant restaurant = new Restaurant(id, name);
+        super.update(restaurant, id);
     }
 }

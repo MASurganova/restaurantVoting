@@ -130,7 +130,9 @@ public class VotingService {
     public Restaurant updateRestaurant(Restaurant restaurant) throws NotFoundException {
         Assert.notNull(restaurant, "restaurant must not be null");
         checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
-        return restaurants.save(restaurant);
+        Restaurant updated = restaurants.get(restaurant.getId());
+        updated.setName(restaurant.getName());
+        return restaurants.save(updated);
     }
 
     public Restaurant createRestaurant(Restaurant restaurant) {

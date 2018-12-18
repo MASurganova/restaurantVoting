@@ -1,4 +1,5 @@
 var ajaxUrl = "ajax/admin/restaurants/";
+
 var datatableApi;
 
 // $(document).ready(function () {

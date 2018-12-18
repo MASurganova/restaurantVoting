@@ -43,7 +43,11 @@ public class UserService {
     public User update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.get(user.getId()), user.getId());
-        return repository.save(user);
+        User updated = repository.get(user.getId());
+        updated.setName(user.getName());
+        updated.setPassword(user.getPassword());
+        updated.setEmail(user.getEmail());
+        return repository.save(updated);
     }
 
     @CacheEvict(value = "users", allEntries = true)
