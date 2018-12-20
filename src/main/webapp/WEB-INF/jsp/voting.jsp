@@ -7,10 +7,12 @@
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
-<section>
-    <h2><fmt:message key="app.voting"/></h2>
-    <section>
-        <table border="1" cellpadding="8" cellspacing="0">
+<div class="jumbotron">
+    <div class="container">
+        <h3><spring:message code="app.voting"/></h3>
+        <br/>
+        <br/><br/>
+        <table class="table table-striped display" id="datatable">
             <thead>
             <tr>
                 <th><fmt:message key="restaurant.name"/></th>
@@ -38,9 +40,11 @@
                 </tr>
             </c:forEach>
         </table>
-    </section>
     <c:if test="${userId == 100008}">
         <a href="voting/endVoting"><th><fmt:message key="app.end"/></th></a>
     </c:if>
+    </div>
+</div>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
