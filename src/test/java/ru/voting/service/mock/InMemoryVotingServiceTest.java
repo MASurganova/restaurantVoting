@@ -123,7 +123,7 @@ public class InMemoryVotingServiceTest {
     public void updateRestaurantTest() throws NotFoundException {
         Restaurant newRestaurant = new Restaurant(START_SEQ, "New");
         service.updateRestaurant(newRestaurant);
-        Assert.assertEquals(service.getRestaurantById(START_SEQ), newRestaurant);
+        Assert.assertEquals(service.getRestaurantById(START_SEQ).getName(), newRestaurant.getName());
     }
 
     @Test(expected = NotFoundException.class)

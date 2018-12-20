@@ -57,8 +57,8 @@ public class RestaurantsRestController extends AbstractVotingController {
 
     @Override
     @PutMapping(value = "/{id}/enabled", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void addRestaurantToVote(@RequestBody Restaurant restaurant) {
-        super.addRestaurantToVote(restaurant);
+    public void addRestaurantToVote(@PathVariable int id) {
+        super.addRestaurantToVote(id);
     }
 
     @PostMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

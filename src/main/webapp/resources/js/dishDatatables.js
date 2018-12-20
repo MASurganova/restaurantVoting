@@ -5,7 +5,7 @@ var datatableApi;
 $(function () {
     datatableApi = $("#datatable").DataTable({
         "paging": false,
-        "info": true,
+        "info": false,
         "columns": [
             {
                 "data": "description"

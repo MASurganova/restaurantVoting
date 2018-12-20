@@ -33,7 +33,7 @@
             </thead>
             <c:forEach items="${restaurants}" var="restaurant">
                 <jsp:useBean id="restaurant" scope="page" type="ru.voting.model.Restaurant"/>
-                <tr>
+                <tr class="${restaurant.enabled ? '' : 'disabled'}">
                     <td><c:out value="${restaurant.name}"/></td>
                     <c:if test="${restaurant.lunch.size() != 0}">
                         <td>
@@ -45,9 +45,10 @@
                             </ul>
                         </td>
                     </c:if>
-                    <td>${restaurant.getTotalPrice()}</td>
+                    <td>${restaurant.totalPrice}</td>
                     <td><input type="checkbox"
-                               <c:if test="${restaurant.enabled}">checked</c:if> onclick="enable($(this), ${restaurant.id})"/>
+                               <c:if test="${restaurant.enabled}">checked</c:if>
+                               onclick="enable($(this), ${restaurant.id})"/>
                     </td>
                     <td><a href="restaurants/${restaurant.id}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
                     <td><a onclick="deleteRow(${restaurant.id})">

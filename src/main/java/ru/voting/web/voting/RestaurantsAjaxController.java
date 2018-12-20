@@ -67,4 +67,10 @@ public class RestaurantsAjaxController extends AbstractVotingController {
         Restaurant restaurant = new Restaurant(id, name);
         super.update(restaurant, id);
     }
+
+
+    @PostMapping(value = "/{id}/enabled")
+    public void enable(@PathVariable("id") int id) {
+        super.addRestaurantToVote(id);
+    }
 }

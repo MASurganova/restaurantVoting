@@ -101,9 +101,9 @@ public abstract class AbstractVotingController {
         service.endVoting();
     }
 
-    public void addRestaurantToVote(Restaurant restaurant) {
-        log.info("addRestaurantToVote {}", restaurant);
-        service.addRestaurantToVote(restaurant.getId());
+    public void addRestaurantToVote(int id) {
+        log.info("addRestaurantToVote with id={}", id);
+        service.addRestaurantToVote(id);
     }
 
     public void addVoice(int userId, Restaurant restaurant, LocalTime time) throws TimeDelayException {

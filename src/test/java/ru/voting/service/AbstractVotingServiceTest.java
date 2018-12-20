@@ -45,7 +45,6 @@ public abstract class AbstractVotingServiceTest extends AbstractServiceTest {
     @Test
     public void updateRestaurant() throws Exception {
         Restaurant newRestaurant = new Restaurant(OTHER.getId(),"New");
-        newRestaurant.setEnabled(true);
         Restaurant updateRestaurant = service.updateRestaurant(newRestaurant);
         newRestaurant.setId(updateRestaurant.getId());
         assertMatch(service.getRestaurantById(OTHER.getId()), newRestaurant);
