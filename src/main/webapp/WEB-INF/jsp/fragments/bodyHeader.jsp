@@ -4,7 +4,7 @@
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <a href="start" class="navbar-brand"><spring:message code="app.title"/></a>
+        <a href="index" class="navbar-brand"><spring:message code="app.title"/></a>
 
         <div class="collapse navbar-collapse">
             <form class="navbar-form navbar-right">

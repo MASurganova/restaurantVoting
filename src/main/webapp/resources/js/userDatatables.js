@@ -20,7 +20,8 @@ $(function () {
                 "data": "registered"
             },
             {
-                "data": "choice"
+                "data": "choice",
+                "defaultContent": " "
             },
             {
                 "defaultContent": "Edit",

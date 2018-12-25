@@ -16,49 +16,61 @@
     <div class="container">
         <jsp:useBean id="restaurant" type="ru.voting.model.Restaurant" scope="request"/>
         <h3><spring:message code="restaurant.update"/> ${restaurant.name}</h3>
-        <form class="form-horizontal" id="restaurantForm">
-            <div class="form-group">
-                <label for="name" class="control-label col-xs-2"><spring:message code="restaurant.name"/></label>
+        <br/>
+        <br/>
 
-                <div class="col-xs-9">
-                    <input type="text" class="form-control" id="name" name="name" value="${restaurant.name}">
-                </div>
-            </div>
+        <h4><spring:message code="restaurant.lunch"/></h4>
+        <a class="btn btn-primary" onclick="add(${restaurant.id})">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <spring:message code="dish.add"/>
+        </a>
 
-            <c:if test="${restaurant.id != null}">
-                <h4><spring:message code="restaurant.lunch"/></h4>
-
-                <table class="table table-striped display" id="datatable">
-                    <thead>
-                    <tr>
-                        <th><fmt:message key="dish.description"/></th>
-                        <th><fmt:message key="dish.price"/></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-
+        <table class="table table-striped display" id="datatable">
+            <thead>
+            <tr>
+                <th><fmt:message key="dish.description"/></th>
+                <th><fmt:message key="dish.price"/></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <c:choose>
+                <c:when test="${restaurant.lunch.size() != 0}">
                     <c:forEach items="${restaurant.lunch}" var="dish">
                         <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
                         <tr class="normal">
                             <td><c:out value="${dish.description}"/></td>
                             <td>${dish.price}</td>
-                            <td><a><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                            <td><a onclick="updateRow(${dish.id}, ${restaurant.id})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
                             <td><a onclick="deleteRow(${dish.id}, ${restaurant.id})">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </a></td>
                         </tr>
                     </c:forEach>
-                </table>
+                </c:when>
+                <c:otherwise>
+                    <tr class="normal">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
+        </table>
 
-                <a class="btn btn-primary" onclick="add(${restaurant.id})">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    <spring:message code="common.add"/>
-                </a>
-            </c:if>
-
+        <br/>
+        <br/>
+        <form class="form-horizontal" id="restaurantForm">
             <div class="form-group">
-                <div class="col-xs-offset-3 col-xs-9">
+                <label for="name" class="control-label col-lg10"><spring:message code="restaurant.newName"/></label>
+
+                <div class="col-lg10">
+                    <input type="text" class="form-control" id="name" name="name" value="${restaurant.name}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-1">
                     <button type="button" onclick="saveRestaurant(${restaurant.id})" class="btn btn-primary">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     </button>
@@ -77,7 +89,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="detailsForm">
-                    <input type="hidden" id="dishId" name="dishId">
+                    <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
                         <label for="description" class="control-label col-xs-3"><spring:message code="dish.description"/></label>

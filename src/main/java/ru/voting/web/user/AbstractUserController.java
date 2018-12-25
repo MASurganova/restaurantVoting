@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.model.User;
 import ru.voting.service.UserService;
-import ru.voting.service.VotingService;
 import ru.voting.to.UserTo;
 
 import java.util.List;

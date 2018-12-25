@@ -2,16 +2,12 @@ package ru.voting.web.voting;
 
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.model.Role;
-import ru.voting.model.User;
+import ru.voting.to.DishTo;
+import ru.voting.util.DishUtil;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,7 +20,7 @@ public class RestaurantsAjaxController extends AbstractVotingController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getAllDishes(@PathVariable("id") int id) {
+    public List<Dish> getRestaurantLunch(@PathVariable("id") int id) {
         return super.getWithLunch(id).getLunch();
     }
 
@@ -54,16 +50,14 @@ public class RestaurantsAjaxController extends AbstractVotingController {
     }
 
     @PostMapping("/{id}")
-    public void createOrUpdateDish(@PathVariable("id") Integer id, @RequestParam("dishId") Integer dishId,
-                               @RequestParam("description") String description, @RequestParam("price") Integer price) {
-        Dish dish = new Dish(dishId, description, price);
-        if (dish.isNew()) {
-            super.createDish(dish, id);
-        } else super.updateDish(id, dish, dishId);
+    public void createOrUpdateDish(@PathVariable("id") int id, DishTo dishTo) {
+        if (dishTo.isNew()) {
+            super.createDish(DishUtil.createNewFromTo(dishTo), id);
+        } else super.updateDish(id, dishTo, dishTo.getId());
     }
 
-    @PutMapping("/{id}")
-    public void updateRestaurant(@PathVariable("id") Integer id, @RequestParam("name") String name) {
+    @PostMapping("/{id}/update")
+    public void updateRestaurant(@PathVariable ("id") int id, @RequestParam("name") String name) {
         Restaurant restaurant = new Restaurant(id, name);
         super.update(restaurant, id);
     }

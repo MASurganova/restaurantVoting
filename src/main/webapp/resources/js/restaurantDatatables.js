@@ -26,10 +26,12 @@ $(function () {
                 "data": "name"
             },
             {
-                "data": "lunch"
+                "data": "lunch",
+                "defaultContent": "<i>Not set</i>"
             },
             {
-                "data": "totalPrice"
+                "data": "totalPrice",
+                "defaultContent": "0"
             },
             {
                 "data": "enabled"

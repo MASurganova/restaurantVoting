@@ -7,6 +7,7 @@ import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.service.UserService;
 import ru.voting.service.VotingService;
+import ru.voting.to.DishTo;
 import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalTime;
@@ -67,8 +68,11 @@ public abstract class AbstractVotingController {
     public void update(Restaurant restaurant, int id) {
         log.info("update {} with id={}", restaurant, id);
         assureIdConsistent(restaurant, id);
-        service.updateRestaurant(restaurant);
+        Restaurant updated = getWithLunch(id);
+        updated.setName(restaurant.getName());
+        service.updateRestaurant(updated);
     }
+
 
     public Dish getDish(int id, int restaurantId) {
         log.info("getDish with id={} in restaurant with id={}", id, restaurantId);
@@ -93,7 +97,15 @@ public abstract class AbstractVotingController {
         log.info("updateDish {} with id={} in restaurant with id={}", dish, id, restaurantId);
         assureIdConsistent(dish, id);
         checkDishInRestaurant(id, restaurantId);
+        dish.setRestaurant(service.getRestaurantById(restaurantId));
         service.updateDish(dish);
+    }
+
+    public void updateDish(int restaurantId, DishTo dishTo, int id) {
+        log.info("updateDish {} with id={} in restaurant with id={}", dishTo, id, restaurantId);
+        assureIdConsistent(dishTo, id);
+        checkDishInRestaurant(id, restaurantId);
+        service.updateDish(dishTo);
     }
 
     public void endVoting() {
@@ -112,7 +124,7 @@ public abstract class AbstractVotingController {
     }
 
     private void checkDishInRestaurant(int id, int restaurantId) {
-        checkNotFound(getWithLunch(restaurantId).getLunch().stream().filter(dish -> dish.getId() == id).count() != 0,
+        checkNotFound(getWithLunch(restaurantId).getLunch().stream().anyMatch(dish -> dish.getId() == id),
                 String.format("restaurant id=%s and dishId=%s", restaurantId, id));
     }
 }

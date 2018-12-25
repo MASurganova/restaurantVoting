@@ -11,13 +11,14 @@ import ru.voting.repository.DishRepository;
 import ru.voting.repository.HistoryRepository;
 import ru.voting.repository.RestaurantRepository;
 import ru.voting.repository.UserRepository;
+import ru.voting.to.DishTo;
+import ru.voting.util.DishUtil;
 import ru.voting.util.ValidationUtil;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -77,9 +78,9 @@ public class VotingService {
     public Restaurant getCurrentChoice() {
         List<Restaurant> currentRestorants = getCurrentRestaurants();
         Integer maxVoters = currentRestorants.stream().map(Restaurant::getVoters)
-                .max(Integer::compareTo).get();
-        return currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
-                .findFirst().orElseGet(null);
+                .max(Integer::compareTo).orElse(0);
+        return maxVoters == 0 ? null : currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
+                .findFirst().orElse(null);
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -155,6 +156,11 @@ public class VotingService {
         Assert.notNull(dish, "dish must not be null");
         checkNotFoundWithId(dishes.get(dish.getId()), dish.getId());
         return dishes.save(dish);
+    }
+
+    public Dish updateDish(DishTo dishTo) throws NotFoundException {
+        Dish dish = getDishById(dishTo.getId());
+        return dishes.save(DishUtil.updateFromTo(dish, dishTo));
     }
 
     public void deleteDish(int id) throws NotFoundException {

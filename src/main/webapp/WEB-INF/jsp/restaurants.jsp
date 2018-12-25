@@ -35,16 +35,21 @@
                 <jsp:useBean id="restaurant" scope="page" type="ru.voting.model.Restaurant"/>
                 <tr class="${restaurant.enabled ? '' : 'disabled'}">
                     <td><c:out value="${restaurant.name}"/></td>
-                    <c:if test="${restaurant.lunch.size() != 0}">
-                        <td>
-                            <ul>
-                                <c:forEach items="${restaurant.lunch}" var="dish">
-                                    <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
-                                    <li><c:out value="${dish.description}"/></li>
-                                </c:forEach>
-                            </ul>
-                        </td>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${restaurant.lunch.size() != 0}">
+                            <td>
+                                <ul>
+                                    <c:forEach items="${restaurant.lunch}" var="dish">
+                                        <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
+                                        <li><c:out value="${dish.description}"/></li>
+                                    </c:forEach>
+                                </ul>
+                            </td>
+                        </c:when>
+                        <c:otherwise>
+                            <td></td>
+                        </c:otherwise>
+                    </c:choose>
                     <td>${restaurant.totalPrice}</td>
                     <td><input type="checkbox"
                                <c:if test="${restaurant.enabled}">checked</c:if>
