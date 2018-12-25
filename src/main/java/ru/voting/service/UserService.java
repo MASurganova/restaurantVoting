@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
+import ru.voting.to.UserTo;
+import ru.voting.util.UserUtil;
 import ru.voting.util.ValidationUtil;
 import ru.voting.util.exception.NotFoundException;
 
@@ -43,11 +46,14 @@ public class UserService {
     public User update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.get(user.getId()), user.getId());
-        User updated = repository.get(user.getId());
-        updated.setName(user.getName());
-        updated.setPassword(user.getPassword());
-        updated.setEmail(user.getEmail());
-        return repository.save(updated);
+        return repository.save(user);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    public void update(UserTo userTo) {
+        User user = get(userTo.getId());
+        repository.save(UserUtil.updateFromTo(user, userTo));
     }
 
     @CacheEvict(value = "users", allEntries = true)

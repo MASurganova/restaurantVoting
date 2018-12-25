@@ -2,6 +2,7 @@ package ru.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.hibernate.Hibernate;
+import ru.voting.HasId;
 
 import javax.persistence.*;
 
@@ -11,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 @MappedSuperclass
 //@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity {
+public abstract class AbstractBaseEntity implements HasId {
 
     public static final int START_SEQ = 100000;
 
@@ -27,16 +28,14 @@ public abstract class AbstractBaseEntity {
         this.id = id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
-    }
-
-    public boolean isNew() {
-        return this.id == null;
     }
 
     @Override

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ru.voting.TestUtil;
 import ru.voting.model.Role;
 import ru.voting.model.User;
+import ru.voting.to.UserTo;
+import ru.voting.util.UserUtil;
 import ru.voting.web.AbstractControllerTest;
 import ru.voting.web.json.JsonUtil;
 
@@ -37,13 +39,13 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testUpdate() throws Exception {
-        User updated = new User(USER_ID, "newName", "newemail@ya.ru", "newPassword", Role.ROLE_USER);
+        UserTo updated = new UserTo(USER_ID, "newName", "newemail@ya.ru", "newPassword");
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertMatch(new User(userService.getByEmail("newemail@ya.ru")), updated);
+        assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updated));
     }
 
     @GetMapping(value = "/text")

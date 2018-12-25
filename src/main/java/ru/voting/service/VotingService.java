@@ -17,6 +17,7 @@ import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,7 @@ public class VotingService {
     public Restaurant getCurrentChoice() {
         List<Restaurant> currentRestorants = getCurrentRestaurants();
         Integer maxVoters = currentRestorants.stream().map(Restaurant::getVoters)
-                .max(Integer::compareTo).orElseGet(null);
+                .max(Integer::compareTo).get();
         return currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
                 .findFirst().orElseGet(null);
     }
@@ -130,9 +131,7 @@ public class VotingService {
     public Restaurant updateRestaurant(Restaurant restaurant) throws NotFoundException {
         Assert.notNull(restaurant, "restaurant must not be null");
         checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
-        Restaurant updated = restaurants.get(restaurant.getId());
-        updated.setName(restaurant.getName());
-        return restaurants.save(updated);
+        return restaurants.save(restaurant);
     }
 
     public Restaurant createRestaurant(Restaurant restaurant) {

@@ -3,12 +3,11 @@
 
 package ru.voting.web.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.voting.model.Role;
 import ru.voting.model.User;
-import ru.voting.service.VotingService;
+import ru.voting.to.UserTo;
+import ru.voting.util.UserUtil;
 
 import java.util.List;
 
@@ -23,20 +22,21 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @Override
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public User get(@PathVariable("id") int id) {
+        return super.get(id);
+    }
+
+    @Override
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") int id) {
         super.delete(id);
     }
 
     @PostMapping
-    public void createOrUpdate(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name,
-                               @RequestParam("email") String email,
-                               @RequestParam("password") String password) {
-
-        User user = new User(id, name, email, password, Role.ROLE_USER);
-        if (user.isNew()) {
-            super.create(user);
-        } else super.update(user, id);
+    public void createOrUpdate(UserTo userTo) {
+        if (userTo.isNew()) {
+            super.create(UserUtil.createNewFromTo(userTo));
+        } else super.update(userTo, userTo.getId());
     }
 }

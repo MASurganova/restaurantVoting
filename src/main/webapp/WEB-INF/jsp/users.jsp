@@ -40,7 +40,7 @@
                     <td>${user.roles}</td>
                     <td>${user.registered}</td>
                     <td>${user.choice == null ? " " : user.choice.name}</td>
-                    <td><a><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                    <td><a onclick="updateRow(${user.id})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
                     <td><a onclick="deleteRow(${user.id})">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                     </td>
