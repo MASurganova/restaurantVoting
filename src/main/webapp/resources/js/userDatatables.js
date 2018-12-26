@@ -4,32 +4,50 @@ var datatableApi;
 // $(document).ready(function () {
 $(function () {
     datatableApi = $("#datatable").DataTable({
+        "ajax": {
+            "url": ajaxUrl,
+            "dataSrc": ""
+        },
         "paging": false,
-        "info": true,
+        "info": false,
         "columns": [
             {
                 "data": "name"
             },
             {
-                "data": "email"
+                "data": "email",
+                "render": function (data, type, row) {
+                    if (type === "display") {
+                        return "<a href='mailto:" + data + "'>" + data + "</a>";
+                    }
+                    return data;
+                }
             },
             {
                 "data": "roles"
             },
             {
-                "data": "registered"
+                "data": "registered",
+                "render": function (date, type, row) {
+                    if (type === "display") {
+                        return date.substring(0, 10);
+                    }
+                    return date;
+                }
             },
             {
-                "data": "choice",
-                "defaultContent": " "
+                "data": "choice.name",
+                "defaultContent": ""
             },
             {
-                "defaultContent": "Edit",
-                "orderable": false
+                "orderable": false,
+                "defaultContent": "",
+                "render": renderEditBtn
             },
             {
-                "defaultContent": "Delete",
-                "orderable": false
+                "orderable": false,
+                "defaultContent": "",
+                "render": renderDeleteBtn
             }
         ],
         "order": [
@@ -37,7 +55,7 @@ $(function () {
                 0,
                 "asc"
             ]
-        ]
+        ],
+        "initComplete": makeEditable
     });
-    makeEditable();
 });

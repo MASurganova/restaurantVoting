@@ -1,6 +1,3 @@
-
-
-
 package ru.voting.web.user;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +11,6 @@ import ru.voting.util.UserUtil;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.StringJoiner;
 
 @RestController
 @RequestMapping("/ajax/admin/users")

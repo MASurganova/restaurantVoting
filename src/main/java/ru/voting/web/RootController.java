@@ -19,8 +19,7 @@ public class RootController extends AbstractController{
     }
 
     @GetMapping("/users")
-    public String users(Model model) {
-        model.addAttribute("users", userService.getAll());
+    public String users() {
         return "users";
     }
 
