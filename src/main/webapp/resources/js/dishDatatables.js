@@ -39,11 +39,12 @@ function deleteRow(id, restaurantId) {
         type: "DELETE"
     }).done(function () {
         updateTable(restaurantId);
-        successNoty("Deleted");
+        successNoty("common.deleted");
     });
 }
 
 function updateRow(id, restaurantId) {
+    $("#modalTitle").html(i18n["editTitle"]);
     $.get(ajaxUrl + restaurantId + "/" + id, function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(value);
@@ -65,6 +66,7 @@ function makeEditable() {
 }
 
 function add() {
+    $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
     $("#editRow").modal();
 }
@@ -85,7 +87,7 @@ function save(id) {
     }).done(function () {
         $("#editRow").modal("hide");
         updateTable(id);
-        successNoty("Saved");
+        successNoty("common.saved");
     });
 }
 
@@ -96,7 +98,7 @@ function saveRestaurant(id) {
         data: $('#restaurantForm').serialize()
     }).done(function () {
         window.location = "http://localhost:8080/restaurantVoting/restaurants/";
-        successNoty("Saved");
+        successNoty("common.saved");
     });
 
 }

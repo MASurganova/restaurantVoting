@@ -10,7 +10,7 @@ function enable(chkbox, id) {
         type: "POST"
     }).done(function () {
         chkbox.closest("tr").toggleClass("disabled");
-        successNoty(enabled ? "Enabled" : "Disabled");
+        successNoty(enabled ? "common.enabled" : "common.disabled");
     }).fail(function () {
         $(chkbox).prop("checked", !enabled);
     });

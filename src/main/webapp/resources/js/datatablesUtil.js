@@ -11,6 +11,7 @@ function makeEditable() {
 }
 
 function add() {
+    $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
     $("#editRow").modal();
 }
@@ -21,7 +22,7 @@ function deleteRow(id) {
         type: "DELETE"
     }).done(function () {
         updateTable();
-        successNoty("Delete");
+        successNoty("common.deleted");
     });
 }
 
@@ -39,11 +40,12 @@ function save() {
     }).done(function () {
         $("#editRow").modal("hide");
         updateTable();
-        successNoty("Saved");
+        successNoty("common.saved");
     });
 }
 
 function updateRow(id) {
+    $("#modalTitle").html(i18n["editTitle"]);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(value);
