@@ -1,8 +1,18 @@
 package ru.voting.to;
 
+import org.hibernate.validator.constraints.Range;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class DishTo extends BaseTo {
+
+    @NotBlank
     private String description;
 
+    @Range(min = 10, max = 5000)
+    @NotNull
     private int price;
 
     public DishTo() {

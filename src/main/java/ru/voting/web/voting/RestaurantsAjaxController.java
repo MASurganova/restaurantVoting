@@ -1,13 +1,18 @@
 package ru.voting.web.voting;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.to.DishTo;
 import ru.voting.util.DishUtil;
+import ru.voting.util.UserUtil;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -50,10 +55,16 @@ public class RestaurantsAjaxController extends AbstractVotingController {
     }
 
     @PostMapping("/{id}")
-    public void createOrUpdateDish(@PathVariable("id") int id, DishTo dishTo) {
+    public ResponseEntity<String> createOrUpdateDish(@PathVariable("id") int id, @Valid DishTo dishTo, BindingResult result) {
+
+        if (result.hasErrors()) {
+            String errorsMessage = getErrorsMessage(result);
+            return new ResponseEntity<>(errorsMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         if (dishTo.isNew()) {
             super.createDish(DishUtil.createNewFromTo(dishTo), id);
         } else super.updateDish(id, dishTo, dishTo.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/{id}/update")

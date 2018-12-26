@@ -3,13 +3,18 @@
 
 package ru.voting.web.user;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.voting.model.User;
 import ru.voting.to.UserTo;
 import ru.voting.util.UserUtil;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.StringJoiner;
 
 @RestController
 @RequestMapping("/ajax/admin/users")
@@ -34,9 +39,18 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @PostMapping
-    public void createOrUpdate(UserTo userTo) {
+    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {
+        if (result.hasErrors()) {
+            String errorsMessage = getErrorsMessage(result);
+            return new ResponseEntity<>(errorsMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         if (userTo.isNew()) {
             super.create(UserUtil.createNewFromTo(userTo));
-        } else super.update(userTo, userTo.getId());
+        } else {
+            super.update(userTo, userTo.getId());
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }
