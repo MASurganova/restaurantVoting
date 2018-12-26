@@ -99,10 +99,12 @@ public class VotingService {
         }
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void addVoice(int userId, int restaurantId) throws TimeDelayException, NotFoundException {
         addVoice(userId, restaurantId, null);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void addVoice(int userId, int restaurantId, LocalTime time) throws TimeDelayException {
         addVoice(ValidationUtil.checkNotFoundWithId(users.getWithChoice(userId), userId),
                 checkNotFoundWithId(restaurants.get(restaurantId), restaurantId), time);
