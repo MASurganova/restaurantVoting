@@ -1,11 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
+<script type="text/javascript" src="resources/js/votingDatatables.js" defer></script>
+<script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
+<script type="text/javascript" src="resources/js/noteUtil.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <div class="jumbotron">
     <div class="container">
@@ -15,11 +18,11 @@
         <table class="table table-striped display" id="datatable">
             <thead>
             <tr>
-                <th><fmt:message key="restaurant.name"/></th>
-                <th><fmt:message key="restaurant.lunch"/></th>
-                <th><fmt:message key="restaurant.totalPrice"/></th>
-                <th><fmt:message key="restaurant.voters"/></th>
-                <th><fmt:message key="common.select"/></th>
+                <th><spring:message code="restaurant.name"/></th>
+                <th><spring:message code="restaurant.lunch"/></th>
+                <th><spring:message code="restaurant.totalPrice"/></th>
+                <th><spring:message code="restaurant.voters"/></th>
+                <th><spring:message code="common.select"/></th>
             </tr>
             </thead>
             <c:forEach items="${restaurants}" var="restaurant">
@@ -36,13 +39,16 @@
                     </td>
                     <td>${restaurant.totalPrice}</td>
                     <td>${restaurant.voters}</td>
-                    <td><a href="voting/choose?id=${restaurant.id}"><fmt:message key="common.select"/></a></td>
+                    <td><a onclick="chooseRow(${restaurant.id})"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a></td>
                 </tr>
             </c:forEach>
         </table>
-    <c:if test="${userId == 100008}">
-        <a href="voting/endVoting"><th><fmt:message key="app.end"/></th></a>
-    </c:if>
+    <%--<c:if test="${userId == 100008}">--%>
+        <a class="btn btn-primary" onclick="endVoting()">
+            <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+            <spring:message code="app.end"/>
+        </a>
+    <%--</c:if>--%>
     </div>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
