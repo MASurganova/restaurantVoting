@@ -57,7 +57,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(repository.save(user), user.getId());
+        checkNotFoundWithId(repository.get(user.getId()), user.getId());
+        repository.save(user);
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void update(UserTo userTo) {
         User user =  updateFromTo(get(userTo.getId()), userTo);
+        checkNotFoundWithId(repository.get(user.getId()), user.getId());
         repository.save(user);
     }
 
