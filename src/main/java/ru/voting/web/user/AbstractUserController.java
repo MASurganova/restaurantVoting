@@ -1,8 +1,6 @@
 package ru.voting.web.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.model.User;
-import ru.voting.service.UserService;
 import ru.voting.to.UserTo;
 import ru.voting.web.AbstractController;
 

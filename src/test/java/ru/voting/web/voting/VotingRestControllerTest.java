@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.TestData.*;
+import static ru.voting.TestUtil.userHttpBasic;
 
 public class VotingRestControllerTest extends AbstractControllerTest {
 
@@ -32,8 +33,8 @@ public class VotingRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void addVote() throws Exception{
-        AuthorizedUser.setId(ADMIN_ID);
         mockMvc.perform(put(REST_URL)
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(MY)))
                 .andExpect(status().isOk());

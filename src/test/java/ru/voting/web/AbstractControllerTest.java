@@ -16,6 +16,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.voting.AllActiveProfileResolver;
 import ru.voting.repository.JpaUtil;
 import ru.voting.service.UserService;
+import ru.voting.service.UserServiceImpl;
 import ru.voting.service.VotingService;
 
 import javax.annotation.PostConstruct;

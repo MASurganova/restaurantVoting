@@ -1,16 +1,10 @@
 package ru.voting.service;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.util.exception.NotFoundException;
-import ru.voting.util.exception.TimeDelayException;
-
-import javax.validation.ConstraintViolationException;
-import java.time.LocalTime;
 
 import static ru.voting.TestData.*;
 

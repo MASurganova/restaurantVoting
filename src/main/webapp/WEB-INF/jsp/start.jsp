@@ -15,10 +15,10 @@
 
         <p>
             <li><a href="voting"><spring:message code="app.voting"/></a></li>
-            <c:if test="${userId == 100008}">
+            <%--<c:if test="${userId == 100008}">--%>
                 <li><a href="users"><spring:message code="user.title"/></a></li>
                 <li><a href="restaurants"><spring:message code="restaurant.title"/></a></li>
-            </c:if>
+            <%--</c:if>--%>
         </p>
     </div>
 </div>

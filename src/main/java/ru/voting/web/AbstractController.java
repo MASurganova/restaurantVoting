@@ -16,10 +16,10 @@ public abstract class AbstractController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    protected UserService userService;
+    protected VotingService votingService;
 
     @Autowired
-    protected VotingService votingService;
+    protected UserService userService;
 
     protected int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));

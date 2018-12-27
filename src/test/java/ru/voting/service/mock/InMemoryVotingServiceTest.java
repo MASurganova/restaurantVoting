@@ -73,7 +73,7 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void addVoiceTest() throws TimeDelayException {
-        service.addVoice(ADMIN_ID, MY.getId());
+        service.addVoice(ADMIN_ID, MY.getId(), LocalTime.of(10, 0));
         Assert.assertEquals(users.get(ADMIN_ID).getChoice(), service.getRestaurantByName("My"));
         Assert.assertEquals(service.getRestaurantById(START_SEQ).getVoters(), 2);
     }

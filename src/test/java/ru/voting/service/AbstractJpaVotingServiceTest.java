@@ -19,7 +19,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void endVoting() throws Exception {
         service.endVoting();
-//        Assert.assertEquals(service.getHistoryVoting().size(), 3);
+//        Assert.assertEquals(userService.getHistoryVoting().size(), 3);
         Assert.assertEquals(service.getCurrentRestaurants().size(), 0);
         Assert.assertEquals(service.getAllRestaurants().stream()
                 .filter(restaurant -> restaurant.getVoters() != 0).count(), 0);
@@ -74,7 +74,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
         Assert.assertEquals(service.getRestaurantById(OTHER.getId()).getVoters(), 1);
         Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
 //        after add choice(restaurant) in user
-//        Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
+//        Assert.assertEquals(userService.getRestaurantById(MY.getId()).getVoters(), 0);
     }
 
     @Test(expected = TimeDelayException.class)

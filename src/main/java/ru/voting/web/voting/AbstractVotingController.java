@@ -1,12 +1,7 @@
 package ru.voting.web.voting;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
-import ru.voting.service.UserService;
-import ru.voting.service.VotingService;
 import ru.voting.to.DishTo;
 import ru.voting.util.exception.TimeDelayException;
 import ru.voting.web.AbstractController;

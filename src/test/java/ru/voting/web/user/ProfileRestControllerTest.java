@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.TestData.*;
+import static ru.voting.TestUtil.userHttpBasic;
 import static ru.voting.web.user.ProfileRestController.REST_URL;
 
 public class ProfileRestControllerTest extends AbstractControllerTest {
@@ -23,7 +24,8 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     @Test
     public void testGet() throws Exception {
         TestUtil.print(
-                mockMvc.perform(get(REST_URL))
+                mockMvc.perform(get(REST_URL)
+                        .with(userHttpBasic(USER)))
                         .andExpect(status().isOk())
                         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                         .andExpect(contentJson(USER))
@@ -31,25 +33,29 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testGetUnauth() throws Exception {
+        mockMvc.perform(get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void testDelete() throws Exception {
-        mockMvc.perform(delete(REST_URL))
-                .andExpect(status().isOk());
+        mockMvc.perform(delete(REST_URL)
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isNoContent());
         assertMatch(userService.getAll(), ADMIN);
     }
 
     @Test
     public void testUpdate() throws Exception {
-        UserTo updated = new UserTo(USER_ID, "newName", "newemail@ya.ru", "newPassword");
+        UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
+
         mockMvc.perform(put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .with(userHttpBasic(USER))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updated));
-    }
-
-    @GetMapping(value = "/text")
-    public String testUTF() {
-        return "Русский текст";
+        assertMatch(userService.getByEmail("newemail@ya.ru"), UserUtil.updateFromTo(new User(USER), updatedTo));
     }
 }

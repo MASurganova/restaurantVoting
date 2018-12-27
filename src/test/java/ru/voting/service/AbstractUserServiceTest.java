@@ -7,10 +7,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.voting.model.Role;
 import ru.voting.model.User;
-import ru.voting.repository.JpaUtil;
 import ru.voting.util.exception.NotFoundException;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static ru.voting.TestData.*;
