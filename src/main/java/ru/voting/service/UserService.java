@@ -20,7 +20,7 @@ public interface UserService {
 
     void update(User user) throws NotFoundException;
 
-    void update(UserTo userTo);
+    void update(UserTo userTo) throws NotFoundException;
 
     User create(User  user);
 

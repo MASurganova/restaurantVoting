@@ -1,6 +1,7 @@
 package ru.voting.repository.mock;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.voting.TestData;
 import ru.voting.model.User;
@@ -14,6 +15,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class InMemoryUserRepository extends AbstractInMemoryRepository<User> implements UserRepository {
 
     private static final Logger log = getLogger(InMemoryUserRepository.class);
+
+    @Autowired
+    InMemoryRestaurantRepository inMemoryRestaurantRepository;
 
     public InMemoryUserRepository() {
         super(log);
@@ -39,4 +43,13 @@ public class InMemoryUserRepository extends AbstractInMemoryRepository<User> imp
         log.info("get with choice {}", id);
         return get(id);
     }
+
+    @Override
+    public User save(User user, Integer restaurantId) {
+        if (restaurantId != null) {
+            user.setChoice(inMemoryRestaurantRepository.get(restaurantId));
+        }
+        return save(user);
+    }
+
 }

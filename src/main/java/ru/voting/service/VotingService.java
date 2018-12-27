@@ -28,8 +28,6 @@ import static ru.voting.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class VotingService {
 
-    private boolean votingEnded = false;
-
     @Autowired
     private UserRepository users;
 
@@ -46,20 +44,15 @@ public class VotingService {
     public void endVoting() {
         Restaurant currentChoice = getCurrentChoice();
         history.addInHistory(LocalDate.now(), currentChoice);
-        votingEnded = true;
         restaurants.getAll().stream().map(Restaurant::getId).forEach(restaurants::updateVoters);
         restaurants.getAll().forEach(r -> restaurants.disabled(r.getId()));
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
                 String.format("Голосование за ресторан, где мы будем обедать завершено, выбран ресторан - %s"
                         , currentChoice.getName())));
-        users.getAll().forEach(u -> {
-            u.setChoice(null);
-            users.save(u);
-        });
+        users.getAll().forEach(u -> users.save(u, null));
     }
 
     public void startVoting() {
-        votingEnded = false;
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
                 "Голосование за ресторан, где мы будем обедать, начато - проголосуйте пожалуйста"));
     }
@@ -77,14 +70,12 @@ public class VotingService {
 
     public Restaurant getCurrentChoice() {
         List<Restaurant> currentRestorants = getCurrentRestaurants();
-        Integer maxVoters = currentRestorants.stream().map(Restaurant::getVoters)
-                .max(Integer::compareTo).orElse(0);
+        Integer maxVoters = currentRestorants.stream().map(Restaurant::getVoters).max(Integer::compareTo).orElse(0);
         return maxVoters == 0 ? null : currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
                 .findFirst().orElse(null);
     }
 
-    @CacheEvict(value = "users", allEntries = true)
-    public void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
+    private void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
         Assert.notNull(user, "user must not be null");
         Assert.notNull(restaurant, "restaurant must not be null");
         if (time == null) time = LocalTime.now();
@@ -93,8 +84,7 @@ public class VotingService {
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
                 restaurants.removeVoter(user.getChoice().getId());
-            user.setChoice(restaurant);
-            users.save(user);
+            users.save(user, restaurant.getId());
             restaurants.addVoter(restaurant.getId());
         }
     }
@@ -111,7 +101,7 @@ public class VotingService {
     }
 
     public void addRestaurantToVote(int id) throws NotFoundException {
-        checkNotFoundWithId(restaurants.getWithLunch(id), id);
+        checkNotFoundWithId(restaurants.get(id), id);
         restaurants.enabled(id);
     }
 
@@ -124,7 +114,7 @@ public class VotingService {
     }
 
     public Restaurant getRestaurantByIdWithLunch(int id) throws NotFoundException {
-        return checkNotFound(restaurants.getWithLunch(id), "id=" + id);
+        return checkNotFoundWithId(restaurants.getWithLunch(id), id);
     }
 
     public List<Restaurant> getAllRestaurants() {

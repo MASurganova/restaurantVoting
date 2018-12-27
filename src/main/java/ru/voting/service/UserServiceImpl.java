@@ -13,12 +13,12 @@ import ru.voting.AuthorizedUser;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
 import ru.voting.to.UserTo;
-import ru.voting.util.ValidationUtil;
 import ru.voting.util.exception.NotFoundException;
 
 import java.util.List;
 
 import static ru.voting.util.UserUtil.updateFromTo;
+import static ru.voting.util.ValidationUtil.checkNotFound;
 import static ru.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("userService")
@@ -34,12 +34,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public void delete(int id) throws NotFoundException {
-        ValidationUtil.checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id), id);
     }
 
     @Override
     public User get(int id) throws NotFoundException {
-        return ValidationUtil.checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     @Cacheable("users")
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User getByEmail(String email) throws NotFoundException {
-        return ValidationUtil.checkNotFound(repository.getByEmail(email), "email=" + email);
+        return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -58,16 +58,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.get(user.getId()), user.getId());
-        repository.save(user);
+        repository.update(user);
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    @Transactional
     @Override
-    public void update(UserTo userTo) {
+    public void update(UserTo userTo) throws NotFoundException {
         User user =  updateFromTo(get(userTo.getId()), userTo);
-        checkNotFoundWithId(repository.get(user.getId()), user.getId());
-        repository.save(user);
+        update(user);
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -77,7 +75,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getWithChoice(int id) { return repository.getWithChoice(id); }
+    public User getWithChoice(int id) throws NotFoundException {
+        return checkNotFoundWithId(repository.getWithChoice(id), id);
+    }
 
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {

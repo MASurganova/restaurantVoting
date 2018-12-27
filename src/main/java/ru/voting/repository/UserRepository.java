@@ -16,6 +16,10 @@ public interface UserRepository {
 
     User save(User user);
 
+    User save(User user, Integer restaurantId);
+
+    default void update(User user) { save(user); }
+
     default User getWithChoice(int id) {
         throw new UnsupportedOperationException();
     }

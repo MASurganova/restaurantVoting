@@ -1,5 +1,6 @@
 package ru.voting.web.user;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import ru.voting.TestUtil;

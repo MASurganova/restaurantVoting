@@ -6,6 +6,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import ru.voting.TestUtil;
 import ru.voting.model.Role;
 import ru.voting.model.User;
+import ru.voting.to.UserTo;
+import ru.voting.util.UserUtil;
 import ru.voting.web.AbstractControllerTest;
 import ru.voting.web.json.JsonUtil;
 
@@ -69,15 +71,15 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testUpdate() throws Exception {
-        User updated = new User(USER);
-        updated.setName("UpdatedName");
+        UserTo updated = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");;
         mockMvc.perform(put(REST_URL + USER_ID)
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
 
-        assertMatch(userService.get(USER_ID), updated);
+        assertMatch(userService.get(USER_ID), UserUtil.updateFromTo(userService.get(USER_ID), updated));
+
     }
 
     @Test
