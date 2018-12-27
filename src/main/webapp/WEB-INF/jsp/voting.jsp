@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
 <html>
@@ -43,12 +44,12 @@
                 </tr>
             </c:forEach>
         </table>
-    <%--<c:if test="${userId == 100008}">--%>
-        <a class="btn btn-primary" onclick="endVoting()">
-            <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-            <spring:message code="app.end"/>
-        </a>
-    <%--</c:if>--%>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="btn btn-primary" onclick="endVoting()">
+                <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+                <spring:message code="app.end"/>
+            </a>
+        </sec:authorize>
     </div>
 </div>
 <jsp:include page="fragments/footer.jsp"/>

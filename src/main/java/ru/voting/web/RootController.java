@@ -2,6 +2,7 @@ package ru.voting.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,22 +21,27 @@ public class RootController extends AbstractController{
         return "redirect:start";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public String users() {
         return "users";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/restaurants")
     public String restaurants(Model model) {
         model.addAttribute("restaurants", votingService.getAllRestaurants());
         return "restaurants";
 
-    }@GetMapping("/voting")
+    }
+
+    @GetMapping("/voting")
     public String voting(Model model) {
         model.addAttribute("restaurants", votingService.getCurrentRestaurants());
         return "voting";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("restaurants/{id}")
     public String getRestaurant(@PathVariable("id") int id, Model model) {
         model.addAttribute("restaurant", votingService.getRestaurantByIdWithLunch(id));
