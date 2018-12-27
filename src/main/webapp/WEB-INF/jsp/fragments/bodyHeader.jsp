@@ -8,6 +8,7 @@
 
         <div class="collapse navbar-collapse">
             <form class="navbar-form navbar-right">
+                <a class="btn btn-info" href="profile">${userTo.name} <spring:message code="app.profile"/></a>
                 <a class="btn btn-primary" href="logout">
                     <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
                 </a>
