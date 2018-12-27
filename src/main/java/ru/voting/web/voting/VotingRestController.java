@@ -27,6 +27,7 @@ public class VotingRestController extends AbstractVotingController {
     }
 
 
+    //Время нужно изменить на текущее
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addVote(@RequestBody Restaurant restaurant) throws TimeDelayException {
         super.addVoice(AuthorizedUser.id(), restaurant, LocalTime.of(10, 20));

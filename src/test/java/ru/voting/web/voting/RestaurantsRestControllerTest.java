@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.TestData.*;
+import static ru.voting.TestUtil.userHttpBasic;
 
 
 public class RestaurantsRestControllerTest extends AbstractControllerTest {
@@ -27,7 +28,8 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testGet() throws Exception {
-        mockMvc.perform(get(REST_URL + MY.getId()))
+        mockMvc.perform(get(REST_URL + MY.getId())
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -35,17 +37,31 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testGetUnauth() throws Exception {
+        mockMvc.perform(get(REST_URL + MY.getId()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void testGetAllRestaurants()throws Exception {
-        TestUtil.print(mockMvc.perform(get(REST_URL))
+        TestUtil.print(mockMvc.perform(get(REST_URL)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(MY, OTHER)));
     }
 
     @Test
+    public void testGetAllUnauth() throws Exception {
+        TestUtil.print(mockMvc.perform(get(REST_URL))
+                .andExpect(status().isUnauthorized()));
+    }
+
+    @Test
     public void testCreate() throws Exception {
         Restaurant expected = new Restaurant(null, "New");
         ResultActions action = mockMvc.perform(post(REST_URL)
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
                 .andExpect(status().isCreated());
@@ -62,6 +78,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
         Restaurant updated = new Restaurant(MY);
         updated.setName("UpdatedName");
         mockMvc.perform(put(REST_URL + MY.getId())
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
@@ -71,7 +88,8 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testDelete() throws Exception{
-        mockMvc.perform(delete(REST_URL + OTHER.getId()))
+        mockMvc.perform(delete(REST_URL + OTHER.getId())
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk());
         assertMatch(votingService.getAllRestaurants(), MY);
@@ -81,6 +99,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     public void testAddRestaurantToVote() throws Exception{
         Restaurant updated = new Restaurant(OTHER);
         mockMvc.perform(put(REST_URL + OTHER.getId() + "/enabled")
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
@@ -94,6 +113,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     public void testCreateDish() throws Exception{
         Dish expected = new Dish("new", 120);
         ResultActions action = mockMvc.perform(post(REST_URL + MY.getId() + "/")
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
                 .andExpect(status().isCreated());
@@ -110,7 +130,8 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void getDish() throws Exception{
-        mockMvc.perform(get(REST_URL + MY.getId() + "/" + DISH_1.getId()))
+        mockMvc.perform(get(REST_URL + MY.getId() + "/" + DISH_1.getId())
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(DISH_1));
@@ -119,7 +140,8 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     @Test
 //    Не проходит нормальную проверку, хотя в SoapUI работает
     public void testDeleteDish() throws Exception {
-        mockMvc.perform(delete(REST_URL + MY.getId() + "/" + DISH_1.getId()))
+        mockMvc.perform(delete(REST_URL + MY.getId() + "/" + DISH_1.getId())
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk());
 //     у ресторана так и остается два блюда, хотя блюдо удаляется из базы
@@ -133,6 +155,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
         updated.setDescription("updated");
         System.out.println("\n\n\n" + votingService.getDishById(DISH_2.getId()) + "\n\n\n");
         mockMvc.perform(put(REST_URL + MY.getId() + "/" + DISH_2.getId())
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
@@ -142,7 +165,8 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void testEnd() throws Exception{
-        mockMvc.perform(put(REST_URL + "end"))
+        mockMvc.perform(put(REST_URL + "end")
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk());
         Assert.assertEquals(votingService.getCurrentRestaurants(), Collections.emptyList());

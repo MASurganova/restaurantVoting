@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.voting.TestData.*;
 import static ru.voting.TestUtil.userAuth;
+import static ru.voting.TestUtil.userHttpBasic;
 import static ru.voting.model.AbstractBaseEntity.START_SEQ;
 
 public class RootControllerTest extends AbstractControllerTest {
@@ -24,7 +25,8 @@ public class RootControllerTest extends AbstractControllerTest {
 
     @Test
     public void testVoting() throws Exception {
-        mockMvc.perform(get("/voting"))
+        mockMvc.perform(get("/voting")
+                .with(userAuth(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("voting"))
@@ -40,7 +42,8 @@ public class RootControllerTest extends AbstractControllerTest {
 
     @Test
     public void testRestaurants() throws Exception {
-        mockMvc.perform(get("/restaurants"))
+        mockMvc.perform(get("/restaurants")
+                .with(userAuth(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("restaurants"))

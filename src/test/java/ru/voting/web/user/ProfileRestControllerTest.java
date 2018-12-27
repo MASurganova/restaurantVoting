@@ -2,9 +2,7 @@ package ru.voting.web.user;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import ru.voting.TestUtil;
-import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.to.UserTo;
 import ru.voting.util.UserUtil;
@@ -42,7 +40,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL)
                 .with(userHttpBasic(USER)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().is2xxSuccessful());
         assertMatch(userService.getAll(), ADMIN);
     }
 
