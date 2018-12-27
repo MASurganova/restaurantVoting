@@ -12,6 +12,7 @@ import ru.voting.web.json.JsonUtil;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.TestData.*;
 import static ru.voting.TestUtil.userHttpBasic;
@@ -34,7 +35,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     public void testGetNotFound() throws Exception {
         mockMvc.perform(get(REST_URL + 1)
                 .with(userHttpBasic(ADMIN)))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/exception/exception.jsp"))
                 .andDo(print());
     }
 
@@ -60,7 +62,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     public void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete(REST_URL + 1)
                 .with(userHttpBasic(ADMIN)))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/exception/exception.jsp"))
                 .andDo(print());
     }
 
