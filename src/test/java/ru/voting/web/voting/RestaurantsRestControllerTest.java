@@ -37,6 +37,14 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testGetNotFound() throws Exception {
+        mockMvc.perform(get(REST_URL + 1)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print());
+    }
+
+    @Test
     public void testGetUnauth() throws Exception {
         mockMvc.perform(get(REST_URL + MY.getId()))
                 .andExpect(status().isUnauthorized());
@@ -96,6 +104,14 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testDeleteNotFound() throws Exception {
+        mockMvc.perform(delete(REST_URL + 1)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print());
+    }
+
+    @Test
     public void testAddRestaurantToVote() throws Exception{
         Restaurant updated = new Restaurant(OTHER);
         mockMvc.perform(put(REST_URL + OTHER.getId() + "/enabled")
@@ -138,6 +154,14 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testGetDishNotFound() throws Exception {
+        mockMvc.perform(get(REST_URL + MY.getId() + "/" + 1)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print());
+    }
+
+    @Test
 //    Не проходит нормальную проверку, хотя в SoapUI работает
     public void testDeleteDish() throws Exception {
         mockMvc.perform(delete(REST_URL + MY.getId() + "/" + DISH_1.getId())
@@ -146,6 +170,14 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk());
 //     у ресторана так и остается два блюда, хотя блюдо удаляется из базы
 //       assertMatch(votingService.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_2);
+    }
+
+    @Test
+    public void testGetDeleteDishNotFound() throws Exception {
+        mockMvc.perform(delete(REST_URL + MY.getId() + "/" + 1)
+                .with(userHttpBasic(ADMIN)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print());
     }
 
     @Test
