@@ -15,6 +15,13 @@ public interface RestaurantRepository {
 
     Restaurant getByName(String name);
 
+    default List<Restaurant> getAllWithLunch() { return getAll(); }
+
+
+    default void update(Restaurant restaurant) {
+        save(restaurant);
+    }
+
     default void addVoter(int id) {
         Restaurant restaurant = getWithLunch(id);
         restaurant.addVoter();

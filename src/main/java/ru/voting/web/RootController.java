@@ -30,7 +30,7 @@ public class RootController extends AbstractController{
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/restaurants")
     public String restaurants(Model model) {
-        model.addAttribute("restaurants", votingService.getAllRestaurants());
+        model.addAttribute("restaurants", votingService.getAllRestaurantsWithLunch());
         return "restaurants";
 
     }

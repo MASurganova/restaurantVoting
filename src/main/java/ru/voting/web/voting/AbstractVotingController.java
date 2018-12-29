@@ -15,7 +15,7 @@ public abstract class AbstractVotingController extends AbstractController {
 
     public List<Restaurant> getAllRestaurants() {
         log.info("getAllRestaurants");
-        return votingService.getAllRestaurants();
+        return votingService.getAllRestaurantsWithLunch();
     }
 
     public List<Restaurant> getEnabledRestaurants() {

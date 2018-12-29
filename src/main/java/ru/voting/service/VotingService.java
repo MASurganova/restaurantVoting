@@ -19,6 +19,7 @@ import ru.voting.util.exception.TimeDelayException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class VotingService {
     public void endVoting() {
         Restaurant currentChoice = getCurrentChoice();
         history.addInHistory(LocalDate.now(), currentChoice);
-        restaurants.getAll().stream().map(Restaurant::getId).forEach(restaurants::updateVoters);
+        restaurants.getAll().forEach(r-> restaurants.updateVoters(r.getId()));
         restaurants.getAll().forEach(r -> restaurants.disabled(r.getId()));
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
                 String.format("Голосование за ресторан, где мы будем обедать завершено, выбран ресторан - %s"
@@ -69,18 +70,12 @@ public class VotingService {
     }
 
     public Restaurant getCurrentChoice() {
-        List<Restaurant> currentRestorants = getCurrentRestaurants();
-        Integer maxVoters = currentRestorants.stream().map(Restaurant::getVoters).max(Integer::compareTo).orElse(0);
-        return maxVoters == 0 ? null : currentRestorants.stream().filter(restaurant -> restaurant.getVoters() == maxVoters)
-                .findFirst().orElse(null);
+       return getCurrentRestaurants().stream().max(Comparator.comparingInt(Restaurant::getVoters)).orElse(null);
     }
 
     private void addVoice(User user, Restaurant restaurant, LocalTime time) throws TimeDelayException {
-        Assert.notNull(user, "user must not be null");
-        Assert.notNull(restaurant, "restaurant must not be null");
         if (time == null) time = LocalTime.now();
-//        Change time for 11:00!!!
-        if (time.isAfter(LocalTime.of(17, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
+        if (time.isAfter(LocalTime.of(11, 0))) throw new TimeDelayException("attempt to change the choice after 11:00");
         if ((user.getChoice() == null || !restaurant.equals(user.getChoice())) && restaurant.isEnabled()) {
             if (user.getChoice() != null)
                 restaurants.removeVoter(user.getChoice().getId());
@@ -121,12 +116,14 @@ public class VotingService {
         return restaurants.getAll();
     }
 
-    public Restaurant updateRestaurant(Restaurant restaurant) throws NotFoundException {
+    public List<Restaurant> getAllRestaurantsWithLunch() {
+        return restaurants.getAllWithLunch();
+    }
+
+    public void updateRestaurant(Restaurant restaurant) throws NotFoundException {
         Assert.notNull(restaurant, "restaurant must not be null");
-        Restaurant updated = restaurants.get(restaurant.getId());
-        checkNotFoundWithId(updated, restaurant.getId());
-        updated.setName(restaurant.getName());
-        return restaurants.save(restaurant);
+        checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
+        restaurants.update(restaurant);
     }
 
     public Restaurant createRestaurant(Restaurant restaurant) {

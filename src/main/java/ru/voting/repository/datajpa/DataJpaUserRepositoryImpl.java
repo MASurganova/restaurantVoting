@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.voting.model.User;
 import ru.voting.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -41,6 +42,10 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
+        return crudUserRepository.getAll(SORT_NAME_EMAIL);
+    }
+
+    public List<User> getAllWithChoice() {
         return crudUserRepository.findAll(SORT_NAME_EMAIL);
     }
 

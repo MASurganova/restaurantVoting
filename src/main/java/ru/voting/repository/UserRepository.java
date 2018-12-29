@@ -20,6 +20,8 @@ public interface UserRepository {
 
     default void update(User user) { save(user); }
 
+    default List<User> getAllWithChoice() { return getAll(); }
+
     default User getWithChoice(int id) {
         throw new UnsupportedOperationException();
     }

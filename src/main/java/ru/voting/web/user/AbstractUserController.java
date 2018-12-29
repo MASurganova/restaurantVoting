@@ -13,7 +13,7 @@ public abstract class AbstractUserController extends AbstractController {
 
     public List<User> getAll() {
         log.info("getAll");
-        return userService.getAll();
+        return userService.getAllWithChoice();
     }
 
     public User get(int id) {

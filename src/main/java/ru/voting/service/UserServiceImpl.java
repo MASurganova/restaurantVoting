@@ -44,6 +44,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Cacheable("users")
     @Override
+    public List<User> getAllWithChoice() {
+        return repository.getAllWithChoice();
+    }
+
+
+    @Override
     public List<User> getAll() {
         return repository.getAll();
     }

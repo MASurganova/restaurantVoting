@@ -17,7 +17,7 @@ public abstract class AbstractVotingServiceTest extends AbstractServiceTest {
     UserService users;
 
     @Test
-    public void getRestaurantById() throws Exception {
+    public void getRestaurantById(){
         assertMatch(service.getRestaurantById(MY.getId()), MY);
     }
 
@@ -38,10 +38,9 @@ public abstract class AbstractVotingServiceTest extends AbstractServiceTest {
 
     @Test
     public void updateRestaurant() throws Exception {
-        Restaurant newRestaurant = new Restaurant(OTHER.getId(),"New");
-        Restaurant updateRestaurant = service.updateRestaurant(newRestaurant);
-        newRestaurant.setId(updateRestaurant.getId());
-        assertMatch(service.getRestaurantById(OTHER.getId()), newRestaurant);
+        Restaurant updatedRestaurant = new Restaurant(OTHER.getId(),"New");
+        service.updateRestaurant(updatedRestaurant);
+        assertMatch(service.getRestaurantById(OTHER.getId()), updatedRestaurant);
     }
 
     @Test(expected = NotFoundException.class)

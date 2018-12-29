@@ -2,15 +2,11 @@ package ru.voting.web.voting;
 
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.voting.AuthorizedUser;
-import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.util.exception.TimeDelayException;
 
-import java.net.URI;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -27,10 +23,10 @@ public class VotingRestController extends AbstractVotingController {
     }
 
 
-    //Время нужно изменить на текущее
+    //Время нужно изменить на null
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addVote(@RequestBody Restaurant restaurant) throws TimeDelayException {
-        super.addVoice(AuthorizedUser.id(), restaurant, LocalTime.of(10, 20));
+        super.addVoice(AuthorizedUser.id(), restaurant.getId(), LocalTime.of(10, 20));
     }
 
 }

@@ -23,8 +23,7 @@ public class VotingAjaxController extends AbstractVotingController {
         return super. getEnabledRestaurants();
     }
 
-
-//    Не забудь поменять время на текущее
+// Не забудь изменить время на null
     @PostMapping(value="/{id}")
     public void addVote(@PathVariable int id) throws TimeDelayException {
         super.addVoice(AuthorizedUser.id(), id, LocalTime.of(10, 20));

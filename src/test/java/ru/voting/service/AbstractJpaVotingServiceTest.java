@@ -1,5 +1,6 @@
 package ru.voting.service;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import ru.voting.util.exception.TimeDelayException;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalTime;
+import java.util.List;
 
 import static ru.voting.TestData.*;
 
@@ -21,8 +23,10 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
         service.endVoting();
 //        Assert.assertEquals(userService.getHistoryVoting().size(), 3);
         Assert.assertEquals(service.getCurrentRestaurants().size(), 0);
-        Assert.assertEquals(service.getAllRestaurants().stream()
-                .filter(restaurant -> restaurant.getVoters() != 0).count(), 0);
+        Assert.assertFalse(service.getAllRestaurants().stream()
+                .anyMatch(Restaurant::isEnabled));
+        Assert.assertFalse(service.getAllRestaurants().stream()
+                .anyMatch(restaurant -> restaurant.getVoters()!=0));
         Assert.assertEquals(users.getAll().stream()
                 .filter(user -> user.getChoice() != null).count(), 0);
     }
@@ -45,7 +49,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void getCurrentChoice() throws Exception {
         service.addRestaurantToVote(OTHER.getId());
-        Assert.assertEquals(service.getRestaurantById(OTHER.getId()).isEnabled(), true);
+        Assert.assertTrue(service.getRestaurantById(OTHER.getId()).isEnabled());
         service.addVoice(ADMIN_ID, OTHER.getId(), LocalTime.of(10,0));
         service.addVoice(USER_ID, OTHER.getId(), LocalTime.of(10,0));
         Restaurant newOther = new Restaurant(OTHER);
@@ -73,8 +77,6 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
         service.addVoice(USER_ID, OTHER.getId(), LocalTime.of(10,0));
         Assert.assertEquals(service.getRestaurantById(OTHER.getId()).getVoters(), 1);
         Assert.assertEquals(service.getRestaurantById(MY.getId()).getVoters(), 0);
-//        after add choice(restaurant) in user
-//        Assert.assertEquals(userService.getRestaurantById(MY.getId()).getVoters(), 0);
     }
 
     @Test(expected = TimeDelayException.class)
@@ -85,9 +87,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void addRestaurantToVote() throws Exception {
         service.addRestaurantToVote(OTHER.getId());
-        Restaurant enabledOther = new Restaurant(OTHER);
-        enabledOther.setEnabled(true);
-        assertMatch(service.getCurrentRestaurants(), MY, enabledOther);
+        assertMatch(service.getCurrentRestaurants(), MY, service.getRestaurantById(OTHER.getId()));
     }
 
     @Test
@@ -134,5 +134,13 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test(expected = NotFoundException.class)
     public void deleteDishNotFoundInRestaurant() throws Exception {
         service.deleteDish(DISH_5.getId(), MY.getId());
+    }
+
+    @Test
+    public void getAllRestaurantsWithLunch() throws Exception {
+        List<Restaurant> restaurantsWithLunch = service.getAllRestaurantsWithLunch();
+        Assert.assertEquals(restaurantsWithLunch.size(), 2);
+        Assert.assertNotNull(restaurantsWithLunch.get(1).getLunch());
+        assertMatch(restaurantsWithLunch.get(1).getLunch(), DISH_3, DISH_4, DISH_5);
     }
 }

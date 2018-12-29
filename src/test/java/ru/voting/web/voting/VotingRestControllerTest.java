@@ -42,7 +42,6 @@ public class VotingRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(MY)))
                 .andExpect(status().isOk());
-        Assert.assertEquals(votingService.getRestaurantById(MY.getId()).getVoters(), 2);
         assertMatch(userService.getWithChoice(ADMIN_ID).getChoice(), votingService.getRestaurantById(MY.getId()));
     }
 }

@@ -48,10 +48,13 @@ public class RestaurantsAjaxController extends AbstractVotingController {
     }
 
     @PostMapping
-    public void create(@RequestParam("name") String name) {
-
+    public ResponseEntity<String> create(@RequestParam("name") String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return new ResponseEntity<>("name null", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         Restaurant restaurant = new Restaurant(null, name);
         super.create(restaurant);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/{id}")

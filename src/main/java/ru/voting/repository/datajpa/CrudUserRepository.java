@@ -29,6 +29,9 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @EntityGraph(attributePaths = "choice")
     List<User> findAll(Sort sort);
 
+    @Query("SELECT distinct u FROM User u")
+    List<User> getAll(Sort sort);
+
     User getByEmail(String email);
 
     @EntityGraph(attributePaths = "choice")
