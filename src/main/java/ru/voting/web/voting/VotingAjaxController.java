@@ -30,9 +30,13 @@ public class VotingAjaxController extends AbstractVotingController {
         super.addVoice(AuthorizedUser.id(), id, LocalTime.of(10, 20));
     }
 
-    @PutMapping("/end")
+    @GetMapping("/end")
     public void endVoting() {
         votingService.endVoting();
     }
 
+    @GetMapping("/start")
+    public void startVoting() {
+        votingService.startVoting();
+    }
 }

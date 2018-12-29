@@ -15,10 +15,19 @@ function chooseRow(id) {
 function endVoting() {
     $.ajax({
         url: ajaxUrl + "end",
-        type: "PUT"
+        type: "Get"
     }).done(function () {
         updateTable();
         successNoty("app.end");
+    });
+}
+
+function startVoting() {
+    $.ajax({
+        url: ajaxUrl + "start",
+        type: "Get"
+    }).done(function () {
+        successNoty("app.start");
     });
 }
 

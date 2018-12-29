@@ -14,8 +14,6 @@
 <div class="jumbotron">
     <div class="container">
         <h3><spring:message code="app.voting"/></h3>
-        <br/>
-        <br/><br/>
         <table class="table table-striped display" id="datatable">
             <thead>
             <tr>
@@ -44,6 +42,13 @@
                 </tr>
             </c:forEach>
         </table>
+        <br/>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="btn btn-primary" onclick="startVoting()">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                <spring:message code="app.start"/>
+            </a>
+        </sec:authorize>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="btn btn-primary" onclick="endVoting()">
                 <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
