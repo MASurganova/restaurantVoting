@@ -93,7 +93,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void createDish() throws Exception {
         Dish newDish = new Dish(null, "new", 120, MY);
-        Dish createDish = service.createDish(newDish);
+        Dish createDish = service.createDish(newDish, MY.getId());
         newDish.setId(createDish.getId());
         assertMatch(service.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_1, DISH_2,newDish);
         Assert.assertEquals(service.getRestaurantByIdWithLunch(MY.getId()).getLunch().size(), 3);
@@ -102,32 +102,37 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void updateDish() throws Exception {
         Dish newDish = new Dish(DISH_1.getId(), "update", 120, MY);
-        Dish updateDish = service.updateDish(newDish);
-        assertMatch(service.getDishById(DISH_1.getId()), updateDish);
+        Dish updateDish = service.updateDish(newDish, MY.getId());
+        assertMatch(service.getDishById(DISH_1.getId(), MY.getId()), updateDish);
     }
 
     @Test(expected = NotFoundException.class)
     public void updateDishNotFound() throws Exception {
         Dish updateDish = new Dish(5, "update", 120, MY);
-        service.updateDish(updateDish);
+        service.updateDish(updateDish, MY.getId());
     }
 
     @Test
     public void testValidation() throws Exception {
-        validateRootCause(() -> service.createDish(new Dish(" ", 100)), ConstraintViolationException.class);
-        validateRootCause(() -> service.createDish(new Dish("soap", 1)), ConstraintViolationException.class);
-        validateRootCause(() -> service.createDish(new Dish("soap", 10001)), ConstraintViolationException.class);
+        validateRootCause(() -> service.createDish(new Dish(" ", 100), MY.getId()), ConstraintViolationException.class);
+        validateRootCause(() -> service.createDish(new Dish("soap", 1), MY.getId()), ConstraintViolationException.class);
+        validateRootCause(() -> service.createDish(new Dish("soap", 10001), MY.getId()), ConstraintViolationException.class);
         validateRootCause(() -> service.createRestaurant(new Restaurant(null, " ")), ConstraintViolationException.class);
     }
 
     @Test
     public void deleteDish() throws Exception {
-        service.deleteDish(DISH_1.getId());
+        service.deleteDish(DISH_1.getId(), MY.getId());
         assertMatch(service.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_2);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteDishNotFound() throws Exception {
-        service.deleteDish(9);
+        service.deleteDish(9, MY.getId());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void deleteDishNotFoundInRestaurant() throws Exception {
+        service.deleteDish(DISH_5.getId(), MY.getId());
     }
 }

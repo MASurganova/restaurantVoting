@@ -77,11 +77,16 @@ public abstract class AbstractVotingServiceTest extends AbstractServiceTest {
 
     @Test
     public void getDishById() throws Exception {
-        assertMatch(service.getDishById(DISH_1.getId()), DISH_1);
+        assertMatch(service.getDishById(DISH_1.getId(), MY.getId()), DISH_1);
     }
 
     @Test(expected = NotFoundException.class)
     public void getDishByIdNotFound() throws Exception {
-        service.getDishById(5);
+        service.getDishById(5, MY.getId());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getDishByIdInRestaurantNotFound() throws Exception {
+        service.getDishById(DISH_5.getId(), MY.getId());
     }
 }

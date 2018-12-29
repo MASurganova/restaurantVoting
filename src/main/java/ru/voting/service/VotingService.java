@@ -123,7 +123,9 @@ public class VotingService {
 
     public Restaurant updateRestaurant(Restaurant restaurant) throws NotFoundException {
         Assert.notNull(restaurant, "restaurant must not be null");
-        checkNotFoundWithId(restaurants.get(restaurant.getId()), restaurant.getId());
+        Restaurant updated = restaurants.get(restaurant.getId());
+        checkNotFoundWithId(updated, restaurant.getId());
+        updated.setName(restaurant.getName());
         return restaurants.save(restaurant);
     }
 
@@ -136,27 +138,30 @@ public class VotingService {
         checkNotFoundWithId(restaurants.delete(id), id);
     }
 
-    public Dish getDishById(int id) throws NotFoundException {
-        return checkNotFoundWithId(dishes.get(id), id);
+    public Dish getDishById(int id, int restaurantId) throws NotFoundException {
+        return checkNotFoundWithId(dishes.get(id, restaurantId), id);
     }
 
-    public Dish createDish(Dish dish) {
-        return dishes.save(dish);
-    }
-
-    public Dish updateDish(Dish dish) throws NotFoundException {
+    public Dish createDish(Dish dish, int restaurantId) {
         Assert.notNull(dish, "dish must not be null");
-        checkNotFoundWithId(dishes.get(dish.getId()), dish.getId());
-        return dishes.save(dish);
+        return dishes.save(dish, restaurantId);
     }
 
-    public Dish updateDish(DishTo dishTo) throws NotFoundException {
-        Dish dish = getDishById(dishTo.getId());
-        return dishes.save(DishUtil.updateFromTo(dish, dishTo));
+    public Dish updateDish(Dish dish, int restaurantId) throws NotFoundException {
+        Assert.notNull(dish, "dish must not be null");
+        checkNotFoundWithId(dishes.get(dish.getId(), restaurantId), dish.getId());
+        return dishes.save(dish, restaurantId);
     }
 
-    public void deleteDish(int id) throws NotFoundException {
-        checkNotFoundWithId(dishes.delete(id), id);
+    public Dish updateDish(DishTo dishTo, int restaurantId) throws NotFoundException {
+        Assert.notNull(dishTo, "dishTo must not be null");
+        Dish dish = getDishById(dishTo.getId(), restaurantId);
+        Assert.notNull(dish, "dish must not be null");
+        return checkNotFoundWithId(dishes.save(DishUtil.updateFromTo(dish, dishTo), restaurantId), dishTo.getId());
+    }
+
+    public void deleteDish(int id, int restaurantId) throws NotFoundException {
+        checkNotFoundWithId(dishes.delete(id, restaurantId), id);
     }
 
 }

@@ -65,36 +65,31 @@ public abstract class AbstractVotingController extends AbstractController {
 
     public Dish getDish(int id, int restaurantId) {
         log.info("getDish with id={} in restaurant with id={}", id, restaurantId);
-        checkDishInRestaurant(id, restaurantId);
-        return votingService.getDishById(id);
+        return votingService.getDishById(id, restaurantId);
     }
 
     public Dish createDish(Dish dish, int restaurantId) {
         log.info("createDish {} in restaurant with id= {}", dish, restaurantId);
         checkNew(dish);
-        dish.setRestaurant(votingService.getRestaurantById(restaurantId));
-        return votingService.createDish(dish);
+        return votingService.createDish(dish,restaurantId);
     }
 
     public void deleteDish(int restaurantId, int dishId) {
         log.info("deleteDish with id={} in restaurant with id={}", dishId, restaurantId);
-        checkDishInRestaurant(dishId, restaurantId);
-        votingService.deleteDish(dishId);
+        votingService.deleteDish(dishId, restaurantId);
     }
 
     public void updateDish(int restaurantId, Dish dish, int id) {
         log.info("updateDish {} with id={} in restaurant with id={}", dish, id, restaurantId);
         assureIdConsistent(dish, id);
-        checkDishInRestaurant(id, restaurantId);
         dish.setRestaurant(votingService.getRestaurantById(restaurantId));
-        votingService.updateDish(dish);
+        votingService.updateDish(dish, restaurantId);
     }
 
     public void updateDish(int restaurantId, DishTo dishTo, int id) {
         log.info("updateDish {} with id={} in restaurant with id={}", dishTo, id, restaurantId);
         assureIdConsistent(dishTo, id);
-        checkDishInRestaurant(id, restaurantId);
-        votingService.updateDish(dishTo);
+        votingService.updateDish(dishTo, restaurantId);
     }
 
     public void endVoting() {
@@ -115,10 +110,5 @@ public abstract class AbstractVotingController extends AbstractController {
     public void addVoice(int userId, Restaurant restaurant, LocalTime time) throws TimeDelayException {
         log.info("addVoice user with id={} restaurant={} time={}", userId, restaurant, time);
         votingService.addVoice(userId, restaurant.getId(), time);
-    }
-
-    private void checkDishInRestaurant(int id, int restaurantId) {
-        checkNotFound(getWithLunch(restaurantId).getLunch().stream().anyMatch(dish -> dish.getId() == id),
-                String.format("restaurant id=%s and dishId=%s", restaurantId, id));
     }
 }

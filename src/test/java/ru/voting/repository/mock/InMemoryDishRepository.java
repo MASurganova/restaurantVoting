@@ -27,4 +27,18 @@ public class InMemoryDishRepository extends AbstractInMemoryRepository<Dish> imp
         inMemoryCount = new AtomicInteger(100004);
     }
 
+    @Override
+    public boolean delete(int id, int restaurantId) {
+        return super.delete(id);
+    }
+
+    @Override
+    public Dish save(Dish dish, int restaurantId) {
+        return super.save(dish);
+    }
+
+    @Override
+    public Dish get(int id, int restaurantId) {
+        return super.get(id);
+    }
 }

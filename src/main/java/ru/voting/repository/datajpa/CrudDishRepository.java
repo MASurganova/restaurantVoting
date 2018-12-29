@@ -12,14 +12,13 @@ import java.util.Optional;
 public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
 
     @Transactional
-    int removeById(int id);
+    int removeByIdAndRestaurantId(int id, int restaurantId);
 
     @Override
     @Transactional
     Dish save(Dish user);
 
-    @Override
-    Optional<Dish> findById(Integer id);
+    Optional<Dish> findByIdAndRestaurantId(int id, int restaurantId);
 
     @Override
     List<Dish> findAll(Sort sort);

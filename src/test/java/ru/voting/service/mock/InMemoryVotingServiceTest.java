@@ -158,35 +158,35 @@ public class InMemoryVotingServiceTest {
 
     @Test
     public void getDishByIdTest() throws NotFoundException {
-        Assert.assertEquals(service.getDishById(START_SEQ + 5), DISH_4);
+        Assert.assertEquals(service.getDishById(DISH_4.getId(), OTHER.getId()), DISH_4);
     }
 
     @Test(expected = NotFoundException.class)
     public void getDishByIdNotFoundTest() throws NotFoundException {
-        service.getDishById(6);
+        service.getDishById(6, MY.getId());
     }
 
     @Test
     public void updateDishTest() throws NotFoundException {
         Dish newDish = new Dish(START_SEQ + 2, "newDish", 120);
-        service.updateDish(newDish);
-        Assert.assertEquals(service.getDishById(START_SEQ + 2), newDish);
+        service.updateDish(newDish, MY.getId());
+        Assert.assertEquals(service.getDishById(START_SEQ + 2, MY.getId()), newDish);
     }
 
     @Test(expected = NotFoundException.class)
     public void updateDishNotFoundTest() throws NotFoundException {
         Dish newDish = new Dish(7, "newDish", 120);
-        service.updateDish(newDish);
+        service.updateDish(newDish, MY.getId());
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteDishTest() throws NotFoundException {
-        service.deleteDish(START_SEQ + 2);
-        service.getDishById(START_SEQ + 2);
+        service.deleteDish(START_SEQ + 2, MY.getId());
+        service.getDishById(START_SEQ + 2, MY.getId());
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteDishTestNotFound() throws NotFoundException {
-        service.deleteDish(7);
+        service.deleteDish(1, MY.getId());
     }
 }

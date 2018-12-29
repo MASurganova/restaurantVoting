@@ -141,7 +141,7 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
         expected.setId(returned.getId());
 
         assertMatch(returned, expected);
-        assertMatch(votingService.getDishById(expected.getId()), expected);
+        assertMatch(votingService.getDishById(expected.getId(), MY.getId()), expected);
 //     блюдо создается, как нужно, но при запросе ресторана, его не оказывается в списке блюд ланча этого ресторана
 //        assertMatch(votingService.getRestaurantByIdWithLunch(MY.getId()).getLunch(), DISH_1, DISH_2, expected);
 
@@ -190,14 +190,13 @@ public class RestaurantsRestControllerTest extends AbstractControllerTest {
     public void testUpdateDish() throws Exception{
         Dish updated = new Dish(DISH_2);
         updated.setDescription("updated");
-        System.out.println("\n\n\n" + votingService.getDishById(DISH_2.getId()) + "\n\n\n");
         mockMvc.perform(put(REST_URL + MY.getId() + "/" + DISH_2.getId())
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
 
-        assertMatch(votingService.getDishById(DISH_2.getId()), updated);
+        assertMatch(votingService.getDishById(DISH_2.getId(), MY.getId()), updated);
     }
 
     @Test

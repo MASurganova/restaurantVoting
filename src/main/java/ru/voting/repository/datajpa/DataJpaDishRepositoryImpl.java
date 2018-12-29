@@ -12,21 +12,28 @@ public class DataJpaDishRepositoryImpl implements DishRepository {
     private static final Sort SORT_ID = new Sort(Sort.Direction.ASC, "id");
 
     @Autowired
-    CrudDishRepository repository;
+    CrudDishRepository crudDishRepository;
+
+    @Autowired
+    CrudRestaurantRepository crudRestaurantRepository;
 
     @Override
-    public boolean delete(int id) {
-        return repository.removeById(id) != 0;
+    public boolean delete(int id, int restaurantId) {
+        return crudDishRepository.removeByIdAndRestaurantId(id, restaurantId) != 0;
     }
 
     @Override
-    public Dish save(Dish dish) {
-        return repository.save(dish);
+    public Dish save(Dish dish, int restaurantId) {
+        if (!dish.isNew() && get(dish.getId(), restaurantId) == null) {
+            return null;
+        }
+        dish.setRestaurant(crudRestaurantRepository.getOne(restaurantId));
+        return crudDishRepository.save(dish);
     }
 
     @Override
-    public Dish get(int id) {
-        return repository.findById(id).orElse(null);
+    public Dish get(int id, int restaurantId) {
+        return crudDishRepository.findByIdAndRestaurantId(id, restaurantId).orElse(null);
     }
 
 }
