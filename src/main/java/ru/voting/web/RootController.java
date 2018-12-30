@@ -45,6 +45,7 @@ public class RootController extends AbstractController{
     @GetMapping("restaurants/{id}")
     public String getRestaurant(@PathVariable("id") int id, Model model) {
         model.addAttribute("restaurant", votingService.getRestaurantByIdWithLunch(id));
+        model.addAttribute("restaurantId", id);
         return "restaurantForm";
     }
 

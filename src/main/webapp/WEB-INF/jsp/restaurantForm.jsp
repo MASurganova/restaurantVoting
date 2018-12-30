@@ -19,7 +19,7 @@
         <br/>
 
         <h4><spring:message code="restaurant.lunch"/></h4>
-        <a class="btn btn-primary" onclick="add(${restaurant.id})">
+        <a class="btn btn-primary" onclick="add()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             <spring:message code="dish.add"/>
         </a>
@@ -33,29 +33,29 @@
                 <th></th>
             </tr>
             </thead>
-            <c:choose>
-                <c:when test="${restaurant.lunch.size() != 0}">
-                    <c:forEach items="${restaurant.lunch}" var="dish">
-                        <jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>
-                        <tr class="normal">
-                            <td><c:out value="${dish.description}"/></td>
-                            <td>${dish.price}</td>
-                            <td><a onclick="updateRow(${dish.id}, ${restaurant.id})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
-                            <td><a onclick="deleteRow(${dish.id}, ${restaurant.id})">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            </a></td>
-                        </tr>
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <tr class="normal">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </c:otherwise>
-            </c:choose>
+            <%--<c:choose>--%>
+                <%--<c:when test="${restaurant.lunch.size() != 0}">--%>
+                    <%--<c:forEach items="${restaurant.lunch}" var="dish">--%>
+                        <%--<jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>--%>
+                        <%--<tr class="normal">--%>
+                            <%--<td><c:out value="${dish.description}"/></td>--%>
+                            <%--<td>${dish.price}</td>--%>
+                            <%--<td><a onclick="updateRow(${dish.id}, ${restaurant.id})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>--%>
+                            <%--<td><a onclick="deleteRow(${dish.id}, ${restaurant.id})">--%>
+                                <%--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>--%>
+                            <%--</a></td>--%>
+                        <%--</tr>--%>
+                    <%--</c:forEach>--%>
+                <%--</c:when>--%>
+                <%--<c:otherwise>--%>
+                    <%--<tr class="normal">--%>
+                        <%--<td></td>--%>
+                        <%--<td></td>--%>
+                        <%--<td></td>--%>
+                        <%--<td></td>--%>
+                    <%--</tr>--%>
+                <%--</c:otherwise>--%>
+            <%--</c:choose>--%>
         </table>
 
         <br/>

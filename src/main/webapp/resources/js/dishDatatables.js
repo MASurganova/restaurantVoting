@@ -1,9 +1,15 @@
 var ajaxUrl = "ajax/admin/restaurants/";
 var datatableApi;
+var id;
 
 // $(document).ready(function () {
 $(function () {
+    id = $(this).data("restaurantId");
     datatableApi = $("#datatable").DataTable({
+        "ajax": {
+            "url": ajaxUrl + id,
+            "dataSrc": ""
+        },
         "paging": false,
         "info": false,
         "columns": [
@@ -15,12 +21,14 @@ $(function () {
             },
 
             {
-                "defaultContent": "Edit",
-                "orderable": false
+                "orderable": false,
+                "defaultContent": "",
+                "render": renderEditBtn
             },
             {
-                "defaultContent": "Delete",
-                "orderable": false
+                "orderable": false,
+                "defaultContent": "",
+                "render": renderDeleteBtn
             }
         ],
         "order": [
@@ -28,9 +36,9 @@ $(function () {
                 0,
                 "asc"
             ]
-        ]
+        ],
+        "initComplete": makeEditable
     });
-    makeEditable();
 });
 
 function deleteRow(id, restaurantId) {
@@ -102,3 +110,18 @@ function saveRestaurant(id) {
     });
 
 }
+
+function renderEditBtn(data, type, row) {
+    if (type === "display") {
+        return "<a onclick='updateRow(" + row.id + ", " + id + ");'>" +
+            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
+    }
+}
+
+function renderDeleteBtn(data, type, row) {
+    if (type === "display") {
+        return "<a onclick='deleteRow(" + row.id + ", " + id + ");'>" +
+            "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>";
+    }
+}
+
