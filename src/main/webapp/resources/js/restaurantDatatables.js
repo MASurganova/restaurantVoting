@@ -2,6 +2,20 @@ var ajaxUrl = "ajax/admin/restaurants/";
 
 var datatableApi;
 
+$(function () {
+    makeEditable();
+});
+
+function makeEditable() {
+    form = $('#detailsForm');
+    $(document).ajaxError(function (event, jqXHR, options, jsExc) {
+        failNoty(jqXHR);
+    });
+
+    // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
+    $.ajaxSetup({cache: false});
+}
+
 function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
 //  https://stackoverflow.com/a/22213543/548473
@@ -15,43 +29,34 @@ function enable(chkbox, id) {
         $(chkbox).prop("checked", !enabled);
     });
 }
-
-// $(document).ready(function () {
-$(function () {
-    datatableApi = $("#datatable").DataTable({
-        "paging": false,
-        "info": false,
-        "columns": [
-            {
-                "data": "name"
-            },
-            {
-                "data": "lunch",
-                "defaultContent": "<i>Not set</i>"
-            },
-            {
-                "data": "totalPrice",
-                "defaultContent": "0"
-            },
-            {
-                "data": "enabled"
-            },
-
-            {
-                "defaultContent": "Edit",
-                "orderable": false
-            },
-            {
-                "defaultContent": "Delete",
-                "orderable": false
-            }
-        ],
-        "order": [
-            [
-                0,
-                "asc"
-            ]
-        ]
+function deleteRow(id) {
+    $.ajax({
+        url: ajaxUrl + id,
+        type: "DELETE"
+    }).done(function () {
+        updateTable();
+        successNoty("common.deleted");
     });
-    makeEditable();
-});
+}
+
+function updateTable() {
+    window.location = "http://localhost:8080/restaurantVoting/restaurants/";
+}
+
+function save() {
+    $.ajax({
+        type: "POST",
+        url: ajaxUrl,
+        data: form.serialize(),
+    }).done(function () {
+        $("#editRow").modal("hide");
+        updateTable();
+        successNoty("common.saved");
+    });
+}
+
+function add() {
+    $("#modalTitle").html(i18n["addTitle"]);
+    form.find(":input").val("");
+    $("#editRow").modal();
+}
