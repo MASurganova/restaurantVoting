@@ -28,12 +28,6 @@ function deleteRow(id) {
     });
 }
 
-function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        datatableApi.clear().rows.add(data).draw();
-    });
-}
-
 function save() {
     $.ajax({
         type: "POST",
@@ -56,17 +50,4 @@ function updateRow(id) {
     });
 }
 
-function renderEditBtn(data, type, row) {
-    if (type === "display") {
-        return "<a onclick='updateRow(" + row.id + ");'>" +
-            "<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
-    }
-}
-
-function renderDeleteBtn(data, type, row) {
-    if (type === "display") {
-        return "<a onclick='deleteRow(" + row.id + ");'>" +
-            "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a>";
-    }
-}
 

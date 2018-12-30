@@ -7,6 +7,7 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
+<script type="text/javascript" src="resources/js/datatablesUtil.js" defer></script>
 <script type="text/javascript" src="resources/js/dishDatatables.js" defer></script>
 <script type="text/javascript" src="resources/js/noteUtil.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
@@ -14,6 +15,7 @@
 <div class="jumbotron">
     <div class="container">
         <jsp:useBean id="restaurant" type="ru.voting.model.Restaurant" scope="request"/>
+        <a id="restaurantId" value="${restaurant.id}"></a>
         <h3><spring:message code="restaurant.update"/> ${restaurant.name}</h3>
         <br/>
         <br/>
@@ -33,29 +35,6 @@
                 <th></th>
             </tr>
             </thead>
-            <%--<c:choose>--%>
-                <%--<c:when test="${restaurant.lunch.size() != 0}">--%>
-                    <%--<c:forEach items="${restaurant.lunch}" var="dish">--%>
-                        <%--<jsp:useBean id="dish" scope="page" type="ru.voting.model.Dish"/>--%>
-                        <%--<tr class="normal">--%>
-                            <%--<td><c:out value="${dish.description}"/></td>--%>
-                            <%--<td>${dish.price}</td>--%>
-                            <%--<td><a onclick="updateRow(${dish.id}, ${restaurant.id})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>--%>
-                            <%--<td><a onclick="deleteRow(${dish.id}, ${restaurant.id})">--%>
-                                <%--<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>--%>
-                            <%--</a></td>--%>
-                        <%--</tr>--%>
-                    <%--</c:forEach>--%>
-                <%--</c:when>--%>
-                <%--<c:otherwise>--%>
-                    <%--<tr class="normal">--%>
-                        <%--<td></td>--%>
-                        <%--<td></td>--%>
-                        <%--<td></td>--%>
-                        <%--<td></td>--%>
-                    <%--</tr>--%>
-                <%--</c:otherwise>--%>
-            <%--</c:choose>--%>
         </table>
 
         <br/>
@@ -70,7 +49,7 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-1">
-                    <button type="button" onclick="saveRestaurant(${restaurant.id})" class="btn btn-primary">
+                    <button type="button" onclick="saveRestaurant()" class="btn btn-primary">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                     </button>
                 </div>

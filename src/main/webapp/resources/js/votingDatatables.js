@@ -1,7 +1,5 @@
 var ajaxUrl = "ajax/profile/voting/";
 
-var datatableApi;
-
 function chooseRow(id) {
     $.ajax({
         url: ajaxUrl + id,
@@ -31,39 +29,10 @@ function startVoting() {
     });
 }
 
-// $(document).ready(function () {
-$(function () {
-    datatableApi = $("#datatable").DataTable({
-        "paging": false,
-        "info": false,
-        "columns": [
-            {
-                "data": "name"
-            },
-            {
-                "data": "lunch",
-                "defaultContent": "<i>Not set</i>"
-            },
-            {
-                "data": "totalPrice",
-                "defaultContent": "0"
-            },
-            {
-                "data": "voters",
-                "defaultContent": "0"
-            },
+function updateTable() {
+    window.location = "http://localhost:8080/restaurantVoting/voting/";
+}
 
-            {
-                "defaultContent": "Choose",
-                "orderable": false
-            }
-        ],
-        "order": [
-            [
-                0,
-                "asc"
-            ]
-        ]
-    });
-    makeEditable();
+$(function () {
+    $.ajaxSetup({cache: false});
 });
