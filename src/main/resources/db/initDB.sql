@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS dishes;
 DROP TABLE IF EXISTS restaurants;
+DROP TABLE IF EXISTS history;
 
 DROP SEQUENCE IF EXISTS global_seq;
 
@@ -44,3 +45,11 @@ CREATE TABLE user_roles
   CONSTRAINT user_roles_idx UNIQUE (user_id, role),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE history
+(
+  event_date       TIMESTAMP DEFAULT now() PRIMARY KEY  NOT NULL,
+  restaurant_name  VARCHAR                              NOT NULL
+
+);
+CREATE UNIQUE INDEX history_unique_date_idx ON history (event_date);

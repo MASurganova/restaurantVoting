@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.model.User;
+import ru.voting.model.VotingEvent;
 import ru.voting.repository.DishRepository;
 import ru.voting.repository.HistoryRepository;
 import ru.voting.repository.RestaurantRepository;
@@ -44,7 +45,7 @@ public class VotingService {
     @CacheEvict(value = "users", allEntries = true)
     public void endVoting() {
         Restaurant currentChoice = getCurrentChoice();
-        history.addInHistory(LocalDate.now(), currentChoice);
+        history.save(new VotingEvent(LocalDate.now(), currentChoice.getName()));
         restaurants.getAll().forEach(r-> restaurants.updateVoters(r.getId()));
         restaurants.getAll().forEach(r -> restaurants.disabled(r.getId()));
         users.getAll().stream().map(User::getEmail).forEach(email -> sendEmail(email,
@@ -61,8 +62,12 @@ public class VotingService {
 //    Нужно реализовать рассылку письма по email с переданным текстом
     private void sendEmail(String email, String s) {}
 
-    public Map<LocalDate, Restaurant> getHistoryVoting() {
-        return history.getHistory();
+    public List<VotingEvent> getHistoryVoting() {
+        return history.getAll();
+    }
+
+    public boolean deleteHistoryVotingEvent(LocalDate date) {
+        return history.delete(date);
     }
 
     public List<Restaurant> getCurrentRestaurants() {

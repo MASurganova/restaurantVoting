@@ -1,8 +1,6 @@
 package ru.voting.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -12,16 +10,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@NamedQueries({
-        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id"),
-        @NamedQuery(name = Dish.ALL_SORTED, query = "SELECT d FROM Dish d ORDER BY d.id")
-})
+//@NamedQueries({
+//        @NamedQuery(name = Dish.DELETE, query = "DELETE FROM Dish d WHERE d.id=:id"),
+//        @NamedQuery(name = Dish.ALL_SORTED, query = "SELECT d FROM Dish d ORDER BY d.id")
+//})
 @Entity
 @Table(name = "dishes")
 public class Dish extends AbstractBaseEntity {
 
-    public static final String DELETE = "Dish.delete";
-    public static final String ALL_SORTED = "Dish.getAllSorted";
+//    public static final String DELETE = "Dish.delete";
+//    public static final String ALL_SORTED = "Dish.getAllSorted";
 
     @Column(name = "description", nullable = false)
     @NotBlank

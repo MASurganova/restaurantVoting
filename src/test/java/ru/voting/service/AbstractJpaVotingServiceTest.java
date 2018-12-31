@@ -21,7 +21,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void endVoting() throws Exception {
         service.endVoting();
-//        Assert.assertEquals(userService.getHistoryVoting().size(), 3);
+          Assert.assertEquals(service.getHistoryVoting().size(), 3);
         Assert.assertEquals(service.getCurrentRestaurants().size(), 0);
         Assert.assertFalse(service.getAllRestaurants().stream()
                 .anyMatch(Restaurant::isEnabled));

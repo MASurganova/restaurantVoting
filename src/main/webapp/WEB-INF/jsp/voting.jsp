@@ -47,8 +47,6 @@
                 <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                 <spring:message code="app.start"/>
             </a>
-        </sec:authorize>
-        <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="btn btn-primary" onclick="endVoting()">
                 <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
                 <spring:message code="app.end"/>

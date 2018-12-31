@@ -1,13 +1,17 @@
 package ru.voting.repository;
 
-import ru.voting.model.Restaurant;
+import ru.voting.model.VotingEvent;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.List;
 
 public interface  HistoryRepository {
 
-    void addInHistory(LocalDate date, Restaurant restaurant);
+    boolean delete(LocalDate date);
 
-    Map<LocalDate, Restaurant> getHistory();
+    VotingEvent save(VotingEvent event) ;
+
+    VotingEvent get(LocalDate date);
+
+    List<VotingEvent> getAll();
 }

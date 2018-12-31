@@ -2,45 +2,59 @@ package ru.voting.repository.mock;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
-import ru.voting.model.Restaurant;
+import ru.voting.TestData;
+import ru.voting.model.VotingEvent;
 import ru.voting.repository.HistoryRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.voting.TestData.MY;
-import static ru.voting.TestData.OTHER;
 
 @Repository
 public class InMemoryHistoryRepository implements HistoryRepository {
 
     public static final Logger log = getLogger(InMemoryHistoryRepository.class);
 
-    private Map<LocalDate, Restaurant> repository;
+    private Map<LocalDate, VotingEvent> inMemoryRepository;
 
     public InMemoryHistoryRepository() {
-        this.repository = new ConcurrentHashMap<>();
+        inMemoryRepository  = new ConcurrentHashMap<>();
         init();
     }
 
     public void init() {
-        repository.clear();
-        repository.put(LocalDate.of(2018, 3, 20), MY);
-        repository.put(LocalDate.of(2018, 3, 19), OTHER);
+        inMemoryRepository.clear();
+        inMemoryRepository.put(TestData.EVENT_1.getDate(), TestData.EVENT_1);
+        inMemoryRepository.put(TestData.EVENT_2.getDate(), TestData.EVENT_2);
+    }
+
+
+    @Override
+    public boolean delete(LocalDate date) {
+        log.info("delete {}", date);
+        return inMemoryRepository.remove(date) != null;
     }
 
     @Override
-    public void addInHistory(LocalDate date, Restaurant restaurant) {
-        log.info("add in history {} - {}", date, restaurant);
-        repository.put(date, restaurant);
+    public VotingEvent save(VotingEvent event) {
+        log.info("create {}", event);
+        return inMemoryRepository.put(event.getDate(), event);
     }
 
     @Override
-    public Map<LocalDate, Restaurant> getHistory() {
-        log.info("get history");
-        return repository;
+    public VotingEvent get(LocalDate date) {
+        log.info("get {}", date);
+        return inMemoryRepository.get(date);
+    }
+
+    @Override
+    public List<VotingEvent> getAll() {
+        log.info("getAll");
+        return new ArrayList<>(inMemoryRepository.values());
     }
 }
 

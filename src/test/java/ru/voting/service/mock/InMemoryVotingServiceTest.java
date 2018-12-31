@@ -17,8 +17,12 @@ import ru.voting.service.VotingService;
 import ru.voting.util.exception.NotFoundException;
 import ru.voting.util.exception.TimeDelayException;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import static ru.voting.TestData.*;
 import static ru.voting.model.AbstractBaseEntity.START_SEQ;
@@ -188,5 +192,16 @@ public class InMemoryVotingServiceTest {
     @Test(expected = NotFoundException.class)
     public void deleteDishTestNotFound() throws NotFoundException {
         service.deleteDish(1, MY.getId());
+    }
+
+    @Test
+    public void deleteHistoryVotingEventTest() {
+        service.deleteHistoryVotingEvent(EVENT_1.getDate());
+        Assert.assertEquals(service.getHistoryVoting(), Arrays.asList(EVENT_2));
+    }
+
+    @Test
+    public void getHistoryVoting() {
+        Assert.assertEquals(service.getHistoryVoting().size(), 2);
     }
 }

@@ -1,11 +1,9 @@
 package ru.voting;
 
 import org.springframework.test.web.servlet.ResultMatcher;
-import ru.voting.model.Dish;
-import ru.voting.model.Restaurant;
-import ru.voting.model.Role;
-import ru.voting.model.User;
+import ru.voting.model.*;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -28,6 +26,8 @@ public class TestData {
             "password",Role.ROLE_USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com",
             "admin", Role.ROLE_ADMIN, Role.ROLE_USER);
+    public static final VotingEvent EVENT_1 = new VotingEvent(LocalDate.of(2018, 12, 30), MY.getName());
+    public static final VotingEvent EVENT_2 = new VotingEvent(LocalDate.of(2018, 12, 29), OTHER.getName());
 
     public static void assertMatch(User actual, User expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "choice");
