@@ -1,10 +1,7 @@
 package ru.voting.service;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
 import ru.voting.util.exception.NotFoundException;
@@ -21,7 +18,7 @@ public abstract class AbstractJpaVotingServiceTest extends AbstractVotingService
     @Test
     public void endVoting() throws Exception {
         service.endVoting();
-          Assert.assertEquals(service.getHistoryVoting().size(), 3);
+          Assert.assertEquals(service.getVotingHistory().size(), 3);
         Assert.assertEquals(service.getCurrentRestaurants().size(), 0);
         Assert.assertFalse(service.getAllRestaurants().stream()
                 .anyMatch(Restaurant::isEnabled));

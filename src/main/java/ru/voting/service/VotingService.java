@@ -62,7 +62,7 @@ public class VotingService {
 //    Нужно реализовать рассылку письма по email с переданным текстом
     private void sendEmail(String email, String s) {}
 
-    public List<VotingEvent> getHistoryVoting() {
+    public List<VotingEvent> getVotingHistory() {
         return history.getAll();
     }
 

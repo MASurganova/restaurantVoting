@@ -1,17 +1,10 @@
 package ru.voting.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import ru.voting.AuthorizedUser;
-import ru.voting.service.VotingService;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class RootController extends AbstractController{
@@ -35,6 +28,14 @@ public class RootController extends AbstractController{
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/history")
+    public String history(Model model) {
+        model.addAttribute("votingEvents", votingService.getVotingHistory());
+        return "history";
+
+    }
+
     @GetMapping("/voting")
     public String voting(Model model) {
         model.addAttribute("restaurants", votingService.getCurrentRestaurants());
@@ -42,10 +43,14 @@ public class RootController extends AbstractController{
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("restaurants/{id}")
-    public String getRestaurant(@PathVariable("id") int id, Model model) {
-        model.addAttribute("restaurant", votingService.getRestaurantByIdWithLunch(id));
-        model.addAttribute("restaurantId", id);
+    @GetMapping("restaurants/{param}")
+    public String getRestaurant(@PathVariable("param") String param, Model model) {
+        try {
+            int id = Integer.valueOf(param);
+            model.addAttribute("restaurant", votingService.getRestaurantByIdWithLunch(id));
+        } catch (NumberFormatException e) {
+            model.addAttribute("restaurant", votingService.getRestaurantByName(param));
+        }
         return "restaurantForm";
     }
 

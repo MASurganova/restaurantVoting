@@ -18,6 +18,7 @@
             <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="users"><spring:message code="user.title"/></a></li>
                 <li><a href="restaurants"><spring:message code="restaurant.title"/></a></li>
+                <li><a href="history"><spring:message code="history.title"/></a></li>
             </sec:authorize>
         </sec:authorize>
     </div>
