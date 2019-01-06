@@ -2,10 +2,12 @@ package ru.voting.web.voting;
 
 import ru.voting.model.Dish;
 import ru.voting.model.Restaurant;
+import ru.voting.model.VotingEvent;
 import ru.voting.to.DishTo;
 import ru.voting.util.exception.TimeDelayException;
 import ru.voting.web.AbstractController;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -110,5 +112,15 @@ public abstract class AbstractVotingController extends AbstractController {
     public void addVoice(int userId, Restaurant restaurant, LocalTime time) throws TimeDelayException {
         log.info("addVoice user with id={} restaurant={} time={}", userId, restaurant, time);
         votingService.addVoice(userId, restaurant.getId(), time);
+    }
+
+    public List<VotingEvent> getHistory() {
+        log.info("getHistory");
+        return votingService.getVotingHistory();
+    }
+
+    public void deleteVotingEvent(LocalDate date) {
+        log.info("getHistory");
+        votingService.deleteHistoryVotingEvent(date);
     }
 }

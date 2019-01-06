@@ -57,4 +57,15 @@ public class RootControllerTest extends AbstractControllerTest {
                 )));
     }
 
+
+    @Test
+    public void testHistory() throws Exception {
+        mockMvc.perform(get("/history")
+                .with(userAuth(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("history"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/history.jsp"));
+    }
+
 }

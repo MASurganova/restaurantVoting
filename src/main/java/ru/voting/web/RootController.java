@@ -31,7 +31,6 @@ public class RootController extends AbstractController{
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/history")
     public String history(Model model) {
-        model.addAttribute("votingEvents", votingService.getVotingHistory());
         return "history";
 
     }

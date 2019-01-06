@@ -7,7 +7,7 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
-<script type="text/javascript" src="resources/js/votingDatatables.js" defer></script>
+<script type="text/javascript" src="resources/js/historyDatatables.js" defer></script>
 <script type="text/javascript" src="resources/js/noteUtil.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <div class="jumbotron">
@@ -16,26 +16,21 @@
         <table class="table table-striped display" id="datatable">
             <thead>
             <tr>
-                <th><spring:message code="history.restaurantName"/></th>
                 <th><spring:message code="history.date"/></th>
-                <th></th>
+                <th><spring:message code="history.restaurantName"/></th>
+                <th><spring:message code="history.delete"/></th>
             </tr>
             </thead>
-            </thead>
-            <c:forEach items="${votingEvents}" var="votingEvent">
-                <jsp:useBean id="votingEvent" scope="page" type="ru.voting.model.VotingEvent"/>
-                <tr>
-                    <td><a href="restaurants/${votingEvent.restaurantName}">${votingEvent.restaurantName}</a></td>
-                    <td><${votingEvent.date}></td>
-                    <td><a onclick="deleteRow(${votingEvent.date})">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </a></td>
-                </tr>
-            </c:forEach>
         </table>
         <br/>
     </div>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<script type="text/javascript">
+    var i18n = [];
+    <c:forEach var="key" items='<%=new String[]{"common.deleted","common.saved","common.errorStatus"}%>'>
+    i18n["${key}"] = "<spring:message code="${key}"/>";
+    </c:forEach>
+</script>
 </html>
