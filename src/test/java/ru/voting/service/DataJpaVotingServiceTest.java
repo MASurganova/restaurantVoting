@@ -13,7 +13,7 @@ import java.util.List;
 
 import static ru.voting.TestData.*;
 
-public abstract class AbstractJpaVotingServiceTest extends AbstractVotingServiceTest {
+public class DataJpaVotingServiceTest extends AbstractVotingServiceTest {
 
     @Test
     public void endVoting() throws Exception {

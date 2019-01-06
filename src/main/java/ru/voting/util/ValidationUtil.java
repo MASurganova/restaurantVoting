@@ -15,7 +15,7 @@ public class ValidationUtil {
     public static ConfigurableApplicationContext getSpringContext() {
         if (springContext == null) {
             springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
-            springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+            springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile());
             springContext.refresh();
         }
         return springContext;

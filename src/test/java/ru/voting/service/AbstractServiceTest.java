@@ -62,9 +62,6 @@ public abstract class AbstractServiceTest {
         SLF4JBridgeHandler.install();
     }
 
-    public boolean isJpaBased() {
-        return env.acceptsProfiles(Profiles.JPA, Profiles.DATAJPA);
-    }
 
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
     public <T extends Throwable> void validateRootCause(Runnable runnable, Class<T> exceptionClass) {

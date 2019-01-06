@@ -3,19 +3,16 @@ package ru.voting.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.dao.DataAccessException;
 import ru.voting.model.Role;
 import ru.voting.model.User;
 import ru.voting.repository.JpaUtil;
-import ru.voting.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 
-import static ru.voting.TestData.*;
+import static ru.voting.TestData.MY;
+import static ru.voting.TestData.assertMatch;
 
-public abstract class AbstractJpaUserServiceTest extends AbstractUserServiceTest {
+public class DataJpaUserServiceTest extends AbstractUserServiceTest {
 
     @Autowired
     private JpaUtil jpaUtil;

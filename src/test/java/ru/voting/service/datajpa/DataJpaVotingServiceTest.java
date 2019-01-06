@@ -1,11 +1,4 @@
 package ru.voting.service.datajpa;
 
-import org.springframework.test.context.ActiveProfiles;
-import ru.voting.service.AbstractJpaVotingServiceTest;
-import ru.voting.service.AbstractVotingServiceTest;
-
-import static ru.voting.Profiles.DATAJPA;
-
-@ActiveProfiles(DATAJPA)
-public class DataJpaVotingServiceTest extends AbstractJpaVotingServiceTest {
+public class DataJpaVotingServiceTest extends ru.voting.service.DataJpaVotingServiceTest {
 }
