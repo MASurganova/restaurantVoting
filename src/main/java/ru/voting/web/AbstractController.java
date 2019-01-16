@@ -21,11 +21,6 @@ public abstract class AbstractController {
     @Autowired
     protected UserService userService;
 
-    protected int getId(HttpServletRequest request) {
-        String paramId = Objects.requireNonNull(request.getParameter("id"));
-        return Integer.valueOf(paramId);
-    }
-
     protected String getErrorsMessage(BindingResult result) {
         StringJoiner joiner = new StringJoiner("<br>");
         result.getFieldErrors().forEach(
